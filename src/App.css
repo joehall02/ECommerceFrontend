@@ -1,0 +1,24 @@
+/* Styling for custom buttons */
+a.custom-button {
+    background-color: #323232;
+    color: #fff;   
+    border: none; 
+    border-radius: 0px;    
+    box-shadow: inset 0 0 0 3px #fff, 3px 3px 0px 0px rgba(0, 0, 0, 0.75);
+    font-size: 1.4rem;
+    box-sizing: border-box;
+}
+
+/* Changes colour of button when hovering over it */
+a.custom-button:hover {
+    box-shadow: inset 0 0 0 8px #fff, 4px 4px 0px 0px rgba(0, 0, 0, 0.75);
+    background-color: #323232;
+    color: #fff;
+}
+
+/* Removes box shadow when button is active */
+a.custom-button:active {
+    box-shadow: inset 0 0 0 5px #fff, 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    background-color: #323232 !important;
+    color: #fff !important;
+}

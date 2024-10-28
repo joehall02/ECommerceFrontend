@@ -10,10 +10,9 @@
     font-size: 1.2rem;
 }
 
-/* Adds underline and changes color when hovering over nav links */
+/* Changes color when hovering over nav links */
 .navbar .nav-link:hover {
-    color: #005F41;
-    text-decoration: underline;
+    color: #727070;    
 }
 
 /* When screen is at medium breakpoint or less, stops nav link items from being underlined */
@@ -58,11 +57,6 @@
     }
 }
 
-.navbar-brand {
-    position: relative;
-    z-index: 1; /* Ensure the brand stays in the correct layer */
-}
-
 /* Changes color and size of navbar profile and cart icons */
 .bi-person-fill {
     font-size: 1.4rem;
@@ -72,4 +66,15 @@
 .bi-bag-fill {
     font-size: 1.2rem;
     color: #fff;
+}
+
+/* Changes colour of profile and cart icons when hovering */
+.bi-bag-fill:hover, .bi-person-fill:hover {
+    color: #727070 !important;
+}
+
+/* Adjust z index of desktop icons, allows functionality on desktop view */
+.desktop-icons {
+    position: relative;
+    z-index: 1;
 }

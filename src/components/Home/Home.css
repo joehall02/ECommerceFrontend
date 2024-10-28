@@ -1,0 +1,20 @@
+/* Main */
+
+/* Changes background image of home page */
+#main{
+    /* background-image: url('../../assets/home_background.jpg');   */
+    background-color: #f8f9fa;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;  
+}
+
+/* Changes size of h1 on home page */
+#main .container h1 {
+    font-size: 4rem;
+}
+
+
+/* Featured products */
+

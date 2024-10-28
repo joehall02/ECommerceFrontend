@@ -1,8 +1,19 @@
+import React from "react";
+import "./Home.css";
+import Main from "./Main";
+import Categories from "./Categories";
+import About from "./About";
+import Contact from "./Contact";
+import FeaturedProducts from "./FeaturedProducts";
+
 function Home() {
   return (
-    <div className="container">
-      <h1>Welcome to the home page!</h1>
-      <p>This is the home page of our example website. Feel free to browse around and discover all the cool things it can do!</p>
+    <div>
+      <Main />
+      <FeaturedProducts />
+      <About />
+      <Categories />
+      <Contact />
     </div>
   );
 }

@@ -38,10 +38,10 @@ function Navbar() {
 
         {/* Cart Icon and Profile Icon Rendering based on screen size */}
         {/* Only visible on mobile */}
-        {isMobile ? (
+        {isMobile && (
           <div className="d-flex align-items-center">
             <a href="#cart" className="me-3">
-              <i className="bi-bag-fill"></i>
+              <i className="bi bi-bag-fill"></i>
             </a>
             <a href="#profile">
               <i className="bi bi-person-fill"></i>
@@ -50,7 +50,7 @@ function Navbar() {
               {navbarOpen ? <i className="bi bi-x-lg toggle-icon" /> : <i className="bi bi-list toggle-icon" />}
             </button>
           </div>
-        ) : null}
+        )}
 
         {/* Collapsible Navbar and links */}
         <div className={`collapse navbar-collapse ${navbarOpen ? "show" : ""}`} id="navbarNav">
@@ -75,9 +75,9 @@ function Navbar() {
 
         {/* Only visible on Desktop */}
         {!isMobile && (
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center desktop-icons">
             <a href="#cart" className="me-3">
-              <i className="bi-bag-fill"></i>
+              <i className="bi bi-bag-fill"></i>
             </a>
             <a href="#profile">
               <i className="bi bi-person-fill"></i>
