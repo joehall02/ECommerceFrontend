@@ -1,0 +1,31 @@
+/* Contact */
+
+/* Changes background colour of contact form */
+.contact-form {
+    background-color: #323232;
+}
+
+/* Custom styling for form inputs and text area */
+#contact form input,
+#contact form textarea {
+    background-color: #323232;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    border: 3px solid #fff;
+    border-radius: 0px;
+    resize: none;
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.75);
+}
+
+/* Removes box shadow when input is selected */
+#contact form input:focus,
+#contact form textarea:focus {    
+    box-shadow: none;
+}
+
+/* Changes colour of placeholder text */
+#contact form input::placeholder,
+#contact form textarea::placeholder {
+    color: #8f9798;
+}

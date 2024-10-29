@@ -6,7 +6,7 @@ function Product({ image, name, category, price }) {
     <>
       <div className="custom-border my-3">
         <div className="card p-2 text-center text-white bg-transparent border-0">
-          <img src={image} className="card-image-top" alt={name} />
+          <img src={image} className="card-image-top image-shadow" alt={name} />
           <h3 className="cart-title fw-bold mt-3">{name}</h3>
           <p className="card-text">{category}</p>
           <p className="card-text">£{price}</p>

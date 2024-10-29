@@ -29,10 +29,10 @@ function Navbar() {
   }, []);
 
   return (
-    <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg fixed-top navbar-dark">
       <div className="container d-flex justify-content-between position-relative">
         {/* Brand Name */}
-        <a className="navbar-brand" href="#home" onClick={handleNavLinkClick}>
+        <a className="navbar-brand" href="#main" onClick={handleNavLinkClick}>
           E-commerce-site
         </a>
 
@@ -56,7 +56,7 @@ function Navbar() {
         <div className={`collapse navbar-collapse ${navbarOpen ? "show" : ""}`} id="navbarNav">
           <ul className="navbar-nav d-flex justify-content-center align-items-center mx-auto w-100">
             <li className="nav-item">
-              <a className="nav-link" href="#home" onClick={handleNavLinkClick}>
+              <a className="nav-link" href="#main" onClick={handleNavLinkClick}>
                 Home
               </a>
             </li>
