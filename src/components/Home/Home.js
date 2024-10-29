@@ -1,10 +1,9 @@
 import React from "react";
-import "./Home.css";
-import Main from "./Main";
-import Categories from "./Categories";
-import About from "./About";
-import Contact from "./Contact";
-import FeaturedProducts from "./FeaturedProducts";
+import Main from "./Main/Main";
+import Categories from "./Categories/Categories";
+import About from "./About/About";
+import Contact from "./Contact/Contact";
+import FeaturedProducts from "./FeaturedProducts/FeaturedProducts";
 
 function Home() {
   return (

@@ -1,5 +1,4 @@
-import "./Home.css";
-import "../../App.css";
+import "../../../App.css";
 import React from "react";
 
 function Main() {
@@ -17,9 +16,9 @@ function Main() {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. <br />
           Exercitationem earum voluptatum animi veniam fuga non eligendi numquam id.
         </h3>
-        <a className="btn px-5 py-2 fw-bold custom-button" href="#shop">
+        <button className="btn px-5 py-2 fw-bold custom-button" href="#shop">
           Shop Now
-        </a>
+        </button>
       </div>
     </section>
   );
