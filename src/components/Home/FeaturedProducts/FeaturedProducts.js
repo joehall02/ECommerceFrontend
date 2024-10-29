@@ -4,7 +4,7 @@ import Product from "./Product/Product";
 
 function FeaturedProducts() {
   return (
-    <section id="featured-products" style={{ boxSizing: "border-box" }}>
+    <section id="featured-products">
       <div className="container py-5">
         <div className="row justify-content-center">
           <div className="col-12 col-lg-3">
