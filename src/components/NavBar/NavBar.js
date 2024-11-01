@@ -1,9 +1,11 @@
 import "./NavBar.css";
 import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
   const [navbarOpen, setNavbarOpen] = useState(false); // State to store the toggle status of the navbar
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992); // Detect if the screen is mobile
+  const location = useLocation(); // Hook to get the current location
 
   // Function to handle the toggle of the navbar
   const handleToggle = () => {
@@ -12,6 +14,25 @@ function Navbar() {
 
   const handleNavLinkClick = () => {
     setNavbarOpen(false);
+  };
+
+  const handleContactClick = () => {
+    if (location.pathname === "/") {
+      // If the user is on the home page, scroll to the contact section
+      document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+    } else {
+      // If on another page, navigate to the home page and scroll to the contact section
+      setTimeout(() => {
+        document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
+  };
+
+  const handleHomeClick = () => {
+    if (location.pathname === "/") {
+      // If the user is on the home page, scroll to the top
+      document.getElementById("main").scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   // Handle window resize events to update isMobile state
@@ -56,19 +77,33 @@ function Navbar() {
         <div className={`collapse navbar-collapse ${navbarOpen ? "show" : ""}`} id="navbarNav">
           <ul className="navbar-nav d-flex justify-content-center align-items-center mx-auto w-100">
             <li className="nav-item">
-              <a className="nav-link" href="#main" onClick={handleNavLinkClick}>
+              <Link
+                to="/"
+                className="nav-link"
+                onClick={() => {
+                  handleNavLinkClick();
+                  handleHomeClick();
+                }}
+              >
                 Home
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#shop" onClick={handleNavLinkClick}>
+              <Link to="/shop" className="nav-link" onClick={handleNavLinkClick}>
                 Shop
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#contact" onClick={handleNavLinkClick}>
+              <Link
+                to="/"
+                className="nav-link"
+                onClick={() => {
+                  handleNavLinkClick();
+                  handleContactClick();
+                }}
+              >
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
