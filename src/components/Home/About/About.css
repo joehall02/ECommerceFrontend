@@ -1,0 +1,14 @@
+
+/* Changes background colour of about section */
+#about {  
+    /* background-image: url('../../assets/about_background.jpg');   */
+    background-color: #f8f9fa;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;  
+}
+
+.custom-line-height {
+    line-height: 2;
+}
