@@ -12,6 +12,7 @@ function Shop() {
   return (
     <section id="shop">
       <div className="container min-vh-100 my-5 py-5">
+        {/* Category heading and sort by button */}
         <div className="d-flex justify-content-between pb-3">
           <h2 className="text-start text-dark fw-bold mb-0">All Product</h2>
           <div className="d-flex column align-items-center">
@@ -45,6 +46,8 @@ function Shop() {
             </div>
           </div>
         </div>
+
+        {/* Products */}
         <div className="row justify-content-start">
           <div className="col-12 col-lg-4">
             <Product image="https://loremflickr.com/320/320" name="Product 1" price="10.00" />

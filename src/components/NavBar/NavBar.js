@@ -32,6 +32,11 @@ function Navbar() {
     if (location.pathname === "/") {
       // If the user is on the home page, scroll to the top
       document.getElementById("main").scrollIntoView({ behavior: "smooth" });
+    } else {
+      // If on another page, navigate to the home page and scroll to the top
+      setTimeout(() => {
+        document.getElementById("main").scrollIntoView({ behavior: "smooth" });
+      }, 300);
     }
   };
 
