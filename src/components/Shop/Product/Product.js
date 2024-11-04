@@ -2,7 +2,7 @@ import React from "react";
 import "./Product.css";
 import { Link } from "react-router-dom";
 
-function Product({ image, name, price }) {
+const Product = ({ image, name, price }) => {
   return (
     <Link to="/shop/product-page" className="text-decoration-none">
       <div className="my-3">
@@ -16,6 +16,6 @@ function Product({ image, name, price }) {
       </div>
     </Link>
   );
-}
+};
 
 export default Product;

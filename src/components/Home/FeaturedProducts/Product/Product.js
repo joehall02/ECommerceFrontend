@@ -1,7 +1,7 @@
 import React from "react";
 import "./Product.css";
 
-function Product({ image, name, category, price }) {
+const Product = ({ image, name, category, price }) => {
   return (
     <div className="custom-border my-3">
       <div className="card p-2 text-center text-white bg-transparent border-0">
@@ -15,6 +15,6 @@ function Product({ image, name, category, price }) {
       </div>
     </div>
   );
-}
+};
 
 export default Product;

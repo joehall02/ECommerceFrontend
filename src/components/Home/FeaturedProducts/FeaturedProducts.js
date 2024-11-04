@@ -2,7 +2,7 @@ import React from "react";
 import "./FeaturedProducts.css";
 import Product from "./Product/Product";
 
-function FeaturedProducts() {
+const FeaturedProducts = () => {
   return (
     <section id="featured-products">
       <div className="container py-5">
@@ -23,6 +23,6 @@ function FeaturedProducts() {
       </div>
     </section>
   );
-}
+};
 
 export default FeaturedProducts;

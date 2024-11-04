@@ -6,7 +6,7 @@ import Shop from "./components/Shop/Shop";
 import ProductPage from "./components/Shop/ProductPage/ProductPage";
 import Footer from "./components/Footer/Footer";
 
-function App() {
+const App = () => {
   return (
     <Router>
       <NavBar />
@@ -18,6 +18,6 @@ function App() {
       <Footer />
     </Router>
   );
-}
+};
 
 export default App;

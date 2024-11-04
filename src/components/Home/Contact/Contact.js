@@ -2,7 +2,7 @@ import React from "react";
 import "./Contact.css";
 import contactBackground from "../../../assets/about.jpg";
 
-function Contact() {
+const Contact = () => {
   return (
     <section id="contact">
       <div className="d-flex flex-column-reverse flex-lg-row">
@@ -50,6 +50,6 @@ function Contact() {
       </div>
     </section>
   );
-}
+};
 
 export default Contact;

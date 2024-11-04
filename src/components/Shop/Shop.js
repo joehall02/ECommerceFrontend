@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Shop.css";
 import Product from "./Product/Product";
 
-function Shop() {
+const Shop = () => {
   const [selectedItem, setSelectedItem] = useState("Name (A-Z)");
 
   const handleDropdownSelect = (item) => {
@@ -74,6 +74,6 @@ function Shop() {
       </div>
     </section>
   );
-}
+};
 
 export default Shop;

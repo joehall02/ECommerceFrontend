@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./ProductPage.css";
 import "../../../App.css";
 
-function ProductPage() {
+const ProductPage = () => {
   const [selectedItem, setSelectedItem] = useState("1");
 
   const handleDropdownSelect = (item) => {
@@ -13,13 +13,16 @@ function ProductPage() {
     <section id="product-page">
       <div className="container min-vh-100 d-flex align-items-center my-5 my-lg-0 py-5">
         <div className="row">
+          {/* Image */}
           <div className="col-12 col-lg-6 mb-5 mb-lg-0">
             <img src="https://loremflickr.com/500/700" className="img-fluid" alt="Product" />
           </div>
+
+          {/* Product details */}
           <div className="col-12 col-lg-6 d-flex justify-content-center flex-column">
             <div className="mt-auto">
-              <h1 className="fw-bold">Product Name</h1>
-              <h2>Category Name</h2>
+              <h2 className="fw-bold">Product Name</h2>
+              <h3>Category Name</h3>
               <h4 className="mb-5">£9.99</h4>
               <div className="">
                 <h4>About this item</h4>
@@ -30,7 +33,8 @@ function ProductPage() {
               </div>
             </div>
 
-            <div className="d-flex mt-auto">
+            {/* Quantity dropdown and add to basket button */}
+            <div className="d-flex justify-content-between justify-content-lg-start mt-auto">
               <div className="btn-group me-3">
                 <button className="btn btn-outline-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown">
                   Quantity: {selectedItem}
@@ -63,13 +67,13 @@ function ProductPage() {
                   </li>
                 </ul>
               </div>
-              <button className="btn shop-button px-5 fs-5">Add to Cart</button>
+              <button className="btn shop-button px-5 fs-5">Add to Basket</button>
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default ProductPage;

@@ -5,7 +5,7 @@ import About from "./About/About";
 import Contact from "./Contact/Contact";
 import FeaturedProducts from "./FeaturedProducts/FeaturedProducts";
 
-function Home() {
+const Home = () => {
   return (
     <div>
       <Main />
@@ -15,6 +15,6 @@ function Home() {
       <Contact />
     </div>
   );
-}
+};
 
 export default Home;

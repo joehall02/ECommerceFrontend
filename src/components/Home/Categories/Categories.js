@@ -2,7 +2,7 @@ import React from "react";
 import Category from "./Category/Category";
 import "./Categories.css";
 
-function Categories() {
+const Categories = () => {
   return (
     <section id="categories">
       <div className="container py-5">
@@ -20,6 +20,6 @@ function Categories() {
       </div>
     </section>
   );
-}
+};
 
 export default Categories;

@@ -1,7 +1,7 @@
 import "../../../App.css";
 import React from "react";
 
-function Main() {
+const Main = () => {
   return (
     <section id="main" className="position-relative">
       {/* Dark overlay, zIndex used to position homepage content above the overlay */}
@@ -22,6 +22,6 @@ function Main() {
       </div>
     </section>
   );
-}
+};
 
 export default Main;

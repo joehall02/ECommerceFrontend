@@ -1,7 +1,7 @@
 import React from "react";
 import "./Category.css";
 
-function Product({ image, name }) {
+const Product = ({ image, name }) => {
   return (
     <div className="category-shadow my-2">
       <div className="card text-center text-secondary border-0 rounded-0">
@@ -12,6 +12,6 @@ function Product({ image, name }) {
       </div>
     </div>
   );
-}
+};
 
 export default Product;
