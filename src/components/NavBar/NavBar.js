@@ -73,12 +73,12 @@ const Navbar = () => {
           {/* Only visible on mobile */}
           {isMobile && (
             <div className="d-flex align-items-center">
-              <a href="#cart" className="me-3" onClick={handleBasketClick}>
+              <button className="btn btn-link me-3 p-0" onClick={handleBasketClick}>
                 <i className="bi bi-bag-fill"></i>
-              </a>
-              <a href="#profile">
+              </button>
+              <Link to={"/login"} className="btn btn-link p-0">
                 <i className="bi bi-person-fill"></i>
-              </a>
+              </Link>
               <button className="navbar-toggler" type="button" onClick={handleToggle} aria-controls="navbarNav" aria-expanded={navbarOpen ? "true" : "false"} aria-label="Toggle navigation">
                 {navbarOpen ? <i className="bi bi-x-lg toggle-icon" /> : <i className="bi bi-list toggle-icon" />}
               </button>
@@ -123,12 +123,12 @@ const Navbar = () => {
           {/* Only visible on Desktop */}
           {!isMobile && (
             <div className="d-flex align-items-center desktop-icons">
-              <a href="#cart" className="me-3" onClick={handleBasketClick}>
+              <button className="btn btn-link me-3 p-0" onClick={handleBasketClick}>
                 <i className="bi bi-bag-fill"></i>
-              </a>
-              <a href="#profile">
+              </button>
+              <Link to={"/login"} className="btn btn-link p-0">
                 <i className="bi bi-person-fill"></i>
-              </a>
+              </Link>
             </div>
           )}
         </div>
