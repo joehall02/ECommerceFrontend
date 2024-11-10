@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Auth.css";
 
 const Register = () => {
+  useEffect(() => {
+    // Scroll to the top of the page when the componenet mounts
+    window.scrollTo(0, 0);
+  });
+
   return (
     <section id="#login" className="d-flex">
       <div className="d-flex flex-lg-row flex-column w-100">

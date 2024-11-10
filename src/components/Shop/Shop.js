@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Shop.css";
 import Product from "./Product/Product";
 
@@ -8,6 +8,11 @@ const Shop = () => {
   const handleDropdownSelect = (item) => {
     setSelectedItem(item);
   };
+
+  useEffect(() => {
+    // Scroll to the top of the page when the componenet mounts
+    window.scrollTo(0, 0);
+  });
 
   return (
     <section id="shop">

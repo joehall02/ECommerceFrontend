@@ -2,6 +2,7 @@ import "./NavBar.css";
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Basket from "../Basket/Basket";
+import Account from "../Account/Account";
 
 const Navbar = () => {
   const [navbarOpen, setNavbarOpen] = useState(false); // State to store the toggle status of the navbar
@@ -76,9 +77,10 @@ const Navbar = () => {
               <button className="btn btn-link me-3 p-0" onClick={handleBasketClick}>
                 <i className="bi bi-bag-fill"></i>
               </button>
-              <Link to={"/login"} className="btn btn-link p-0">
-                <i className="bi bi-person-fill"></i>
-              </Link>
+
+              {/* Account component */}
+              <Account />
+
               <button className="navbar-toggler" type="button" onClick={handleToggle} aria-controls="navbarNav" aria-expanded={navbarOpen ? "true" : "false"} aria-label="Toggle navigation">
                 {navbarOpen ? <i className="bi bi-x-lg toggle-icon" /> : <i className="bi bi-list toggle-icon" />}
               </button>
@@ -126,9 +128,9 @@ const Navbar = () => {
               <button className="btn btn-link me-3 p-0" onClick={handleBasketClick}>
                 <i className="bi bi-bag-fill"></i>
               </button>
-              <Link to={"/login"} className="btn btn-link p-0">
-                <i className="bi bi-person-fill"></i>
-              </Link>
+
+              {/* Account component */}
+              <Account />
             </div>
           )}
         </div>
