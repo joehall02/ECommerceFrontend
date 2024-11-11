@@ -1,0 +1,29 @@
+.order {
+    overflow: hidden;
+    height: 350px;
+}
+
+.card-products {
+    overflow-y: auto;
+}
+
+.order-info-closed {
+    background-color: #D9D9D9;
+    max-height: 70px;
+    overflow: hidden;
+}
+
+.order-info-open {
+    background-color: #D9D9D9;
+    max-height: 100%;
+    transition: max-height 0.3s ease-out;
+}
+
+
+.order-product:hover {
+    background-color: #D9D9D9;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

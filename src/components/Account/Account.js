@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./Account.css";
 
 const Account = () => {
   return (
@@ -10,15 +11,15 @@ const Account = () => {
 
       <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
         <li>
-          <a className="dropdown-item text-end" href="#dropdown">
+          <Link to={"/account/orders"} className="dropdown-item remove-blue-background text-end">
             Orders
-          </a>
+          </Link>
         </li>
         <li>
           <hr className="dropdown-divider bg-secondary" />
         </li>
         <li>
-          <a className="dropdown-item text-end" href="#dropdown">
+          <a className="dropdown-item remove-blue-background text-end" href="#dropdown">
             Addresses
           </a>
         </li>
@@ -26,7 +27,7 @@ const Account = () => {
           <hr className="dropdown-divider bg-secondary" />
         </li>
         <li>
-          <a className="dropdown-item text-end" href="#dropdown">
+          <a className="dropdown-item remove-blue-background text-end" href="#dropdown">
             Settings
           </a>
         </li>
@@ -34,7 +35,7 @@ const Account = () => {
           <hr className="dropdown-divider bg-secondary" />
         </li>
         <li>
-          <a className="dropdown-item text-end" href="#dropdown">
+          <a className="dropdown-item remove-blue-background text-end" href="#dropdown">
             Logout
           </a>
         </li>
