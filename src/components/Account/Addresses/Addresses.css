@@ -1,0 +1,11 @@
+.add-address {
+    height: 350px;    
+}
+
+.bi-plus-lg {
+    font-size: 3rem;    
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}

@@ -34,7 +34,7 @@ const Order = ({ orderDate, totalPrice, status, products, address, payment }) =>
               {status}
             </small>
             <small className="card-text fw-bold d-flex align-items-center cursor-pointer" onClick={handleInfoToggle}>
-              <u>Order Details</u> <i className="bi bi-caret-down-fill"></i>
+              <u>Order Details</u> <i className={`bi ${infoToggle ? "bi-caret-up-fill" : "bi-caret-down-fill"}`}></i>
             </small>
           </div>
 
