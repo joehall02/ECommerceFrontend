@@ -10,6 +10,10 @@ import Register from "./components/Auth/Register";
 import Orders from "./components/Account/Orders/Orders";
 import Addresses from "./components/Account/Addresses/Addresses";
 import AddAddress from "./components/Account/Addresses/AddAddress/AddAddress";
+import Settings from "./components/Account/Settings/Settings";
+import EditName from "./components/Account/Settings/EditName/EditName";
+import EditPassword from "./components/Account/Settings/EditPassword/EditPassword";
+import DeleteAccount from "./components/Account/Settings/DeleteAccount/DeleteAccount";
 
 const App = () => {
   return (
@@ -24,6 +28,10 @@ const App = () => {
         <Route path="/account/orders" element={<Orders />} />
         <Route path="/account/addresses" element={<Addresses />} />
         <Route path="/account/addresses/add-address" element={<AddAddress />} />
+        <Route path="/account/settings" element={<Settings />} />
+        <Route path="/account/settings/edit-name" element={<EditName />} />
+        <Route path="/account/settings/edit-password" element={<EditPassword />} />
+        <Route path="/account/settings/delete-account" element={<DeleteAccount />} />
       </Routes>
       <Footer />
     </Router>

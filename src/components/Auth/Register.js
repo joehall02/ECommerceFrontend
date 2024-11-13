@@ -24,16 +24,10 @@ const Register = () => {
             <h1 className="fw-bold text-white text-center pb-5">Register</h1>
             <form className="d-flex flex-column justify-content-center">
               <div className="mb-3">
-                <label htmlFor="firstName" className="form-label text-white">
+                <label htmlFor="fullName" className="form-label text-white">
                   First Name
                 </label>
-                <input type="text" className="form-control py-2" id="firstName" name="firstName" placeholder="john" required />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="lastName" className="form-label text-white">
-                  Last Name
-                </label>
-                <input type="text" className="form-control py-2" id="lastName" name="lastName" placeholder="doe" required />
+                <input type="text" className="form-control py-2" id="fullName" name="fullName" placeholder="John Doe" required />
               </div>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label text-white">
