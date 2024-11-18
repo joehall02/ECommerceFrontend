@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./AddAddress.css";
 import "./../../../../App.css";
+import { Link } from "react-router-dom";
 
 const AddAddress = () => {
   useEffect(() => {
@@ -12,7 +13,10 @@ const AddAddress = () => {
       {/* Contact form */}
       <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center">
         <div className="col-10 col-lg-8">
-          <h2 className="fw-bold text-start pb-5">Add Address</h2>
+          <div className="d-flex justify-content-between align-items-center mb-5 px-0">
+            <h2 className="fw-bold text-start pb-5">Add Address</h2>
+            <Link to={"/account/addresses"}>Go Back</Link>
+          </div>
           <form className="d-flex flex-column justify-content-center">
             <div className="mb-3">
               <label htmlFor="fullName" className="form-label fw-bold">

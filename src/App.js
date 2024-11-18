@@ -14,6 +14,7 @@ import Settings from "./components/Account/Settings/Settings";
 import EditName from "./components/Account/Settings/EditName/EditName";
 import EditPassword from "./components/Account/Settings/EditPassword/EditPassword";
 import DeleteAccount from "./components/Account/Settings/DeleteAccount/DeleteAccount";
+import Admin from "./components/Admin/Admin";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/account/settings/edit-name" element={<EditName />} />
         <Route path="/account/settings/edit-password" element={<EditPassword />} />
         <Route path="/account/settings/delete-account" element={<DeleteAccount />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footer />
     </Router>

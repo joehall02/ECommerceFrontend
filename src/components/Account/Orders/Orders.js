@@ -8,14 +8,14 @@ const Orders = () => {
   });
 
   // Sample products
-  const sampleProducts = [{ name: "Product 1", quantity: "2", image: "https://loremflickr.com/100/100" }];
+  const sampleProducts = [{ name: "Product 1", quantity: "2", price: "12.59", image: "https://loremflickr.com/100/100" }];
 
   const sampleProductsLarge = [
-    { name: "Product 1", quantity: "2", image: "https://loremflickr.com/100/100" },
-    { name: "Product 2", quantity: "3", image: "https://loremflickr.com/100/100" },
-    { name: "Product 3", quantity: "1", image: "https://loremflickr.com/100/100" },
-    { name: "Product 3", quantity: "1", image: "https://loremflickr.com/100/100" },
-    { name: "Product 3", quantity: "1", image: "https://loremflickr.com/100/100" },
+    { name: "Product 1", quantity: "2", price: "12.59", image: "https://loremflickr.com/100/100" },
+    { name: "Product 2", quantity: "3", price: "12.59", image: "https://loremflickr.com/100/100" },
+    { name: "Product 3", quantity: "1", price: "12.59", image: "https://loremflickr.com/100/100" },
+    { name: "Product 3", quantity: "1", price: "12.59", image: "https://loremflickr.com/100/100" },
+    { name: "Product 3", quantity: "1", price: "12.59", image: "https://loremflickr.com/100/100" },
   ];
 
   const sampleAddress = {
@@ -26,12 +26,12 @@ const Orders = () => {
   };
 
   const sampleOrders = [
-    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234" },
-    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProductsLarge, address: sampleAddress, payment: "Card ending in 1234" },
-    { orderDate: "02/07/2024", totalPrice: "£99.99", status: "Dispatched", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234" },
-    { orderDate: "15/07/2024", totalPrice: "£100.99", status: "Delivered", products: sampleProductsLarge, address: sampleAddress, payment: "Card ending in 1234" },
-    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "In Progress", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234" },
-    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234" },
+    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
+    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProductsLarge, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
+    { orderDate: "02/07/2024", totalPrice: "£99.99", status: "Dispatched", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
+    { orderDate: "15/07/2024", totalPrice: "£100.99", status: "Delivered", products: sampleProductsLarge, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
+    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "In Progress", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
+    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
   ];
 
   return (
@@ -41,7 +41,16 @@ const Orders = () => {
 
         <div className="row mt-5">
           {sampleOrders.map((order, index) => (
-            <Order key={index} orderDate={order.orderDate} totalPrice={order.totalPrice} status={order.status} products={order.products} address={order.address} payment={order.payment} />
+            <Order
+              key={index}
+              orderDate={order.orderDate}
+              totalPrice={order.totalPrice}
+              status={order.status}
+              products={order.products}
+              address={order.address}
+              payment={order.payment}
+              orderNumber={order.orderNumber}
+            />
           ))}
         </div>
       </div>

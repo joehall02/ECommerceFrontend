@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Order.css";
 import { Link } from "react-router-dom";
 
-const Order = ({ orderDate, totalPrice, status, products, address, payment }) => {
+const Order = ({ orderDate, totalPrice, status, products, address, payment, orderNumber }) => {
   const [infoToggle, setInfoToggle] = useState(false);
 
   const handleInfoToggle = () => {
@@ -12,7 +12,7 @@ const Order = ({ orderDate, totalPrice, status, products, address, payment }) =>
 
   return (
     // Order component
-    <div className="col-12 col-lg-6 col-xxl-4 mb-5 order">
+    <div className="col-12 col-lg-6 mb-5 order">
       <div className="card h-100">
         {/* Order info */}
         <div className={`card-body ${infoToggle ? "order-info-open" : "order-info-closed"}`}>
@@ -57,6 +57,11 @@ const Order = ({ orderDate, totalPrice, status, products, address, payment }) =>
               <br />
               {payment}
             </small>
+            <small className="card-text">
+              <span className="fw-bold">Order Number:</span>
+              <br />
+              {orderNumber}
+            </small>
           </div>
         </div>
 
@@ -67,6 +72,7 @@ const Order = ({ orderDate, totalPrice, status, products, address, payment }) =>
               <img src={product.image} alt={product.name} />
               <div className="d-flex flex-column ms-3">
                 <span className="fw-bold">{product.name}</span>
+                <span>Price: £{product.price}</span>
                 <span>Quantity: {product.quantity}</span>
               </div>
             </Link>
