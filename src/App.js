@@ -14,7 +14,10 @@ import Settings from "./components/Account/Settings/Settings";
 import EditName from "./components/Account/Settings/EditName/EditName";
 import EditPassword from "./components/Account/Settings/EditPassword/EditPassword";
 import DeleteAccount from "./components/Account/Settings/DeleteAccount/DeleteAccount";
-import Admin from "./components/Admin/Admin";
+import AdminDashboard from "./components/Admin/AdminDashboard/AdminDashboard";
+import AdminCategories from "./components/Admin/AdminCategories/AdminCategories";
+import AdminProducts from "./components/Admin/AdminProducts/AdminProducts";
+import AdminOrders from "./components/Admin/AdminOrders/AdminOrders";
 
 const App = () => {
   return (
@@ -33,7 +36,10 @@ const App = () => {
         <Route path="/account/settings/edit-name" element={<EditName />} />
         <Route path="/account/settings/edit-password" element={<EditPassword />} />
         <Route path="/account/settings/delete-account" element={<DeleteAccount />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/admin/orders" element={<AdminOrders />} />
       </Routes>
       <Footer />
     </Router>

@@ -35,7 +35,7 @@ const Account = () => {
           <hr className="dropdown-divider bg-secondary" />
         </li>
         <li>
-          <Link to={"/admin"} className="dropdown-item remove-blue-background text-end" href="#dropdown">
+          <Link to={"/admin/dashboard"} className="dropdown-item remove-blue-background text-end" href="#dropdown">
             Admin
           </Link>
         </li>
