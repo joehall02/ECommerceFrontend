@@ -16,8 +16,13 @@ import EditPassword from "./components/Account/Settings/EditPassword/EditPasswor
 import DeleteAccount from "./components/Account/Settings/DeleteAccount/DeleteAccount";
 import AdminDashboard from "./components/Admin/AdminDashboard/AdminDashboard";
 import AdminCategories from "./components/Admin/AdminCategories/AdminCategories";
+import NewCategory from "./components/Admin/AdminCategories/NewCategory/NewCategory";
+import CategoryDetails from "./components/Admin/AdminCategories/CategoryDetails/CategoryDetails";
 import AdminProducts from "./components/Admin/AdminProducts/AdminProducts";
+import NewProduct from "./components/Admin/AdminProducts/NewProduct/NewProduct";
+import ProductDetails from "./components/Admin/AdminProducts/ProductDetails/ProductDetails";
 import AdminOrders from "./components/Admin/AdminOrders/AdminOrders";
+import OrderDetails from "./components/Admin/AdminOrders/OrderDetails/OrderDetails";
 
 const App = () => {
   return (
@@ -38,8 +43,13 @@ const App = () => {
         <Route path="/account/settings/delete-account" element={<DeleteAccount />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/categories/new-category" element={<NewCategory />} />
+        <Route path="/admin/categories/category-details" element={<CategoryDetails />} />
         <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/admin/products/new-product" element={<NewProduct />} />
+        <Route path="admin/products/product-details" element={<ProductDetails />} />
         <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route path="/admin/orders/order-details" element={<OrderDetails />} />
       </Routes>
       <Footer />
     </Router>

@@ -1,5 +1,6 @@
 import React from "react";
 import AdminSidebar from "../AdminSidebar/AdminSidebar";
+import { Link } from "react-router-dom";
 import "./AdminProducts.css";
 
 const AdminProducts = () => {
@@ -17,7 +18,9 @@ const AdminProducts = () => {
         <div className="d-flex justify-content-between">
           <h2 className="fw-bold mt-4">Products</h2>
 
-          <button className="btn btn-dark px-4 rounded-0 fw-bold my-auto">New Product</button>
+          <Link to={"/admin/products/new-product"} className="btn btn-dark px-4 rounded-0 fw-bold my-auto">
+            New Product
+          </Link>
         </div>
 
         <div className="d-flex mt-5">
@@ -54,7 +57,9 @@ const AdminProducts = () => {
                   <td className="w-15">{product.price}</td>
                   <td className="w-15">{product.stock}</td>
                   <td className="w-35 text-end">
-                    <button className="btn btn-dark rounded-0 btn-sm me-2">Details</button>
+                    <Link to={"/admin/products/product-details"} className="btn btn-dark rounded-0 btn-sm me-2">
+                      Details
+                    </Link>
                     <button className="btn btn-danger rounded-0 btn-sm">Delete</button>
                   </td>
                 </tr>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AdminSidebar from "../AdminSidebar/AdminSidebar";
+import { Link } from "react-router-dom";
 import "./AdminOrders.css";
 
 const AdminOrders = () => {
@@ -86,7 +87,9 @@ const AdminOrders = () => {
                   <td className="w-15">{product.stock}</td>
                   <td className="w-15">{product.total}</td>
                   <td className="w-35 text-end">
-                    <button className="btn btn-dark rounded-0 btn-sm me-2">Details</button>
+                    <Link to={"/admin/orders/order-details"} className="btn btn-dark rounded-0 btn-sm me-2">
+                      Details
+                    </Link>
                   </td>
                 </tr>
               ))}

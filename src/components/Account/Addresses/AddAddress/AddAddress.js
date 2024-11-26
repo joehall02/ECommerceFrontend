@@ -14,7 +14,7 @@ const AddAddress = () => {
       <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center">
         <div className="col-10 col-lg-8">
           <div className="d-flex justify-content-between align-items-center mb-5 px-0">
-            <h2 className="fw-bold text-start pb-5">Add Address</h2>
+            <h2 className="fw-bold text-start">Add Address</h2>
             <Link to={"/account/addresses"}>Go Back</Link>
           </div>
           <form className="d-flex flex-column justify-content-center">

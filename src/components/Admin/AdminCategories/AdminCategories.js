@@ -1,5 +1,6 @@
 import React from "react";
 import AdminSidebar from "../AdminSidebar/AdminSidebar";
+import { Link } from "react-router-dom";
 import "./AdminCategories.css";
 
 const AdminCategories = () => {
@@ -17,7 +18,9 @@ const AdminCategories = () => {
         <div className="d-flex justify-content-between">
           <h2 className="fw-bold mt-4">Categories</h2>
 
-          <button className="btn btn-dark px-4 rounded-0 fw-bold my-auto">New Category</button>
+          <Link to={"/admin/categories/new-category"} className="btn btn-dark px-4 rounded-0 fw-bold my-auto">
+            New Category
+          </Link>
         </div>
 
         <div className="d-flex mt-5">
@@ -38,7 +41,9 @@ const AdminCategories = () => {
                   <td>{category.name}</td>
                   <td className="text-end">
                     <button className="btn btn-dark rounded-0 btn-sm me-2">Products</button>
-                    <button className="btn btn-dark rounded-0 btn-sm me-2">Details</button>
+                    <Link to={"/admin/categories/category-details"} className="btn btn-dark rounded-0 btn-sm me-2">
+                      Details
+                    </Link>
                     <button className="btn btn-danger rounded-0 btn-sm">Delete</button>
                   </td>
                 </tr>
