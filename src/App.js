@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import axios from "axios";
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./components/Home/Home";

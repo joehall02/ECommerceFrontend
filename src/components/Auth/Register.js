@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./Auth.css";
 import "../../App.css";
 import { useNavigate } from "react-router-dom";
+import { register } from "../../api/auth";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -38,15 +38,12 @@ const Register = () => {
       const { confirmPassword, ...updatedFormData } = formData;
 
       // Send a POST request to the server
-      try {
-        await axios.post("/user/signup", updatedFormData);
+      const response = await register(updatedFormData); // Call Api function
+
+      if (response.success) {
         navigate("/login"); // Redirect to the login page
-      } catch (error) {
-        if (error.response) {
-          setError(error.response.data.error);
-        } else {
-          setError("An error occurred. Please try again.");
-        }
+      } else {
+        setError(response.message);
       }
     }
   };

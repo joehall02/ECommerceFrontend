@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./Account.css";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Account = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, handleLogout } = useContext(AuthContext);
 
   return (
     <div className="dropdown">
@@ -53,7 +53,7 @@ const Account = () => {
           <hr className="dropdown-divider bg-secondary" />
         </li>
         <li>
-          <Link to={"/login"} onClick={logout} className="dropdown-item remove-blue-background text-end" href="#dropdown">
+          <Link to={"/login"} onClick={handleLogout} className="dropdown-item remove-blue-background text-end" href="#dropdown">
             Logout
           </Link>
         </li>

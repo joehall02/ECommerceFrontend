@@ -3,11 +3,11 @@ import "./Auth.css";
 import "../../App.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
+import { login } from "../../api/auth";
 
 const Login = () => {
-  const { checkAuth } = useContext(AuthContext);
+  const { verifyAuthentication } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -30,16 +30,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      await axios.post("/user/login", formData);
-      checkAuth(); // Update the authentication state
-      navigate("/"); // Redirect to the home page
-    } catch (error) {
-      if (error.response) {
-        setError(error.response.data.error);
-      } else {
-        setError("An error occurred. Please try again.");
-      }
+    const response = await login(formData); // Call API function
+
+    if (response.success) {
+      verifyAuthentication(); // Verify authentication
+      navigate("/"); // Redirect to home page
+    } else {
+      setError(response.message);
     }
   };
 
