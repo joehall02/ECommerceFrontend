@@ -1,14 +1,63 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./Auth.css";
+import "../../App.css";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    full_name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [error, setError] = useState("");
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Confirm passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    } else {
+      // Remove confirmPassword from the formData object if the passwords match
+      const { confirmPassword, ...updatedFormData } = formData;
+
+      // Send a POST request to the server
+      try {
+        await axios.post("/user/signup", updatedFormData);
+        navigate("/login"); // Redirect to the login page
+      } catch (error) {
+        if (error.response) {
+          setError(error.response.data.error);
+        } else {
+          setError("An error occurred. Please try again.");
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     // Scroll to the top of the page when the componenet mounts
     window.scrollTo(0, 0);
   });
 
   return (
-    <section id="#login" className="d-flex">
+    <section id="#register" className="d-flex">
       <div className="d-flex flex-lg-row flex-column w-100">
         <div className="col-12 col-lg-6 bg-primary d-none d-lg-flex align-items-center justify-content-center min-vh-100">
           <div className="col-10">
@@ -22,31 +71,43 @@ const Register = () => {
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center min-vh-100 auth-form">
           <div className="col-10 col-lg-8">
             <h1 className="fw-bold text-white text-center pb-5">Register</h1>
-            <form className="d-flex flex-column justify-content-center">
+            <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label htmlFor="fullName" className="form-label text-white">
-                  First Name
+                <label htmlFor="full_name" className="form-label text-white">
+                  Full Name
                 </label>
-                <input type="text" className="form-control py-2" id="fullName" name="fullName" placeholder="John Doe" required />
+                <input type="text" className="form-control py-2" id="full_name" name="full_name" placeholder="John Doe" value={formData.full_name} onChange={handleChange} required />
               </div>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label text-white">
                   E-Mail
                 </label>
-                <input type="text" className="form-control py-2" id="email" name="email" placeholder="johndoe@gmail.com" required />
+                <input type="email" className="form-control py-2" id="email" name="email" placeholder="johndoe@gmail.com" value={formData.email} onChange={handleChange} required />
               </div>
               <div className="mb-3">
                 <label htmlFor="password" className="form-label text-white">
                   Password
                 </label>
-                <input type="text" className="form-control py-2" id="password" name="password" placeholder="********" required />
+                <input type="password" className="form-control py-2" id="password" name="password" placeholder="********" value={formData.password} onChange={handleChange} required />
               </div>
               <div className="mb-3">
                 <label htmlFor="confirmPassword" className="form-label text-white">
                   Confirm Password
                 </label>
-                <input type="text" className="form-control py-2" id="confirmPassword" name="confirmPassword" placeholder="********" required />
+                <input
+                  type="password"
+                  className="form-control py-2"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="********"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
               </div>
+
+              {/* Error Message */}
+              <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
 
               <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100">
                 Register

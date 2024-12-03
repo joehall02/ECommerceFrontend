@@ -33,3 +33,9 @@
 .auth-form form textarea::placeholder {
     color: #8f9798;
 }
+
+
+/* Container for error message, fixed height to ensure form component doesnt move */
+.error-container {
+    height: 2rem;
+}

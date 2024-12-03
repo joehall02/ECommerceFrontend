@@ -1,8 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Auth.css";
+import "../../App.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
+  const { checkAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post("/user/login", formData);
+      checkAuth(); // Update the authentication state
+      navigate("/"); // Redirect to the home page
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error);
+      } else {
+        setError("An error occurred. Please try again.");
+      }
+    }
+  };
+
   useEffect(() => {
     // Scroll to the top of the page when the componenet mounts
     window.scrollTo(0, 0);
@@ -23,18 +63,18 @@ const Login = () => {
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center min-vh-100 auth-form">
           <div className="col-10 col-lg-8">
             <h1 className="fw-bold text-white text-center pb-5">Login</h1>
-            <form className="d-flex flex-column justify-content-center">
+            <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="email" className="form-label text-white">
                   E-Mail
                 </label>
-                <input type="text" className="form-control py-3" id="email" name="email" placeholder="johndoe@gmail.com" required />
+                <input type="email" className="form-control py-3" id="email" name="email" placeholder="johndoe@gmail.com" value={formData.email} onChange={handleChange} required />
               </div>
               <div className="mb-3">
                 <label htmlFor="password" className="form-label text-white">
                   Password
                 </label>
-                <input type="text" className="form-control py-3" id="password" name="password" placeholder="********" required />
+                <input type="password" className="form-control py-3" id="password" name="password" placeholder="********" value={formData.password} onChange={handleChange} required />
               </div>
               <div className="mb-3 form-check ">
                 <input type="checkbox" className="form-check-input" id="rememberMe" />
@@ -42,6 +82,9 @@ const Login = () => {
                   Remember Me
                 </label>
               </div>
+
+              {/* Error Message */}
+              <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
 
               <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100">
                 Login
