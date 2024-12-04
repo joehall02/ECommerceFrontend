@@ -4,7 +4,7 @@ import "./Account.css";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const Account = () => {
-  const { isAuthenticated, handleLogout } = useContext(AuthContext);
+  const { isAuthenticated, isAdmin, handleLogout } = useContext(AuthContext);
 
   return (
     <div className="dropdown">
@@ -44,14 +44,19 @@ const Account = () => {
         <li>
           <hr className="dropdown-divider bg-secondary" />
         </li>
-        <li>
-          <Link to={"/admin/dashboard"} className="dropdown-item remove-blue-background text-end" href="#dropdown">
-            Admin
-          </Link>
-        </li>
-        <li>
-          <hr className="dropdown-divider bg-secondary" />
-        </li>
+        {/* Display Admin tab only for Admins */}
+        {isAdmin && (
+          <>
+            <li>
+              <Link to={"/admin/dashboard"} className="dropdown-item remove-blue-background text-end" href="#dropdown">
+                Admin
+              </Link>
+            </li>
+            <li>
+              <hr className="dropdown-divider bg-secondary" />
+            </li>
+          </>
+        )}
         <li>
           <Link to={"/login"} onClick={handleLogout} className="dropdown-item remove-blue-background text-end" href="#dropdown">
             Logout

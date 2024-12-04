@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Shop.css";
 import Product from "./Product/Product";
+import { getProducts } from "../../api/products";
 
 const Shop = () => {
   const [selectedItem, setSelectedItem] = useState("Name (A-Z)");
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
 
   const handleDropdownSelect = (item) => {
     setSelectedItem(item);
@@ -13,6 +16,21 @@ const Shop = () => {
     // Scroll to the top of the page when the componenet mounts
     window.scrollTo(0, 0);
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getProducts();
+
+      if (response.success) {
+        setProducts(response.products);
+        console.log(response.products);
+      } else {
+        setError(response.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <section id="shop">
@@ -54,27 +72,16 @@ const Shop = () => {
 
         {/* Products */}
         <div className="row justify-content-start">
-          <div className="col-12 col-lg-4">
-            <Product image="https://loremflickr.com/320/320" name="Product 1" price="10.00" />
-          </div>
-          <div className="col-12 col-lg-4">
-            <Product image="https://loremflickr.com/320/320" name="Product 2" price="10.00" />
-          </div>
-          <div className="col-12 col-lg-4">
-            <Product image="https://loremflickr.com/320/320" name="Product 3" price="10.00" />
-          </div>
-          <div className="col-12 col-lg-4">
-            <Product image="https://loremflickr.com/320/320" name="Product 3" price="10.00" />
-          </div>
-          <div className="col-12 col-lg-4">
-            <Product image="https://loremflickr.com/320/320" name="Product 3" price="10.00" />
-          </div>
-          <div className="col-12 col-lg-4">
-            <Product image="https://loremflickr.com/320/320" name="Product 3" price="10.00" />
-          </div>
-          <div className="col-12 col-lg-4">
-            <Product image="https://loremflickr.com/320/320" name="Product 3" price="10.00" />
-          </div>
+          {/* Display products if there are any, else show message */}
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div key={product.id} className="col-12 col-lg-4">
+                <Product image={product.image_path} name={product.name} price={product.price} />
+              </div>
+            ))
+          ) : (
+            <p>{error || "Nothing in stock right now, please come back later!"}</p>
+          )}
         </div>
       </div>
     </section>

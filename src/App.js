@@ -1,7 +1,9 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import axios from "axios";
+import AdminRoute from "./components/routes/AdminRoutes";
+import UserRoute from "./components/routes/UserRoutes";
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./components/Home/Home";
 import Shop from "./components/Shop/Shop";
@@ -40,22 +42,30 @@ const App = () => {
           <Route path="/shop/product-page" element={<ProductPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/account/orders" element={<Orders />} />
-          <Route path="/account/addresses" element={<Addresses />} />
-          <Route path="/account/addresses/add-address" element={<AddAddress />} />
-          <Route path="/account/settings" element={<Settings />} />
-          <Route path="/account/settings/edit-name" element={<EditName />} />
-          <Route path="/account/settings/edit-password" element={<EditPassword />} />
-          <Route path="/account/settings/delete-account" element={<DeleteAccount />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/categories" element={<AdminCategories />} />
-          <Route path="/admin/categories/new-category" element={<NewCategory />} />
-          <Route path="/admin/categories/category-details" element={<CategoryDetails />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/admin/products/new-product" element={<NewProduct />} />
-          <Route path="admin/products/product-details" element={<ProductDetails />} />
-          <Route path="/admin/orders" element={<AdminOrders />} />
-          <Route path="/admin/orders/order-details" element={<OrderDetails />} />
+          {/* User only routes */}
+          <Route path="/account" element={<UserRoute />}>
+            <Route path="orders" element={<Orders />} />
+            <Route path="addresses" element={<Addresses />} />
+            <Route path="addresses/add-address" element={<AddAddress />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="settings/edit-name" element={<EditName />} />
+            <Route path="settings/edit-password" element={<EditPassword />} />
+            <Route path="settings/delete-account" element={<DeleteAccount />} />
+          </Route>
+          {/* Admin only routes */}
+          <Route path="/admin" element={<AdminRoute />}>
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="categories" element={<AdminCategories />} />
+            <Route path="categories/new-category" element={<NewCategory />} />
+            <Route path="categories/category-details" element={<CategoryDetails />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="products/new-product" element={<NewProduct />} />
+            <Route path="products/product-details" element={<ProductDetails />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="orders/order-details" element={<OrderDetails />} />
+          </Route>
+          {/* Catch-all route */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Footer />
       </Router>

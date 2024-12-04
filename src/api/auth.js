@@ -1,13 +1,14 @@
-import axios from "axios";
-import { handleApiError } from "../utils/apiUtils";
+import { handleApiError } from "../utils/apiErrorHandler";
+import { axiosInstance } from "./axiosInstance";
 
 const API_URL = "/user";
 
 // Check if the user is authenticated
 export const checkAuth = async () => {
   try {
-    const response = await axios.get(`${API_URL}/authenticate`, { withCredentials: true });
-    return { success: true, logged_in: response.data.logged_in };
+    const response = await axiosInstance.get(`${API_URL}/authenticate`);
+    const { logged_in, is_admin } = response.data;
+    return { success: true, logged_in, is_admin };
   } catch (error) {
     return handleApiError(error);
   }
@@ -16,7 +17,7 @@ export const checkAuth = async () => {
 // Log the user out
 export const logout = async () => {
   try {
-    await axios.post(`${API_URL}/logout`, { withCredentials: true });
+    await axiosInstance.post(`${API_URL}/logout`);
     return { success: true, message: "Logged out successfully." };
   } catch (error) {
     return handleApiError(error);
@@ -26,7 +27,7 @@ export const logout = async () => {
 // Log the user in
 export const login = async (formData) => {
   try {
-    await axios.post("/user/login", formData, { withCredentials: true });
+    await axiosInstance.post("/user/login", formData);
     return { success: true, message: "Logged in successfully." };
   } catch (error) {
     return handleApiError(error);
@@ -36,9 +37,11 @@ export const login = async (formData) => {
 // Register user
 export const register = async (formdata) => {
   try {
-    await axios.post("/user/signup", formdata);
+    await axiosInstance.post("/user/signup", formdata);
     return { success: true, message: "Registered successfully." };
   } catch (error) {
     return handleApiError(error);
   }
 };
+
+// Handle token refresh
