@@ -17,13 +17,13 @@ const Shop = () => {
     window.scrollTo(0, 0);
   });
 
+  // Fetch products when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       const response = await getProducts();
 
       if (response.success) {
         setProducts(response.products);
-        console.log(response.products);
       } else {
         setError(response.message);
       }
@@ -75,7 +75,7 @@ const Shop = () => {
           {/* Display products if there are any, else show message */}
           {products.length > 0 ? (
             products.map((product) => (
-              <div key={product.id} className="col-12 col-lg-4">
+              <div key={product.product_id} className="col-12 col-lg-4">
                 <Product image={product.image_path} name={product.name} price={product.price} />
               </div>
             ))
