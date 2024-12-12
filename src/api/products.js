@@ -1,5 +1,5 @@
 import { handleApiError } from "../utils/apiErrorHandler";
-import { axiosInstance } from "./axiosInstance";
+import axiosInstance from "./axiosInstance";
 
 const API_URL = "/product";
 

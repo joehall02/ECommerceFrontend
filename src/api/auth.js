@@ -1,5 +1,5 @@
 import { handleApiError } from "../utils/apiErrorHandler";
-import { axiosInstance } from "./axiosInstance";
+import axiosInstance from "./axiosInstance";
 
 const API_URL = "/user";
 
@@ -27,7 +27,7 @@ export const logout = async () => {
 // Log the user in
 export const login = async (formData) => {
   try {
-    await axiosInstance.post("/user/login", formData);
+    await axiosInstance.post(`${API_URL}/login`, formData);
     return { success: true, message: "Logged in successfully." };
   } catch (error) {
     return handleApiError(error);
@@ -37,7 +37,7 @@ export const login = async (formData) => {
 // Register user
 export const register = async (formdata) => {
   try {
-    await axiosInstance.post("/user/signup", formdata);
+    await axiosInstance.post(`${API_URL}/signup`, formdata);
     return { success: true, message: "Registered successfully." };
   } catch (error) {
     return handleApiError(error);
@@ -45,3 +45,11 @@ export const register = async (formdata) => {
 };
 
 // Handle token refresh
+export const refreshToken = async () => {
+  try {
+    await axiosInstance.post(`${API_URL}/refresh`);
+    return { success: true, message: "Token refreshed successfully." };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
