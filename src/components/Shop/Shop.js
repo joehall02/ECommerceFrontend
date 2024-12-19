@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Shop.css";
 import Product from "./Product/Product";
-import { getProducts } from "../../api/products";
+import { getProducts } from "../../api/product";
 
 const Shop = () => {
   const [selectedItem, setSelectedItem] = useState("Name (A-Z)");
@@ -72,10 +72,10 @@ const Shop = () => {
 
         {/* Products */}
         <div className="row justify-content-start">
-          {/* Display products if there are any, else show message */}
+          {/* Display products if there are any, show error message if there is one, else show no stock message */}
           {products.length > 0 ? (
             products.map((product) => (
-              <div key={product.product_id} className="col-12 col-lg-4">
+              <div key={product.id} className="col-12 col-lg-4">
                 <Product image={product.image_path} name={product.name} price={product.price} />
               </div>
             ))
