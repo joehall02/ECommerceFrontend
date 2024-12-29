@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../AdminSidebar/AdminSidebar";
-import { Link } from "react-router-dom";
 import { createProduct } from "../../../../api/product";
 import { deleteProduct } from "../../../../api/product";
 import { addProductImages } from "../../../../api/product";
 import { addFeaturedProduct } from "../../../../api/product";
 import { getCategories } from "../../../../api/category";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../../App.css";
 
 const NewProduct = () => {
@@ -16,10 +15,11 @@ const NewProduct = () => {
     price: "",
     description: "",
     stock: "",
-    featured_product: "2", // Default to No
+    featured_product: "No", // Default to No
     category_id: "", // Initially empty
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ const NewProduct = () => {
       setProduct({ ...product, [e.target.name]: e.target.value });
 
       // If the input is the category dropdown, set the category_id to the selected value
-      if (e.target.name === "productCategory") {
+      if (e.target.name === "product_category") {
         setProduct({ ...product, category_id: e.target.value });
       }
     }
@@ -45,8 +45,6 @@ const NewProduct = () => {
     delete productData.featured_product; // Remove featuredProduct from the product data
     delete productData.image; // Remove image from the product data
 
-    console.log(productData);
-
     // Send a POST request to the server to create a new product
     const response = await createProduct(productData);
 
@@ -56,7 +54,7 @@ const NewProduct = () => {
       const product_id = response.response.product_id;
 
       // If the product is a featured product, send a POST request to the server to add the product as a featured product
-      if (product.featured_product === "1") {
+      if (product.featured_product === "Yes") {
         const featuredResponse = await addFeaturedProduct(product_id);
 
         if (!featuredResponse.success) {
@@ -96,8 +94,10 @@ const NewProduct = () => {
 
       if (response.success) {
         setCategories(response.categories);
+        setLoading(false);
       } else {
         setError(response.message);
+        setLoading(false);
       }
     };
 
@@ -121,81 +121,89 @@ const NewProduct = () => {
           <Link to={"/admin/products"}>Go back</Link>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="card">
-            <div className="card-body py-4">
-              <div className="column">
-                {/* Name */}
-                <label htmlFor="name" className="form-label fw-bold">
-                  Product Name
-                </label>
-                <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Product 1" value={product.name} onChange={handleInputChange} required />
+        {/* Loading */}
+        {loading ? (
+          <div className="d-flex justify-content-center">
+            <div class="spinner-border" role="status" />
+          </div>
+        ) : (
+          // Product Form
+          <form onSubmit={handleSubmit}>
+            <div className="card">
+              <div className="card-body py-4">
+                <div className="column">
+                  {/* Name */}
+                  <label htmlFor="name" className="form-label fw-bold">
+                    Product Name
+                  </label>
+                  <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Product 1" value={product.name} onChange={handleInputChange} required />
 
-                {/* Price */}
-                <label htmlFor="price" className="form-label fw-bold">
-                  Price (£)
-                </label>
-                <input type="number" className="form-control mb-3" id="price" name="price" placeholder="10.50" value={product.price} onChange={handleInputChange} required />
+                  {/* Price */}
+                  <label htmlFor="price" className="form-label fw-bold">
+                    Price (£)
+                  </label>
+                  <input type="number" className="form-control mb-3" id="price" name="price" placeholder="10.50" value={product.price} onChange={handleInputChange} required />
 
-                {/* Description */}
-                <label htmlFor="description" className="form-label fw-bold">
-                  Description
-                </label>
-                <textarea
-                  type="text"
-                  className="form-control mb-3"
-                  id="description"
-                  name="description"
-                  placeholder="Product Description..."
-                  value={product.description}
-                  onChange={handleInputChange}
-                  required
-                />
+                  {/* Description */}
+                  <label htmlFor="description" className="form-label fw-bold">
+                    Description
+                  </label>
+                  <textarea
+                    type="text"
+                    className="form-control mb-3"
+                    id="description"
+                    name="description"
+                    placeholder="Product Description..."
+                    value={product.description}
+                    onChange={handleInputChange}
+                    required
+                  />
 
-                {/* Stock */}
-                <label htmlFor="stock" className="form-label fw-bold">
-                  Stock
-                </label>
-                <input type="text" className="form-control mb-3" id="stock" name="stock" placeholder="57" value={product.stock} onChange={handleInputChange} required />
+                  {/* Stock */}
+                  <label htmlFor="stock" className="form-label fw-bold">
+                    Stock
+                  </label>
+                  <input type="number" className="form-control mb-3" id="stock" name="stock" placeholder="57" value={product.stock} onChange={handleInputChange} required />
 
-                {/* Featured Product */}
-                <label htmlFor="featured_product" className="form-label fw-bold">
-                  Featured Product
-                </label>
-                <select className="form-select mb-3" id="featured_product" name="featured_product" value={product.featured_product} onChange={handleInputChange} required>
-                  <option value="1">Yes</option>
-                  <option value="2">No</option>
-                </select>
+                  {/* Featured Product */}
+                  <label htmlFor="featured_product" className="form-label fw-bold">
+                    Featured Product
+                  </label>
+                  <select className="form-select mb-3" id="featured_product" name="featured_product" value={product.featured_product} onChange={handleInputChange} required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
 
-                {/* Category */}
-                <label htmlFor="productCategory" className="form-label fw-bold">
-                  Category
-                </label>
-                <select className="form-select mb-3" id="productCategory" name="productCategory" value={product.category_id} onChange={handleInputChange} required>
-                  {/* Maps the categories */}
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+                  {/* Category */}
+                  <label htmlFor="product_category" className="form-label fw-bold">
+                    Category
+                  </label>
+                  <select className="form-select mb-3" id="product_category" name="product_category" value={product.category_id} onChange={handleInputChange} required>
+                    {/* Maps the categories */}
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Image */}
-          <label htmlFor="image" className="form-label fw-bold mt-3">
-            Product Image
-          </label>
-          <input type="file" className="form-control mb-3" id="image" name="image" onChange={handleInputChange} required />
+            {/* Image */}
+            <label htmlFor="image" className="form-label fw-bold mt-3">
+              Product Image
+            </label>
+            <input type="file" className="form-control mb-3" id="image" name="image" onChange={handleInputChange} required />
 
-          <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
-            Submit
-          </button>
+            <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
+              Submit
+            </button>
 
-          {/* Error Message */}
-          <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
-        </form>
+            {/* Error Message */}
+            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+          </form>
+        )}
       </div>
     </section>
   );

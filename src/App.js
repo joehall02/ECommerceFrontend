@@ -33,8 +33,8 @@ axios.defaults.withCredentials = true; // Allow cookies to be sent and stored, a
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -57,10 +57,10 @@ const App = () => {
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="categories" element={<AdminCategories />} />
             <Route path="categories/new-category" element={<NewCategory />} />
-            <Route path="categories/category-details" element={<CategoryDetails />} />
+            <Route path="categories/category-details/:category_id" element={<CategoryDetails />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="products/new-product" element={<NewProduct />} />
-            <Route path="products/product-details" element={<ProductDetails />} />
+            <Route path="products/product-details/:product_id" element={<ProductDetails />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="orders/order-details" element={<OrderDetails />} />
           </Route>
@@ -68,8 +68,8 @@ const App = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Footer />
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 };
 

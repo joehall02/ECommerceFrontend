@@ -7,6 +7,7 @@ const Shop = () => {
   const [selectedItem, setSelectedItem] = useState("Name (A-Z)");
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handleDropdownSelect = (item) => {
     setSelectedItem(item);
@@ -24,8 +25,10 @@ const Shop = () => {
 
       if (response.success) {
         setProducts(response.products);
+        setLoading(false);
       } else {
         setError(response.message);
+        setLoading(false);
       }
     };
 
@@ -72,15 +75,21 @@ const Shop = () => {
 
         {/* Products */}
         <div className="row justify-content-start">
-          {/* Display products if there are any, show error message if there is one, else show no stock message */}
-          {products.length > 0 ? (
+          {/* Loading */}
+          {loading ? (
+            <div className="d-flex justify-content-center">
+              <div class="spinner-border" role="status" />
+            </div>
+          ) : error ? (
+            <p>{error}</p>
+          ) : products.length > 0 ? (
             products.map((product) => (
               <div key={product.id} className="col-12 col-lg-4">
                 <Product image={product.image_path} name={product.name} price={product.price} />
               </div>
             ))
           ) : (
-            <p>{error || "Nothing in stock right now, please come back later!"}</p>
+            <p>No products available.</p>
           )}
         </div>
       </div>
