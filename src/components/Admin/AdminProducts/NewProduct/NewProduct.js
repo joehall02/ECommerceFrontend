@@ -20,13 +20,23 @@ const NewProduct = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     // If the input is a file, set the value to the file itself, else set the value to the input value
     if (e.target.type === "file") {
-      setProduct({ ...product, [e.target.name]: e.target.files[0] });
+      const file = e.target.files[0];
+
+      if (file) {
+        setProduct({ ...product, [e.target.name]: e.target.files[0] });
+        setPreviewImage(URL.createObjectURL(file));
+        setSelectedFile(file);
+      } else {
+        setPreviewImage(null);
+      }
     } else {
       setProduct({ ...product, [e.target.name]: e.target.value });
 
@@ -51,13 +61,17 @@ const NewProduct = () => {
     // If response a success, get product_id from the response
     // and send a POST request to the server to add the product images
     if (response.success) {
+      setError("");
+
       const product_id = response.response.product_id;
 
       // If the product is a featured product, send a POST request to the server to add the product as a featured product
       if (product.featured_product === "Yes") {
         const featuredResponse = await addFeaturedProduct(product_id);
 
-        if (!featuredResponse.success) {
+        if (featuredResponse.success) {
+          setError("");
+        } else {
           setError(featuredResponse.message);
           await deleteProduct(product_id); // Delete the product if it fails to be a featured product
           return;
@@ -72,6 +86,7 @@ const NewProduct = () => {
       const imageResponse = await addProductImages(product_id, imageFormData);
 
       if (imageResponse.success) {
+        setError("");
         navigate("/admin/products");
       } else {
         setError(imageResponse.message);
@@ -80,6 +95,17 @@ const NewProduct = () => {
     } else {
       setError(response.message);
     }
+  };
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setPreviewImage(null);
+    // Remove the image from the product object
+    setProduct((prevProduct) => {
+      const { image, ...rest } = prevProduct;
+      return rest;
+    });
+    document.getElementById("image").value = "";
   };
 
   useEffect(() => {
@@ -93,6 +119,7 @@ const NewProduct = () => {
       const response = await getCategories();
 
       if (response.success) {
+        setError("");
         setCategories(response.categories);
         setLoading(false);
       } else {
@@ -194,7 +221,18 @@ const NewProduct = () => {
             <label htmlFor="image" className="form-label fw-bold mt-3">
               Product Image
             </label>
-            <input type="file" className="form-control mb-3" id="image" name="image" onChange={handleInputChange} required />
+
+            <div className="d-flex align-items-center mb-3">
+              <input type="file" className="form-control" id="image" name="image" onChange={handleInputChange} required />
+              {selectedFile && (
+                <button type="button" className="btn btn-danger ms-3" onClick={handleRemoveFile}>
+                  <i className="bi bi-x-lg" />
+                </button>
+              )}
+            </div>
+
+            {/* Display Image */}
+            {previewImage && <img src={previewImage} className="d-block w-100" alt="Uploaded file" />}
 
             <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
               Submit

@@ -29,6 +29,7 @@ const NewCategory = () => {
 
     // If the response is a success, redirect to the categories page
     if (response.success) {
+      setError("");
       navigate("/admin/categories");
     } else {
       setError(response.message);

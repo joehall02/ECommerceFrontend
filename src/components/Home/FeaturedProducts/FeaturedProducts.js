@@ -1,27 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./FeaturedProducts.css";
 import Product from "./Product/Product";
+import { getFeaturedProducts } from "../../../api/product";
 
 const FeaturedProducts = () => {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isVisable, setIsVisable] = useState(true);
+
+  // Fetch products when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getFeaturedProducts();
+
+      if (response.success) {
+        setFeaturedProducts(response.products);
+      } else {
+        setIsVisable(false);
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <section id="featured-products">
-      <div className="container py-5">
-        <div className="row justify-content-center">
-          <div className="col-12 col-lg-3">
-            <Product image="https://loremflickr.com/320/450" name="Product 1" category="Category 1" price="1.00" />
-          </div>
-          <div className="col-12 col-lg-3">
-            <Product image="https://loremflickr.com/320/450" name="Product 2" category="Category 2" price="2.00" />
-          </div>
-          <div className="col-12 col-lg-3">
-            <Product image="https://loremflickr.com/320/450" name="Product 3" category="Category 3" price="3.00" />
-          </div>
-          <div className="col-12 col-lg-3">
-            <Product image="https://loremflickr.com/320/450" name="Product 4" category="Category 4" price="4.00" />
+    isVisable && (
+      <section id="featured-products">
+        <div className="container py-5">
+          <div className="row justify-content-center">
+            {loading ? (
+              <div className="d-flex justify-content-center">
+                <div class="spinner-border" role="status" />
+              </div>
+            ) : (
+              <>
+                {featuredProducts.map((product, index) => (
+                  <div className="col-12 col-lg-3" key={index}>
+                    <Product image={product.image_path} name={product.name} category={product.category_name} price={product.price} />
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    )
   );
 };
 

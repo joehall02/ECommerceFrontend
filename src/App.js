@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { BasketProvider } from "./contexts/BasketContext";
 import axios from "axios";
 import AdminRoute from "./components/routes/AdminRoutes";
 import UserRoute from "./components/routes/UserRoutes";
@@ -35,39 +36,41 @@ const App = () => {
   return (
     <Router>
       <AuthProvider>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/product-page" element={<ProductPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          {/* User only routes */}
-          <Route path="/account" element={<UserRoute />}>
-            <Route path="orders" element={<Orders />} />
-            <Route path="addresses" element={<Addresses />} />
-            <Route path="addresses/add-address" element={<AddAddress />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="settings/edit-name" element={<EditName />} />
-            <Route path="settings/edit-password" element={<EditPassword />} />
-            <Route path="settings/delete-account" element={<DeleteAccount />} />
-          </Route>
-          {/* Admin only routes */}
-          <Route path="/admin" element={<AdminRoute />}>
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="categories" element={<AdminCategories />} />
-            <Route path="categories/new-category" element={<NewCategory />} />
-            <Route path="categories/category-details/:category_id" element={<CategoryDetails />} />
-            <Route path="products" element={<AdminProducts />} />
-            <Route path="products/new-product" element={<NewProduct />} />
-            <Route path="products/product-details/:product_id" element={<ProductDetails />} />
-            <Route path="orders" element={<AdminOrders />} />
-            <Route path="orders/order-details" element={<OrderDetails />} />
-          </Route>
-          {/* Catch-all route */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-        <Footer />
+        <BasketProvider>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/shop/product-page/:product_id" element={<ProductPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            {/* User only routes */}
+            <Route path="/account" element={<UserRoute />}>
+              <Route path="orders" element={<Orders />} />
+              <Route path="addresses" element={<Addresses />} />
+              <Route path="addresses/add-address" element={<AddAddress />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="settings/edit-name" element={<EditName />} />
+              <Route path="settings/edit-password" element={<EditPassword />} />
+              <Route path="settings/delete-account" element={<DeleteAccount />} />
+            </Route>
+            {/* Admin only routes */}
+            <Route path="/admin" element={<AdminRoute />}>
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="categories" element={<AdminCategories />} />
+              <Route path="categories/new-category" element={<NewCategory />} />
+              <Route path="categories/category-details/:category_id" element={<CategoryDetails />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="products/new-product" element={<NewProduct />} />
+              <Route path="products/product-details/:product_id" element={<ProductDetails />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="orders/order-details" element={<OrderDetails />} />
+            </Route>
+            {/* Catch-all route */}
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+          <Footer />
+        </BasketProvider>
       </AuthProvider>
     </Router>
   );

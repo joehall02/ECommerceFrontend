@@ -13,6 +13,16 @@ export const getCategories = async () => {
   }
 };
 
+// Get category by id
+export const getCategoryById = async (category_id) => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/${category_id}`);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 // Admin Routes
 
 // Create a new category
@@ -39,16 +49,6 @@ export const updateCategory = async (category) => {
 export const deleteCategory = async (category_id) => {
   try {
     const response = await axiosInstance.delete(`${API_URL}/admin/${category_id}`);
-    return { success: true, response: response.data };
-  } catch (error) {
-    return handleApiError(error);
-  }
-};
-
-// Get category by id
-export const getCategoryById = async (category_id) => {
-  try {
-    const response = await axiosInstance.get(`${API_URL}/admin/${category_id}`);
     return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);

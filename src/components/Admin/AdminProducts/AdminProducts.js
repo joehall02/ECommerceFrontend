@@ -24,6 +24,7 @@ const AdminProducts = () => {
       const response = await getAdminProducts();
 
       if (response.success) {
+        setError("");
         setProducts(response.products);
         setLoading(false);
       } else {

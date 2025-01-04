@@ -27,6 +27,7 @@ const ProductDetails = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleInputChange = (e) => {
     // If the input is a file, set the value to the file itself, else set the value to the input value
@@ -37,6 +38,7 @@ const ProductDetails = () => {
       if (file) {
         setEditedProduct({ ...editedProduct, [e.target.name]: file });
         setPreviewImage(URL.createObjectURL(file));
+        setSelectedFile(file);
       } else {
         setPreviewImage(null);
       }
@@ -80,63 +82,79 @@ const ProductDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Create a JSON object for product data
-    const productData = { ...editedProduct };
-    delete productData.featured_product; // Remove featuredProduct from the product data
-    delete productData.image; // Remove image from the product data
+    // If the product has not been edited, set the error message
+    if (Object.keys(editedProduct).length === 0) {
+      setError("No changes have been made.");
+    } else {
+      // Create a JSON object for product data
+      const productData = { ...editedProduct };
+      delete productData.featured_product; // Remove featuredProduct from the product data
+      delete productData.image; // Remove image from the product data
 
-    let productEditSuccess = true;
+      let productEditSuccess = true;
 
-    // Only call editProduct if there are fields to update
-    if (Object.keys(productData).length > 0) {
-      // Send a PUT request to the server to edit the product
-      const response = await editProduct(product_id, productData);
+      // Only call editProduct if there are fields to update
+      if (Object.keys(productData).length > 0) {
+        // Send a PUT request to the server to edit the product
+        const response = await editProduct(product_id, productData);
 
-      if (!response.success) {
-        setError(response.message);
-        productEditSuccess = false;
-      }
-    }
-
-    // Handle featured product
-    if (editedProduct.featured_product !== undefined && productEditSuccess) {
-      // if featured product === "Yes" and productEditSuccess is true, add the product as a featured product
-      if (editedProduct.featured_product === "Yes") {
-        const featuredResponse = await addFeaturedProduct(product_id);
-
-        // If the response is not a success, set the error message
-        if (!featuredResponse.success) {
-          setError("Failed to add product as a featured product.");
-        }
-        // if featured product === "No" and productEditSuccess is true, remove the product as a featured product
-      } else if (editedProduct.featured_product === "No") {
-        const deleteFeaturedResponse = await deleteFeaturedProduct(featuredProductId);
-
-        // If the response is not a success, set the error message
-        if (!deleteFeaturedResponse.success) {
-          setError("Failed to remove product as a featured product.");
+        if (!response.success) {
+          setError(response.message);
+          productEditSuccess = false;
         }
       }
-    }
 
-    // Handle image upload
-    if (editedProduct.image && productEditSuccess) {
-      // Create FormData object
-      const imageFormData = new FormData();
-      imageFormData.append("image", editedProduct.image);
+      // Handle featured product
+      if (editedProduct.featured_product !== undefined && productEditSuccess) {
+        // if featured product === "Yes" and productEditSuccess is true, add the product as a featured product
+        if (editedProduct.featured_product === "Yes") {
+          const featuredResponse = await addFeaturedProduct(product_id);
 
-      // Send a POST request to the server to add the product images
-      const imageResponse = await addProductImages(product_id, imageFormData);
+          // If the response is not a success, set the error message
+          if (!featuredResponse.success) {
+            setError("Failed to add product as a featured product.");
+          }
+          // if featured product === "No" and productEditSuccess is true, remove the product as a featured product
+        } else if (editedProduct.featured_product === "No") {
+          const deleteFeaturedResponse = await deleteFeaturedProduct(featuredProductId);
 
-      if (!imageResponse.success) {
-        setError("Failed to add product image.");
+          // If the response is not a success, set the error message
+          if (!deleteFeaturedResponse.success) {
+            setError("Failed to remove product as a featured product.");
+          }
+        }
+      }
+
+      // Handle image upload
+      if (editedProduct.image && productEditSuccess) {
+        // Create FormData object
+        const imageFormData = new FormData();
+        imageFormData.append("image", editedProduct.image);
+
+        // Send a POST request to the server to add the product images
+        const imageResponse = await addProductImages(product_id, imageFormData);
+
+        if (!imageResponse.success) {
+          setError("Failed to add product image.");
+        }
+      }
+
+      // Navigate to the products page if everything is successful
+      if (productEditSuccess) {
+        navigate("/admin/products");
       }
     }
+  };
 
-    // Navigate to the products page if everything is successful
-    if (productEditSuccess) {
-      navigate("/admin/products");
-    }
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setPreviewImage(null);
+    // Remove the image from the editedProduct object
+    setEditedProduct((prevProduct) => {
+      const { image, ...rest } = prevProduct;
+      return rest;
+    });
+    document.getElementById("image").value = "";
   };
 
   useEffect(() => {
@@ -150,6 +168,7 @@ const ProductDetails = () => {
       const response = await getCategories();
 
       if (response.success) {
+        setError("");
         setCategories(response.categories);
       } else {
         setError(response.message);
@@ -165,16 +184,20 @@ const ProductDetails = () => {
       const response = await getProductById(product_id);
 
       if (response.success) {
+        setError("");
         setProduct(response.response);
 
         // Get the image path
         const imageResponse = await getProductImage(product_id);
 
         if (imageResponse.success) {
+          setError("");
           setProduct((prevProduct) => ({
             ...prevProduct,
             image_path: imageResponse.response.image_path,
           }));
+        } else {
+          setError(imageResponse.message);
         }
       } else {
         setError(response.message);
@@ -364,7 +387,14 @@ const ProductDetails = () => {
             <label htmlFor="image" className="form-label fw-bold mt-3">
               Product Image
             </label>
-            <input type="file" className="form-control mb-3" id="image" name="image" onChange={handleInputChange} />
+            <div className="d-flex align-items-center mb-3">
+              <input type="file" className="form-control" id="image" name="image" onChange={handleInputChange} />
+              {selectedFile && (
+                <button type="button" className="btn btn-danger ms-2" onClick={handleRemoveFile}>
+                  <i className="bi bi-x-lg" />
+                </button>
+              )}
+            </div>
 
             {/* Display image */}
             {/* Display preview image if image is uploaded, else show current product image */}

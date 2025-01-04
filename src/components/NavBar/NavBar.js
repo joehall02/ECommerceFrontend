@@ -1,14 +1,15 @@
 import "./NavBar.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Basket from "../Basket/Basket";
+import { BasketContext } from "../../contexts/BasketContext";
 import Account from "../Account/Account";
 
 const Navbar = () => {
   const [navbarOpen, setNavbarOpen] = useState(false); // State to store the toggle status of the navbar
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992); // Detect if the screen is mobile
   const location = useLocation(); // Hook to get the current location
-  const [isBasketVisible, setIsBasketVisible] = useState(false); // State to store the visibility of the basket
+  const { isBasketVisible, toggleBasketVisibility } = useContext(BasketContext); // Context to store the visibility of the basket
 
   // Function to handle the toggle of the navbar
   const handleToggle = () => {
@@ -43,9 +44,9 @@ const Navbar = () => {
     }
   };
 
-  const handleBasketClick = () => {
-    setIsBasketVisible(!isBasketVisible);
-  };
+  // const handleBasketClick = () => {
+  //   setIsBasketVisible(!isBasketVisible);
+  // };
 
   // Handle window resize events to update isMobile state
   useEffect(() => {
@@ -74,7 +75,7 @@ const Navbar = () => {
           {/* Only visible on mobile */}
           {isMobile && (
             <div className="d-flex align-items-center">
-              <button className="btn btn-link me-3 p-0" onClick={handleBasketClick}>
+              <button className="btn btn-link me-3 p-0" onClick={toggleBasketVisibility}>
                 <i className="bi bi-bag-fill"></i>
               </button>
 
@@ -125,7 +126,7 @@ const Navbar = () => {
           {/* Only visible on Desktop */}
           {!isMobile && (
             <div className="d-flex align-items-center desktop-icons">
-              <button className="btn btn-link me-3 p-0" onClick={handleBasketClick}>
+              <button className="btn btn-link me-3 p-0" onClick={toggleBasketVisibility}>
                 <i className="bi bi-bag-fill"></i>
               </button>
 
@@ -136,10 +137,10 @@ const Navbar = () => {
         </div>
       </nav>
       {/* Basket Component */}
-      <Basket isVisible={isBasketVisible} onClose={handleBasketClick} />
+      <Basket isVisible={isBasketVisible} onClose={toggleBasketVisibility} />
 
       {/* Overlay Background */}
-      {isBasketVisible && <div className="offcanvas-backdrop fade show" onClick={handleBasketClick}></div>}
+      {isBasketVisible && <div className="offcanvas-backdrop fade show" onClick={toggleBasketVisibility}></div>}
     </>
   );
 };

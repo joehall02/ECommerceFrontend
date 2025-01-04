@@ -33,6 +33,16 @@ export const getProductImage = async (product_id) => {
   }
 };
 
+// Get all featured products
+export const getFeaturedProducts = async () => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/featured-product`);
+    return { success: true, products: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 // Admin routes
 
 // Get all products

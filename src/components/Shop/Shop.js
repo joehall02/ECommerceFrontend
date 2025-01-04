@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Shop.css";
 import Product from "./Product/Product";
 import { getProducts } from "../../api/product";
+import { Link } from "react-router-dom";
 
 const Shop = () => {
   const [selectedItem, setSelectedItem] = useState("Name (A-Z)");
@@ -24,12 +25,13 @@ const Shop = () => {
       const response = await getProducts();
 
       if (response.success) {
+        setError("");
         setProducts(response.products);
-        setLoading(false);
       } else {
         setError(response.message);
-        setLoading(false);
       }
+
+      setLoading(false);
     };
 
     fetchData();
@@ -85,7 +87,9 @@ const Shop = () => {
           ) : products.length > 0 ? (
             products.map((product) => (
               <div key={product.id} className="col-12 col-lg-4">
-                <Product image={product.image_path} name={product.name} price={product.price} />
+                <Link to={`/shop/product-page/${product.id}`} className="text-decoration-none">
+                  <Product image={product.image_path} name={product.name} category={product.category_name} price={product.price} />
+                </Link>
               </div>
             ))
           ) : (

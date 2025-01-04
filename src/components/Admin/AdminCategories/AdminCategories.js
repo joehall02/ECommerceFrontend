@@ -23,6 +23,7 @@ const AdminCategories = () => {
       const response = await getCategories();
 
       if (response.success) {
+        setError("");
         setCategories(response.categories);
         setLoading(false);
       } else {

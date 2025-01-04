@@ -41,6 +41,7 @@ const Register = () => {
       const response = await register(updatedFormData); // Call Api function
 
       if (response.success) {
+        setError("");
         navigate("/login"); // Redirect to the login page
       } else {
         setError(response.message);

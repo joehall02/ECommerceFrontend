@@ -33,6 +33,7 @@ const Login = () => {
     const response = await login(formData); // Call API function
 
     if (response.success) {
+      setError("");
       verifyAuthentication(); // Verify authentication
       navigate("/"); // Redirect to home page
     } else {

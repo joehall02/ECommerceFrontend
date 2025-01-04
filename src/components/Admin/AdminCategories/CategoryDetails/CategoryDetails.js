@@ -38,6 +38,7 @@ const CategoryDetails = () => {
     const response = await updateCategory(categoryData);
 
     if (response.success) {
+      setEditError("");
       navigate("/admin/categories");
     } else {
       setEditError(response.message);
@@ -52,6 +53,7 @@ const CategoryDetails = () => {
       if (response.success) {
         setCategory(response.response);
         setLoading(false);
+        setError("");
       } else {
         setError(response.message);
         setLoading(false);
