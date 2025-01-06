@@ -66,7 +66,7 @@ export const createProduct = async (product) => {
 };
 
 // Edit a product
-export const editProduct = async (product_id, product) => {
+export const updateProduct = async (product_id, product) => {
   try {
     const response = await axiosInstance.put(`${API_URL}/admin/${product_id}`, product);
     return { success: true, response: response.data };

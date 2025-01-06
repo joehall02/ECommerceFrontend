@@ -15,6 +15,7 @@ import Register from "./components/Auth/Register";
 import Orders from "./components/Account/Orders/Orders";
 import Addresses from "./components/Account/Addresses/Addresses";
 import AddAddress from "./components/Account/Addresses/AddAddress/AddAddress";
+import EditAddress from "./components/Account/Addresses/EditAddress/EditAddress";
 import Settings from "./components/Account/Settings/Settings";
 import EditName from "./components/Account/Settings/EditName/EditName";
 import EditPassword from "./components/Account/Settings/EditPassword/EditPassword";
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="orders" element={<Orders />} />
               <Route path="addresses" element={<Addresses />} />
               <Route path="addresses/add-address" element={<AddAddress />} />
+              <Route path="addresses/edit-address/:address_id" element={<EditAddress />} />
               <Route path="settings" element={<Settings />} />
               <Route path="settings/edit-name" element={<EditName />} />
               <Route path="settings/edit-password" element={<EditPassword />} />

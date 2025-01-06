@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../AdminSidebar/AdminSidebar";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import "../../../../App.css";
-import { addFeaturedProduct, getProductById, addProductImages, checkFeaturedProduct, getProductImage, editProduct, deleteFeaturedProduct } from "../../../../api/product";
+import { addFeaturedProduct, getProductById, addProductImages, checkFeaturedProduct, getProductImage, updateProduct, deleteFeaturedProduct } from "../../../../api/product";
 import { getCategories } from "../../../../api/category";
 
 const ProductDetails = () => {
@@ -93,10 +93,10 @@ const ProductDetails = () => {
 
       let productEditSuccess = true;
 
-      // Only call editProduct if there are fields to update
+      // Only call updateProduct if there are fields to update
       if (Object.keys(productData).length > 0) {
         // Send a PUT request to the server to edit the product
-        const response = await editProduct(product_id, productData);
+        const response = await updateProduct(product_id, productData);
 
         if (!response.success) {
           setError(response.message);

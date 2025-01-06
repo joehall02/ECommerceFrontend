@@ -57,7 +57,7 @@ const Product = ({ image_path, name, category_name, price, quantity, cart_produc
 
         {/* Product details */}
         <div className="d-flex flex-column ms-3">
-          {name}
+          <span className="text-break">{name}</span>
           <span>{category_name}</span>
           <span className="">£{price}</span>
         </div>
