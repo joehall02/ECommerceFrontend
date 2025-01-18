@@ -33,6 +33,15 @@ export const createAddress = async (address) => {
   }
 };
 
+// Get default address
+export const getDefaultAddress = async () => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/default`);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
 // Update an address
 export const updateAddress = async (address_id, address) => {
   try {

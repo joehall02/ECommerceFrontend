@@ -36,8 +36,6 @@ export const BasketProvider = ({ children }) => {
       setCartProducts([]); // Clear the products array
     }
 
-    console.log("Fetched Cart Products", response);
-
     setCartLoading(false);
   };
 

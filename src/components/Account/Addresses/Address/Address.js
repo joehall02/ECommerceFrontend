@@ -24,8 +24,12 @@ const Address = ({ name, addressLine1, addressLine2, city, postcode, addressId, 
               <span className="fw-bold">Delivery Address:</span>
               <br />
               {addressLine1}
-              <br />
-              {addressLine2}
+              {addressLine2 && (
+                <>
+                  <br />
+                  {addressLine2}
+                </>
+              )}
               <br />
               {city}
               <br />

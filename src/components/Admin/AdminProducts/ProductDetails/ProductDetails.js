@@ -58,7 +58,6 @@ const ProductDetails = () => {
         if (newValue === product.category_id) {
           const { category_id: removed, ...rest } = editedProduct;
           setEditedProduct(rest);
-          console.log("category removed: ", editedProduct);
         } else {
           setEditedProduct({ ...editedProduct, category_id: newValue });
         }
@@ -67,7 +66,6 @@ const ProductDetails = () => {
         if (newValue === product[e.target.name]) {
           const { [e.target.name]: removed, ...rest } = editedProduct;
           setEditedProduct(rest);
-          console.log("value removed: ", editedProduct);
         } else {
           setEditedProduct({ ...editedProduct, [e.target.name]: newValue });
         }

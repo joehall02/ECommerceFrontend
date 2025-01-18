@@ -1,8 +1,6 @@
 import React, { useState, useContext } from "react";
-import "./Product.css";
 import "../../../App.css";
-import { editProductQuantityInCart } from "../../../api/cart";
-import { deleteProductFromCart } from "../../../api/cart";
+import { editProductQuantityInCart, deleteProductFromCart } from "../../../api/cart";
 import { BasketContext } from "../../../contexts/BasketContext";
 import { Link } from "react-router-dom";
 
@@ -10,7 +8,7 @@ const Product = ({ image_path, name, category_name, price, quantity, product_id,
   const [selectedItem, setSelectedItem] = useState(quantity);
   const [error, setError] = useState("");
 
-  const { toggleBasketVisibility, fetchCartProducts } = useContext(BasketContext); // Get fetchCartProducts function from the BasketContext
+  const { fetchCartProducts } = useContext(BasketContext); // Get fetchCartProducts function from the BasketContext
 
   const handleDropdownSelect = async (item) => {
     setSelectedItem(item);
@@ -31,6 +29,7 @@ const Product = ({ image_path, name, category_name, price, quantity, product_id,
 
     if (response.success) {
       setError("");
+      fetchCartProducts(); // Fetch the cart products
     } else {
       setError(response.message);
     }
@@ -52,7 +51,7 @@ const Product = ({ image_path, name, category_name, price, quantity, product_id,
     <>
       <li className="d-flex align-items-center my-3">
         {/* Product image */}
-        <Link to={`/shop/product-page/${product_id}`} className="text-decoration-none" onClick={() => toggleBasketVisibility()}>
+        <Link to={`/shop/product-page/${product_id}`} className="text-decoration-none">
           <img src={"https://storage.googleapis.com/" + image_path} alt={name} style={{ width: "75px", height: "75px" }} />
         </Link>
 
@@ -65,7 +64,7 @@ const Product = ({ image_path, name, category_name, price, quantity, product_id,
 
         {/* Dropdown */}
         <div className="btn-group ms-auto flex-shrink-0">
-          <button className="btn btn-outline-light rounded-0" data-bs-toggle="dropdown">
+          <button className="btn btn-outline-dark rounded-0" data-bs-toggle="dropdown">
             {selectedItem} <i className="bi bi-caret-down-fill"></i>
           </button>
           <ul className="dropdown-menu">

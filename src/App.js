@@ -29,6 +29,7 @@ import NewProduct from "./components/Admin/AdminProducts/NewProduct/NewProduct";
 import ProductDetails from "./components/Admin/AdminProducts/ProductDetails/ProductDetails";
 import AdminOrders from "./components/Admin/AdminOrders/AdminOrders";
 import OrderDetails from "./components/Admin/AdminOrders/OrderDetails/OrderDetails";
+import Checkout from "./components/Checkout/Checkout";
 
 // Set Axios defaults
 axios.defaults.withCredentials = true; // Allow cookies to be sent and stored, allowing access and refresh tokens to be stored
@@ -55,6 +56,7 @@ const App = () => {
               <Route path="settings/edit-name" element={<EditName />} />
               <Route path="settings/edit-password" element={<EditPassword />} />
               <Route path="settings/delete-account" element={<DeleteAccount />} />
+              <Route path="checkout" element={<Checkout />} />
             </Route>
             {/* Admin only routes */}
             <Route path="/admin" element={<AdminRoute />}>

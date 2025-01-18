@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "./Basket.css";
 import Product from "./Product/Product";
 import { BasketContext } from "../../contexts/BasketContext";
+import { Link } from "react-router-dom";
 
 const Basket = ({ isVisible, onClose }) => {
   // Get the cart products, loading state, and error message from the BasketContext
@@ -24,7 +25,7 @@ const Basket = ({ isVisible, onClose }) => {
         ) : cartProducts.length > 0 ? (
           <>
             {/* List of Products */}
-            <ul className="mb-4 p-0">
+            <ul className="mb-4 p-0 h-100" style={{ maxHeight: "100vh", overflowY: "auto" }}>
               {/* Grey separator */}
               <div className="flex-grow-1 border-top border-secondary"></div>
               {cartProducts.map((product, index) => (
@@ -36,12 +37,21 @@ const Basket = ({ isVisible, onClose }) => {
                   price={product.product.price}
                   quantity={product.cart_product.quantity}
                   cart_product_id={product.cart_product.id}
+                  product_id={product.product.id}
                 />
               ))}
+              {/* <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
+              <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
+              <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
+              <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
+              <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
+              <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" /> */}
             </ul>
 
             {/* Checkout Button */}
-            <button className="btn btn-success rounded-0 mt-auto">Checkout</button>
+            <Link to={"account/checkout"} className="btn btn-success rounded-0 mt-auto text-decoration-none" onClick={onClose}>
+              Checkout
+            </Link>
           </>
         ) : (
           <p>Your basket is empty</p>
