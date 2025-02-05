@@ -80,7 +80,7 @@ const Shop = () => {
           {/* Loading */}
           {loading ? (
             <div className="d-flex justify-content-center">
-              <div class="spinner-border" role="status" />
+              <div className="spinner-border" role="status" />
             </div>
           ) : error ? (
             <p>{error}</p>

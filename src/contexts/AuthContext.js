@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Check if the user is authenticated when the component mounts
   const verifyAuthentication = async () => {
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
       setIsAdmin(false);
       // handleLogout();
     }
+    setLoading(false);
   };
 
   const handleLogout = useCallback(async () => {
@@ -54,5 +56,5 @@ export const AuthProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, [isAuthenticated, handleTokenRefresh]);
 
-  return <AuthContext.Provider value={{ isAuthenticated, isAdmin, verifyAuthentication, handleLogout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isAuthenticated, isAdmin, loading, verifyAuthentication, handleLogout }}>{children}</AuthContext.Provider>;
 };

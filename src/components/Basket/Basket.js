@@ -18,7 +18,7 @@ const Basket = ({ isVisible, onClose }) => {
       <div className="offcanvas-body d-flex flex-column">
         {cartLoading ? (
           <div className="d-flex justify-content-center">
-            <div class="spinner-border" role="status" />
+            <div className="spinner-border" role="status" />
           </div>
         ) : cartError ? (
           <p>{cartError}</p>
@@ -49,7 +49,7 @@ const Basket = ({ isVisible, onClose }) => {
             </ul>
 
             {/* Checkout Button */}
-            <Link to={"account/checkout"} className="btn btn-success rounded-0 mt-auto text-decoration-none" onClick={onClose}>
+            <Link to={"/checkout"} className="btn btn-success rounded-0 mt-auto text-decoration-none" onClick={onClose}>
               Checkout
             </Link>
           </>

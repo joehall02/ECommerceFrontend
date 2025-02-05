@@ -1,57 +1,67 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Order from "./Order/Order";
+import { getOrders } from "../../../api/order";
 
 const Orders = () => {
+  const [orders, setOrders] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getOrders();
+
+      if (response.success) {
+        setError("");
+        setOrders(response.response);
+      } else {
+        setError(response.message);
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
   useEffect(() => {
     // Scroll to the top of the page when the componenet mounts
     window.scrollTo(0, 0);
   });
-
-  // Sample products
-  const sampleProducts = [{ name: "Product 1", quantity: "2", price: "12.59", image: "https://loremflickr.com/100/100" }];
-
-  const sampleProductsLarge = [
-    { name: "Product 1", quantity: "2", price: "12.59", image: "https://loremflickr.com/100/100" },
-    { name: "Product 2", quantity: "3", price: "12.59", image: "https://loremflickr.com/100/100" },
-    { name: "Product 3", quantity: "1", price: "12.59", image: "https://loremflickr.com/100/100" },
-    { name: "Product 3", quantity: "1", price: "12.59", image: "https://loremflickr.com/100/100" },
-    { name: "Product 3", quantity: "1", price: "12.59", image: "https://loremflickr.com/100/100" },
-  ];
-
-  const sampleAddress = {
-    addressLine1: "123 Fake Street",
-    addressLine2: "Fake Town",
-    city: "Fake City",
-    postcode: "FA1 2KE",
-  };
-
-  const sampleOrders = [
-    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
-    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProductsLarge, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
-    { orderDate: "02/07/2024", totalPrice: "£99.99", status: "Dispatched", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
-    { orderDate: "15/07/2024", totalPrice: "£100.99", status: "Delivered", products: sampleProductsLarge, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
-    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "In Progress", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
-    { orderDate: "02/07/2024", totalPrice: "£29.99", status: "Delivered", products: sampleProducts, address: sampleAddress, payment: "Card ending in 1234", orderNumber: "123456" },
-  ];
 
   return (
     <section id="orders">
       <div className="container min-vh-100 my-5 p-5">
         <h2 className="fw-bold mb-0">My Orders</h2>
 
+        {/* Orders */}
         <div className="row mt-5">
-          {sampleOrders.map((order, index) => (
-            <Order
-              key={index}
-              orderDate={order.orderDate}
-              totalPrice={order.totalPrice}
-              status={order.status}
-              products={order.products}
-              address={order.address}
-              payment={order.payment}
-              orderNumber={order.orderNumber}
-            />
-          ))}
+          {/* Loading */}
+          {loading ? (
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border" role="status" />
+            </div>
+          ) : error ? (
+            <p>{error}</p>
+          ) : orders.length > 0 ? (
+            orders.map((order, index) => (
+              <Order
+                key={index}
+                order_date={order.order.order_date}
+                total_price={order.order.total_price}
+                status={order.order.status}
+                full_name={order.order.full_name}
+                address_line_1={order.order.address_line_1}
+                address_line_2={order.order.address_line_2}
+                city={order.order.city}
+                postcode={order.order.postcode}
+                order_number={order.order.id}
+                products={order.order_items}
+              />
+            ))
+          ) : (
+            <p>No orders found</p>
+          )}
         </div>
       </div>
     </section>

@@ -1,11 +1,21 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BasketContext } from "../../contexts/BasketContext";
 import Product from "../Checkout/Product/Product";
 import AddressDetails from "./AddressDetails/AddressDetails";
+import { getStripeCheckoutSession } from "../../api/order";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Checkout = () => {
   // Get the cart products, loading state, and error message from the BasketContext
-  const { cartProducts, cartLoading, cartError } = useContext(BasketContext);
+  const { cartProducts, cartLoading, cartError, fetchCartProducts } = useContext(BasketContext);
+  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+  const [address, setAddress] = useState({
+    full_name: "",
+    address_line_1: "",
+    address_line_2: "",
+    city: "",
+    postcode: "",
+  });
 
   // const address = {
   //   name: "John Doe",
@@ -15,9 +25,37 @@ const Checkout = () => {
   //   postcode: "E1 4AB",
   // };
 
+  // Fetch the cart products when the component mounts
+  useEffect(() => {
+    fetchCartProducts();
+  }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   });
+
+  const handleCheckout = async () => {
+    // Load Stripe.js
+    const stripe = await stripePromise;
+
+    // Create a JSON object for the address data, excluding the is_default property
+    const { is_default, id, ...addressData } = address;
+
+    // Get the Stripe checkout session
+    const response = await getStripeCheckoutSession(addressData);
+
+    if (response.success) {
+      const result = await stripe.redirectToCheckout({
+        sessionId: response.response.session_id,
+      });
+
+      if (result.error) {
+        console.error(result.error.message);
+      }
+    } else {
+      console.error(response.error);
+    }
+  };
 
   return (
     <section id="checkout">
@@ -25,7 +63,7 @@ const Checkout = () => {
         <div className="d-flex flex-column justify-content-between flex-lg-row">
           {/* Details */}
           <div className="col-lg-5 mb-5 mb-lg-0 d-flex">
-            <AddressDetails />
+            <AddressDetails address={address} setAddress={setAddress} />
           </div>
 
           {/* Order summary */}
@@ -36,7 +74,7 @@ const Checkout = () => {
               <div className="d-flex flex-column">
                 {cartLoading ? (
                   <div className="d-flex justify-content-center">
-                    <div class="spinner-border" role="status" />
+                    <div className="spinner-border" role="status" />
                   </div>
                 ) : cartError ? (
                   <p>{cartError}</p>
@@ -67,7 +105,9 @@ const Checkout = () => {
                     </ul>
 
                     {/* Checkout Button */}
-                    <button className="btn btn-success rounded-0">Checkout</button>
+                    <button className="btn btn-success rounded-0" onClick={handleCheckout}>
+                      Checkout
+                    </button>
                   </>
                 ) : (
                   <p>Your basket is empty</p>

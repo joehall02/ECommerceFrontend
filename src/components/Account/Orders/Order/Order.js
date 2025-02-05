@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import "./Order.css";
 import { Link } from "react-router-dom";
 
-const Order = ({ orderDate, totalPrice, status, products, address, payment, orderNumber }) => {
+const Order = ({ order_date, total_price, status, full_name, address_line_1, address_line_2, city, postcode, order_number, products }) => {
   const [infoToggle, setInfoToggle] = useState(false);
+
+  console.log(products);
 
   const handleInfoToggle = () => {
     setInfoToggle(!infoToggle);
-    console.log(infoToggle);
   };
 
   return (
@@ -21,12 +22,12 @@ const Order = ({ orderDate, totalPrice, status, products, address, payment, orde
             <small className="card-text">
               <span className="fw-bold">Order Placed:</span>
               <br />
-              {orderDate}
+              {order_date}
             </small>
             <small className="card-text">
               <span className="fw-bold">Total:</span>
               <br />
-              {totalPrice}
+              {total_price}
             </small>
             <small className="card-text">
               <span className="fw-bold">Status:</span>
@@ -44,23 +45,29 @@ const Order = ({ orderDate, totalPrice, status, products, address, payment, orde
             <small className="card-text">
               <span className="fw-bold">Delivery Address:</span>
               <br />
-              {address.addressLine1}
+              {full_name}
               <br />
-              {address.addressLine2}
+              {address_line_1}
+              {address_line_2 && (
+                <>
+                  <br />
+                  {address_line_2}
+                </>
+              )}
               <br />
-              {address.city}
+              {city}
               <br />
-              {address.postcode}
+              {postcode}
             </small>
-            <small className="card-text">
+            {/* <small className="card-text">
               <span className="fw-bold">Payment Method:</span>
               <br />
               {payment}
-            </small>
+            </small> */}
             <small className="card-text">
               <span className="fw-bold">Order Number:</span>
               <br />
-              {orderNumber}
+              {order_number}
             </small>
           </div>
         </div>
@@ -68,8 +75,8 @@ const Order = ({ orderDate, totalPrice, status, products, address, payment, orde
         {/* Order products */}
         <div className="card-body card-products">
           {products.map((product, index) => (
-            <Link to={"/shop/product-page"} key={index} className="d-flex align-items-center mb-2 p-1 text-decoration-none text-dark order-product">
-              <img src={product.image} alt={product.name} />
+            <Link to={`/shop/product-page/${product.product_id}`} key={index} className="d-flex align-items-center mb-2 p-1 text-decoration-none text-dark order-product">
+              <img src={"https://storage.googleapis.com/" + product.product_image} alt={product.name} style={{ width: "75px", height: "75px" }} />
               <div className="d-flex flex-column ms-3">
                 <span className="fw-bold">{product.name}</span>
                 <span>Price: £{product.price}</span>

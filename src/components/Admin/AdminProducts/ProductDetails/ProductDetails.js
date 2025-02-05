@@ -257,13 +257,13 @@ const ProductDetails = () => {
 
       <div className="container my-5 py-5 col-12 col-xl-6">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="fw-bold my-4">Product Number {loading ? <div class="spinner-border" role="status" /> : <span className="text-danger">#{product.id}</span>}</h2>
+          <h2 className="fw-bold my-4">Product Number {loading ? <div className="spinner-border" role="status" /> : <span className="text-danger">#{product.id}</span>}</h2>
           <Link to={"/admin/products"}>Go back</Link>
         </div>
 
         {loading ? (
           <div className="d-flex justify-content-center">
-            <div class="spinner-border" role="status" />
+            <div className="spinner-border" role="status" />
           </div>
         ) : (
           <form onSubmit={handleSubmit}>

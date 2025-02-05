@@ -74,7 +74,7 @@ const CategoryDetails = () => {
 
       <div className="container my-5 py-5 col-12 col-xl-6">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="fw-bold my-4">Category Number {loading ? <div class="spinner-border" role="status" /> : <span className="text-danger">#{category.id}</span>}</h2>
+          <h2 className="fw-bold my-4">Category Number {loading ? <div className="spinner-border" role="status" /> : <span className="text-danger">#{category.id}</span>}</h2>
           <Link to={"/admin/categories"}>Go back</Link>
         </div>
         {/* Display loading message */}
@@ -82,7 +82,7 @@ const CategoryDetails = () => {
         {/* Else show category details */}
         {loading ? (
           <div className="d-flex justify-content-center">
-            <div class="spinner-border" role="status" />
+            <div className="spinner-border" role="status" />
           </div>
         ) : error ? (
           <p className="text-danger">{error}</p>

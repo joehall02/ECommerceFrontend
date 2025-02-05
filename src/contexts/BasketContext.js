@@ -39,17 +39,14 @@ export const BasketProvider = ({ children }) => {
     setCartLoading(false);
   };
 
-  // Fetch the cart products when the user logs in
   useEffect(() => {
+    // Fetch the cart products when the user logs in
     if (isAuthenticated) {
       fetchCartProducts();
-    }
-  }, [isAuthenticated]);
-
-  // Clear the products array when the user logs out
-  useEffect(() => {
-    if (!isAuthenticated) {
+    } else {
+      // Clear the products array when the user logs out
       setCartProducts([]);
+      setCartLoading(false);
     }
   }, [isAuthenticated]);
 

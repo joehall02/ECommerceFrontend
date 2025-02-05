@@ -3,14 +3,7 @@ import "./AddressDetails.css";
 import { getDefaultAddress, getAllAddresses } from "../../../api/address";
 import Address from "./Address/Address";
 
-const AddressDetails = () => {
-  const [address, setAddress] = useState({
-    full_name: "",
-    address_line_1: "",
-    address_line_2: "",
-    city: "",
-    postcode: "",
-  });
+const AddressDetails = ({ address, setAddress }) => {
   const [addresses, setAddresses] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -36,7 +29,7 @@ const AddressDetails = () => {
     };
 
     fetchData();
-  }, []);
+  }, [setAddress]);
 
   // Fetch all addresses if isChanging is true and addresses is empty
   useEffect(() => {
@@ -75,7 +68,7 @@ const AddressDetails = () => {
           <div className="d-flex mt-2" style={{ height: "25vh", overflowY: "auto" }}>
             {loading ? (
               <div className="d-flex justify-content-center">
-                <div class="spinner-border" role="status" />
+                <div className="spinner-border" role="status" />
               </div>
             ) : error ? (
               <p>{error}</p>

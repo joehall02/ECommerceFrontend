@@ -84,7 +84,7 @@ const EditAddress = () => {
 
           {loading ? (
             <div className="d-flex justify-content-center">
-              <div class="spinner-border" role="status" />
+              <div className="spinner-border" role="status" />
             </div>
           ) : (
             <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit} style={{ minHeight: "650px" }}>

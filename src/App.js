@@ -30,6 +30,8 @@ import ProductDetails from "./components/Admin/AdminProducts/ProductDetails/Prod
 import AdminOrders from "./components/Admin/AdminOrders/AdminOrders";
 import OrderDetails from "./components/Admin/AdminOrders/OrderDetails/OrderDetails";
 import Checkout from "./components/Checkout/Checkout";
+import Success from "./components/Checkout/Success";
+import Cancel from "./components/Checkout/Cancel";
 
 // Set Axios defaults
 axios.defaults.withCredentials = true; // Allow cookies to be sent and stored, allowing access and refresh tokens to be stored
@@ -56,7 +58,12 @@ const App = () => {
               <Route path="settings/edit-name" element={<EditName />} />
               <Route path="settings/edit-password" element={<EditPassword />} />
               <Route path="settings/delete-account" element={<DeleteAccount />} />
-              <Route path="checkout" element={<Checkout />} />
+            </Route>
+            {/* Checkout routes */}
+            <Route path="/checkout" element={<UserRoute />}>
+              <Route path="" element={<Checkout />} />
+              <Route path="success" element={<Success />} />
+              <Route path="cancel" element={<Cancel />} />
             </Route>
             {/* Admin only routes */}
             <Route path="/admin" element={<AdminRoute />}>
@@ -68,7 +75,7 @@ const App = () => {
               <Route path="products/new-product" element={<NewProduct />} />
               <Route path="products/product-details/:product_id" element={<ProductDetails />} />
               <Route path="orders" element={<AdminOrders />} />
-              <Route path="orders/order-details" element={<OrderDetails />} />
+              <Route path="orders/order-details/:order_id" element={<OrderDetails />} />
             </Route>
             {/* Catch-all route */}
             <Route path="*" element={<Navigate to="/" />} />
