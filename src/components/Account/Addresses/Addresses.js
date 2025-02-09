@@ -78,27 +78,29 @@ const Addresses = () => {
             <div className="d-flex justify-content-center">
               <div className="spinner-border" role="status" />
             </div>
+          ) : error === "Addresses not found" ? (
+            <p></p>
           ) : error ? (
-            <p>{error}</p>
-          ) : addresses.length > 0 ? (
-            <>
-              {addresses.map((address, index) => (
-                <Address
-                  key={index}
-                  name={address.full_name}
-                  addressLine1={address.address_line_1}
-                  addressLine2={address.address_line_2}
-                  city={address.city}
-                  postcode={address.postcode}
-                  isDefault={address.is_default}
-                  addressId={address.id}
-                  handleAddressDelete={() => handleAddressDelete(address.id)}
-                  handleSetDefault={() => handleSetDefaultAddress(address.id)}
-                />
-              ))}
-            </>
+            <p className="text-danger">{error}</p>
           ) : (
-            <p>No addresses available</p>
+            addresses.length > 0 && (
+              <>
+                {addresses.map((address, index) => (
+                  <Address
+                    key={index}
+                    name={address.full_name}
+                    addressLine1={address.address_line_1}
+                    addressLine2={address.address_line_2}
+                    city={address.city}
+                    postcode={address.postcode}
+                    isDefault={address.is_default}
+                    addressId={address.id}
+                    handleAddressDelete={() => handleAddressDelete(address.id)}
+                    handleSetDefault={() => handleSetDefaultAddress(address.id)}
+                  />
+                ))}
+              </>
+            )
           )}
         </div>
       </div>

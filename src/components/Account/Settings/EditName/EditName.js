@@ -1,7 +1,35 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { editName } from "../../../../api/settings";
+import "../../../../App.css";
 
 const EditName = () => {
+  const [newName, setNewName] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = {
+      full_name: newName,
+    };
+
+    const response = await editName(data);
+
+    if (response.success) {
+      setError("");
+      navigate("/account/settings");
+    } else {
+      setError(response.message);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setNewName(e.target.value);
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   });
@@ -16,17 +44,19 @@ const EditName = () => {
 
         <div className="card">
           <div className="card-body py-5">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="column">
-                <label htmlFor="fullName" className="form-label fw-bold">
+                <label htmlFor="full_name" className="form-label fw-bold">
                   Full Name
                 </label>
-                <input type="text" className="form-control mb-3" id="fullName" name="fullName" placeholder="John Doe" required />
+                <input type="text" className="form-control mb-3" id="full_name" name="full_name" placeholder="John Doe" onChange={handleInputChange} value={newName} required />
                 <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
                   Submit
                 </button>
               </div>
             </form>
+            {/* Error message */}
+            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
           </div>
         </div>
       </div>

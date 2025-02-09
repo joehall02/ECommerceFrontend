@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AdminSidebar from "../../AdminSidebar/AdminSidebar";
-import { createProduct } from "../../../../api/product";
-import { deleteProduct } from "../../../../api/product";
-import { addProductImages } from "../../../../api/product";
-import { addFeaturedProduct } from "../../../../api/product";
+import { createProduct, deleteProduct, addFeaturedProduct, addProductImages } from "../../../../api/product";
 import { getCategories } from "../../../../api/category";
 import { Link, useNavigate } from "react-router-dom";
+import Cropper from "react-easy-crop";
+import imageCompression from "browser-image-compression";
 import "../../../../App.css";
 
 const NewProduct = () => {
@@ -23,17 +22,42 @@ const NewProduct = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
+  // Crop state
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropping, setCropping] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
     // If the input is a file, set the value to the file itself, else set the value to the input value
     if (e.target.type === "file") {
       const file = e.target.files[0];
 
       if (file) {
-        setProduct({ ...product, [e.target.name]: e.target.files[0] });
-        setPreviewImage(URL.createObjectURL(file));
-        setSelectedFile(file);
+        // setProduct({ ...product, [e.target.name]: e.target.files[0] });
+        // setPreviewImage(URL.createObjectURL(file));
+        // setSelectedFile(file);
+
+        try {
+          // Compress the image
+          const options = {
+            maxSizeKB: 300,
+            maxWidthOrHeight: 1024,
+            useWebWorker: true,
+          };
+
+          const compressedFile = await imageCompression(file, options);
+          const compressedImageUrl = URL.createObjectURL(compressedFile);
+
+          // Store the compressed image in the state
+          setSelectedFile(compressedFile);
+          setPreviewImage(compressedImageUrl);
+          setCropping(true); // Show cropping UI
+        } catch (error) {
+          setError("Failed to compress the image. Please try again.");
+        }
       } else {
         setPreviewImage(null);
       }
@@ -45,6 +69,56 @@ const NewProduct = () => {
         setProduct({ ...product, category_id: e.target.value });
       }
     }
+  };
+
+  // Handles cropping completion
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  // function to crop and convert the image using canvas
+  const getCroppedImage = async () => {
+    if (!selectedFile || !croppedAreaPixels) return;
+
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.src = URL.createObjectURL(selectedFile);
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = croppedAreaPixels.width;
+        canvas.height = croppedAreaPixels.height;
+
+        ctx.drawImage(image, croppedAreaPixels.x, croppedAreaPixels.y, croppedAreaPixels.width, croppedAreaPixels.height, 0, 0, croppedAreaPixels.width, croppedAreaPixels.height);
+
+        canvas.toBlob((blob) => {
+          const file = new File([blob], selectedFile.name, { type: "image/jpeg" });
+          resolve(file);
+        }, "image/jpeg");
+      };
+    });
+  };
+
+  // Handles the crop button click
+  const handleCropDone = async () => {
+    const croppedFile = await getCroppedImage();
+    setPreviewImage(URL.createObjectURL(croppedFile));
+    setProduct({ ...product, image: croppedFile });
+    setSelectedFile(croppedFile);
+    setCropping(false); // Hide cropping UI
+  };
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setPreviewImage(null);
+    setCropping(false); // Hide cropping UI
+    // Remove the image from the product object
+    setProduct((prevProduct) => {
+      const { image, ...rest } = prevProduct;
+      return rest;
+    });
+    document.getElementById("image").value = "";
   };
 
   const handleSubmit = async (e) => {
@@ -95,17 +169,6 @@ const NewProduct = () => {
     } else {
       setError(response.message);
     }
-  };
-
-  const handleRemoveFile = () => {
-    setSelectedFile(null);
-    setPreviewImage(null);
-    // Remove the image from the product object
-    setProduct((prevProduct) => {
-      const { image, ...rest } = prevProduct;
-      return rest;
-    });
-    document.getElementById("image").value = "";
   };
 
   useEffect(() => {
@@ -231,8 +294,20 @@ const NewProduct = () => {
               )}
             </div>
 
+            {/* Cropping UI */}
+            {cropping && previewImage && (
+              <div>
+                <div style={{ position: "relative", width: "100%", height: "300px" }}>
+                  <Cropper image={previewImage} crop={crop} zoom={zoom} aspect={4 / 3} onCropChange={setCrop} onZoomChange={setZoom} onCropComplete={onCropComplete} />
+                </div>
+                <button type="button" className="btn btn-primary mt-2" onClick={handleCropDone}>
+                  Crop Image
+                </button>
+              </div>
+            )}
+
             {/* Display Image */}
-            {previewImage && <img src={previewImage} className="d-block w-100" alt="Uploaded file" />}
+            {previewImage && !cropping && <img src={previewImage} className="d-block w-100" alt="Uploaded file" />}
 
             <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
               Submit

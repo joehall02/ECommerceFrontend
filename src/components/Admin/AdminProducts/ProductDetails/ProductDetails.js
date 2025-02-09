@@ -326,9 +326,10 @@ const ProductDetails = () => {
                     Stock
                   </label>
                   {isEditing ? (
-                    <input type="number" className="form-control mb-3" id="stock" name="stock" placeholder="57" value={editedProduct.stock || product.stock} onChange={handleInputChange} required />
+                    // ?? is the nullish coalescing operator, it returns the right-hand operand if the left-hand operand is null or undefined, allowing the value to be 0
+                    <input type="number" className="form-control mb-3" id="stock" name="stock" placeholder="57" value={editedProduct.stock ?? product.stock} onChange={handleInputChange} required />
                   ) : (
-                    <p>{editedProduct.stock || product.stock}</p>
+                    <p>{editedProduct.stock ?? product.stock}</p>
                   )}
 
                   {/* Featured Product */}

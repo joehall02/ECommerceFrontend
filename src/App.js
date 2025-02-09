@@ -32,6 +32,7 @@ import OrderDetails from "./components/Admin/AdminOrders/OrderDetails/OrderDetai
 import Checkout from "./components/Checkout/Checkout";
 import Success from "./components/Checkout/Success";
 import Cancel from "./components/Checkout/Cancel";
+import CheckoutAddAddress from "./components/Checkout/AddressDetails/AddAddress/CheckoutAddAddress";
 
 // Set Axios defaults
 axios.defaults.withCredentials = true; // Allow cookies to be sent and stored, allowing access and refresh tokens to be stored
@@ -62,6 +63,7 @@ const App = () => {
             {/* Checkout routes */}
             <Route path="/checkout" element={<UserRoute />}>
               <Route path="" element={<Checkout />} />
+              <Route path="add-address" element={<CheckoutAddAddress />} />
               <Route path="success" element={<Success />} />
               <Route path="cancel" element={<Cancel />} />
             </Route>

@@ -1,7 +1,49 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { editPassword } from "../../../../api/settings";
+import "../../../../App.css";
 
 const EditPassword = () => {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    const data = {
+      current_password: currentPassword,
+      new_password: newPassword,
+    };
+
+    const response = await editPassword(data);
+
+    if (response.success) {
+      setError("");
+      navigate("/account/settings");
+    } else {
+      setError(response.message);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    if (e.target.name === "new_password") {
+      setNewPassword(e.target.value);
+    } else if (e.target.name === "confirm_password") {
+      setConfirmPassword(e.target.value);
+    } else {
+      setCurrentPassword(e.target.value);
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   });
@@ -16,27 +58,47 @@ const EditPassword = () => {
 
         <div className="card">
           <div className="card-body py-5">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="column">
-                <label htmlFor="currentPassword" className="form-label fw-bold">
+                <label htmlFor="current_password" className="form-label fw-bold">
                   Current Password
                 </label>
-                <input type="text" className="form-control mb-3" id="currentPassword" name="currentPassword" placeholder="********" required />
+                <input
+                  type="password"
+                  className="form-control mb-3"
+                  id="current_password"
+                  name="current_password"
+                  placeholder="********"
+                  onChange={handleInputChange}
+                  value={currentPassword}
+                  required
+                />
 
-                <label htmlFor="newPassword" className="form-label fw-bold">
+                <label htmlFor="new_password" className="form-label fw-bold">
                   New Password
                 </label>
-                <input type="text" className="form-control mb-3" id="newPassword" name="newPassword" placeholder="********" required />
+                <input type="password" className="form-control mb-3" id="new_password" name="new_password" placeholder="********" onChange={handleInputChange} value={newPassword} required />
 
-                <label htmlFor="confirmPassword" className="form-label fw-bold">
+                <label htmlFor="confirm_password" className="form-label fw-bold">
                   Confirm New Password
                 </label>
-                <input type="text" className="form-control mb-3" id="confirmPassword" name="confirmPassword" placeholder="********" required />
+                <input
+                  type="password"
+                  className="form-control mb-3"
+                  id="confirm_password"
+                  name="confirm_password"
+                  placeholder="********"
+                  onChange={handleInputChange}
+                  value={confirmPassword}
+                  required
+                />
                 <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
                   Submit
                 </button>
               </div>
             </form>
+            {/* Error message */}
+            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
           </div>
         </div>
       </div>

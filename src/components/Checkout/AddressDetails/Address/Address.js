@@ -21,7 +21,7 @@ const Address = ({ address, setAddress, setIsChanging }) => {
       </div>
 
       {/* Grey separator */}
-      <div className="flex-grow-1 border-top border-secondary"></div>
+      <div className="border-top border-secondary"></div>
     </>
   );
 };

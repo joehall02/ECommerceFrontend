@@ -115,7 +115,7 @@ const AdminProducts = () => {
                       {product.id}
                     </th>
                     <td className="w-25">{product.name}</td>
-                    <td className="w-15">{product.price}</td>
+                    <td className="w-15">£{product.price}</td>
                     <td className="w-15">{product.stock}</td>
                     <td className="w-35 text-end">
                       <Link to={`/admin/products/product-details/${product.id}`} className="btn btn-dark rounded-0 btn-sm me-2">

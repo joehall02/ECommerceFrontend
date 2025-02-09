@@ -6,11 +6,13 @@ import { deleteProductFromCart } from "../../../api/cart";
 import { BasketContext } from "../../../contexts/BasketContext";
 import { Link } from "react-router-dom";
 
-const Product = ({ image_path, name, category_name, price, quantity, product_id, cart_product_id }) => {
+const Product = ({ image_path, name, category_name, price, stock, quantity, product_id, cart_product_id }) => {
   const [selectedItem, setSelectedItem] = useState(quantity);
   const [error, setError] = useState("");
 
   const { toggleBasketVisibility, fetchCartProducts } = useContext(BasketContext); // Get fetchCartProducts function from the BasketContext
+
+  const maxItems = Math.min(stock, 5);
 
   const handleDropdownSelect = async (item) => {
     setSelectedItem(item);
@@ -69,10 +71,10 @@ const Product = ({ image_path, name, category_name, price, quantity, product_id,
             {selectedItem} <i className="bi bi-caret-down-fill"></i>
           </button>
           <ul className="dropdown-menu">
-            {[1, 2, 3, 4, 5].map((num) => (
-              <li key={num}>
-                <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect(num)}>
-                  {num}
+            {Array.from({ length: maxItems }, (_, i) => (
+              <li key={i}>
+                <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect(i + 1)}>
+                  {i + 1}
                 </a>
               </li>
             ))}

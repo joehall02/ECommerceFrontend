@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./ProductPage.css";
 import "../../../App.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { getProductById, getProductImage } from "../../../api/product";
 import { getCategoryById } from "../../../api/category";
 import { addProductToCart } from "../../../api/cart";
@@ -10,6 +10,7 @@ import { BasketContext } from "../../../contexts/BasketContext";
 const ProductPage = () => {
   const { product_id } = useParams(); // Get the product id from the URL
   const { toggleBasketVisibility, fetchCartProducts } = useContext(BasketContext); // Get basket visaibility and fetchCartProducts function from the BasketContext
+  const navigate = useNavigate();
 
   const [selectedItem, setSelectedItem] = useState("1");
   const [product, setProduct] = useState({
@@ -27,6 +28,8 @@ const ProductPage = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const maxItems = Math.min(product.stock, 5);
 
   const handleDropdownSelect = (item) => {
     setSelectedItem(item);
@@ -52,6 +55,12 @@ const ProductPage = () => {
   // Fetch product by id when the component mounts
   useEffect(() => {
     const fetchData = async () => {
+      // If the product has been deleted, redirect to shop
+      if (product_id === "null") {
+        navigate("/shop");
+        return;
+      }
+
       const response = await getProductById(product_id);
 
       if (response.success) {
@@ -77,7 +86,7 @@ const ProductPage = () => {
     };
 
     fetchData();
-  }, [product_id]);
+  }, [product_id, navigate]);
 
   // Fetch category by id when the component mounts and the product state is set
   useEffect(() => {
@@ -111,61 +120,50 @@ const ProductPage = () => {
         ) : error ? (
           <p className="text-danger">{error}</p>
         ) : (
-          <div className="row w-100">
-            {/* Image */}
-            <div className="col-12 col-lg-6 mb-5 mb-lg-0">
-              <img src={"https://storage.googleapis.com/" + product.image_path} className="img-fluid" alt={product.name} />
-            </div>
-
-            {/* Product details */}
-            <div className="col-12 col-lg-6 d-flex justify-content-between flex-column">
-              <div className="mt-auto">
-                <h2 className="fw-bold">{product.name}</h2>
-                <h3>{category.name}</h3>
-                <h4 className="mb-5">£{product.price}</h4>
-                <div className="">
-                  <h4>About this item</h4>
-                  <p className="mb-5 flex-grow-1">{product.description}</p>
-                </div>
+          <div className="d-flex flex-column align-items-center">
+            <Link to={"/shop"} className="mb-3 ms-3 text-dark text-decoration-none me-auto">
+              <i className="bi bi-arrow-left me-2" />
+              Back to Shop
+            </Link>
+            <div className="row w-100">
+              {/* Image */}
+              <div className="col-12 col-lg-6 mb-5 mb-lg-0">
+                <img src={"https://storage.googleapis.com/" + product.image_path} className="img-fluid" alt={product.name} />
               </div>
 
-              {/* Quantity dropdown and add to basket button */}
-              <div className="d-flex justify-content-between justify-content-lg-start mt-auto">
-                <div className="btn-group me-3">
-                  <button className="btn btn-outline-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown">
-                    Quantity: {selectedItem}
-                  </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect("1")}>
-                        1
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect("2")}>
-                        2
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect("3")}>
-                        3
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect("4")}>
-                        4
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect("5")}>
-                        5
-                      </a>
-                    </li>
-                  </ul>
+              {/* Product details */}
+              <div className="col-12 col-lg-6 d-flex justify-content-between flex-column">
+                <div className="mt-auto">
+                  <h2 className="fw-bold">{product.name}</h2>
+                  <h3>{category.name}</h3>
+                  <h4 className="mb-5">£{product.price}</h4>
+                  <div className="">
+                    <h4>About this item</h4>
+                    <p className="mb-5 flex-grow-1">{product.description}</p>
+                  </div>
                 </div>
-                <button className="btn shop-button px-5 fs-5" onClick={handleAddToCart(product_id, selectedItem)}>
-                  Add to Basket
-                </button>
+
+                {/* Quantity dropdown and add to basket button */}
+                <div className="d-flex justify-content-between justify-content-lg-start mt-auto">
+                  <div className="btn-group me-3">
+                    <button className="btn btn-outline-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown">
+                      Quantity: {selectedItem}
+                    </button>
+                    <ul className="dropdown-menu">
+                      {/* Create a list of 5 dropdown items */}
+                      {Array.from({ length: maxItems }, (_, i) => (
+                        <li key={i}>
+                          <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect(i + 1)}>
+                            {i + 1}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button className="btn shop-button px-5 fs-5" onClick={handleAddToCart(product_id, selectedItem)}>
+                    Add to Basket
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./Shop.css";
 import Product from "./Product/Product";
 import { getProducts } from "../../api/product";
+import Pagination from "../Pagination/Pagination";
 import { Link } from "react-router-dom";
 
 const Shop = () => {
   const [selectedItem, setSelectedItem] = useState("Name (A-Z)");
   const [products, setProducts] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -22,11 +26,14 @@ const Shop = () => {
   // Fetch products when the component mounts
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getProducts();
+      const response = await getProducts(currentPage);
 
       if (response.success) {
         setError("");
-        setProducts(response.products);
+        setProducts(response.response.products);
+        setTotalPages(response.response.total_pages);
+        setCurrentPage(response.response.current_page);
+        setTotalProducts(response.response.total_products);
       } else {
         setError(response.message);
       }
@@ -35,14 +42,15 @@ const Shop = () => {
     };
 
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   return (
-    <section id="shop">
-      <div className="container min-vh-100 my-5 py-5">
+    <section id="shop" className="d-flex min-vh-100">
+      <div className="container flex-grow-1 d-flex flex-column mt-5 py-5">
         {/* Category heading and sort by button */}
-        <div className="d-flex justify-content-between pb-3">
+        <div className="d-flex justify-content-between column pb-3">
           <h2 className="text-start text-dark fw-bold mb-0">All Product</h2>
+
           <div className="d-flex column align-items-center">
             <p className="mb-0 me-3">Sort By</p>
             <div className="btn-group">
@@ -75,6 +83,8 @@ const Shop = () => {
           </div>
         </div>
 
+        {products.length > 0 && <small>{totalProducts} Products Total</small>}
+
         {/* Products */}
         <div className="row justify-content-start">
           {/* Loading */}
@@ -83,7 +93,7 @@ const Shop = () => {
               <div className="spinner-border" role="status" />
             </div>
           ) : error ? (
-            <p>{error}</p>
+            <p className="text-danger">{error}</p>
           ) : products.length > 0 ? (
             products.map((product) => (
               <div key={product.id} className="col-12 col-lg-4">
@@ -93,9 +103,18 @@ const Shop = () => {
               </div>
             ))
           ) : (
-            <p>No products available.</p>
+            <div className="d-flex justify-content-center align-items-center" style={{ height: "75vh" }}>
+              <p>No products in stock at the moment. Please come back later!</p>
+            </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {products.length > 0 && (
+          <div className="mt-auto">
+            <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          </div>
+        )}
       </div>
     </section>
   );

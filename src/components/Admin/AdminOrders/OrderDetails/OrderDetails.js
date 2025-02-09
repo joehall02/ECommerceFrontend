@@ -3,6 +3,7 @@ import AdminSidebar from "../../AdminSidebar/AdminSidebar";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getOrderById, updateOrderStatus } from "../../../../api/order";
 import "../../../../App.css";
+import noImageAvailable from "../../../../assets/no-image-available.png";
 
 const OrderDetails = () => {
   const { order_id } = useParams();
@@ -28,6 +29,7 @@ const OrderDetails = () => {
 
     if (newStatus === order.order.status || newStatus === "") {
       navigate("/admin/orders");
+      return;
     }
 
     // Create a json object with the new status
@@ -73,7 +75,7 @@ const OrderDetails = () => {
       <div className="container my-5 py-5 col-12 col-xl-6">
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="fw-bold my-4">
-            Order Number <span className="text-danger">#{order.id}</span>
+            Order Number <span className="text-danger">#{order_id}</span>
           </h2>
           <Link to={"/admin/orders"}>Go back</Link>
         </div>
@@ -92,7 +94,8 @@ const OrderDetails = () => {
               <div className="card-body py-4">
                 {order.order_items.map((product, index) => (
                   <Link to={`/shop/product-page/${product.product_id}`} key={index} className="d-flex align-items-center mb-2 p-1 text-decoration-none text-dark order-product">
-                    <img src={"https://storage.googleapis.com/" + product.product_image} alt={product.name} style={{ width: "75px", height: "75px" }} />
+                    {/* <img src={`https://storage.googleapis.com/${product.product_image ? product.product_image : noImageAvailable}`} alt={product.name} style={{ width: "75px", height: "75px" }} /> */}
+                    <img src={product.product_image ? `https://storage.googleapis.com/${product.product_image}` : noImageAvailable} alt={product.name} style={{ width: "75px", height: "75px" }} />
                     <div className="d-flex flex-column ms-3">
                       <span className="fw-bold">{product.name}</span>
                       <span>Price: £{product.price}</span>
@@ -141,12 +144,26 @@ const OrderDetails = () => {
                 <div className="d-flex justify-content-between">
                   <div className="d-flex flex-column">
                     <p className="card-text">
-                      <span className="fw-bold">Customer Name: </span>
-                      {order.customer_name}
-                      <br />
-                      <span className="fw-bold">Customer Email: </span>
-                      {order.customer_email}
-                      <br />
+                      {/* if customer name and email are not null, display them, otherwise display "Customer account deleted" */}
+                      {order.customer_name && order.customer_email ? (
+                        <>
+                          <span className="fw-bold">Customer Name: </span>
+                          {order.customer_name}
+                          <br />
+                          <span className="fw-bold">Customer Email: </span>
+                          {order.customer_email}
+                          <br />
+                        </>
+                      ) : (
+                        <>
+                          <span className="fw-bold">Customer Name: </span>
+                          <span className="text-danger">Customer account deleted</span>
+                          <br />
+                          <span className="fw-bold">Customer Email: </span>
+                          <span className="text-danger">Customer account deleted</span>
+                          <br />
+                        </>
+                      )}
                       <span className="fw-bold">Order Date: </span>
                       {order.order.order_date}
                       <br />

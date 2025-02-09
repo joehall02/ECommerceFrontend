@@ -35,6 +35,7 @@ const Basket = ({ isVisible, onClose }) => {
                   name={product.product.name}
                   category_name={product.product.category_name}
                   price={product.product.price}
+                  stock={product.product.stock}
                   quantity={product.cart_product.quantity}
                   cart_product_id={product.cart_product.id}
                   product_id={product.product.id}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./AddressDetails.css";
 import { getDefaultAddress, getAllAddresses } from "../../../api/address";
 import Address from "./Address/Address";
+import { Link } from "react-router-dom";
 
 const AddressDetails = ({ address, setAddress }) => {
   const [addresses, setAddresses] = useState([]);
@@ -76,7 +77,7 @@ const AddressDetails = ({ address, setAddress }) => {
               // Display all user addresses
               <div className="d-flex flex-column w-100">
                 {/* Grey separator */}
-                <div className="flex-grow-1 border-top border-secondary"></div>
+                <div className="border-top border-secondary"></div>
 
                 {addresses.map((address) => (
                   <Address key={address.id} address={address} setAddress={setAddress} setIsChanging={setIsChanging} />
@@ -102,13 +103,23 @@ const AddressDetails = ({ address, setAddress }) => {
             )}
           </div>
           {/* Address actions */}
-          <div className="mt-auto">
-            <div className="d-flex justify-content-start">
-              <button className="btn btn-outline-primary w-25 rounded-0" onClick={handleAddressChange}>
-                {isChanging ? "Cancel" : "Change"}
-              </button>
+          {address.full_name ? (
+            <div className="mt-auto">
+              <div className="d-flex justify-content-start">
+                <button className="btn btn-outline-primary w-25 rounded-0" onClick={handleAddressChange}>
+                  {isChanging ? "Cancel" : "Change"}
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="mt-auto">
+              <div className="d-flex justify-content-start">
+                <Link to={"/checkout/add-address"} className="btn btn-outline-primary w-25 rounded-0">
+                  Add
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

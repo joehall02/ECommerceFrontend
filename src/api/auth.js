@@ -17,8 +17,8 @@ export const checkAuth = async () => {
 // Log the user out
 export const logout = async () => {
   try {
-    await axiosInstance.post(`${API_URL}/logout`);
-    return { success: true, message: "Logged out successfully." };
+    const response = await axiosInstance.post(`${API_URL}/logout`);
+    return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);
   }
@@ -27,8 +27,8 @@ export const logout = async () => {
 // Log the user in
 export const login = async (formData) => {
   try {
-    await axiosInstance.post(`${API_URL}/login`, formData);
-    return { success: true, message: "Logged in successfully." };
+    const response = await axiosInstance.post(`${API_URL}/login`, formData);
+    return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);
   }
@@ -37,8 +37,8 @@ export const login = async (formData) => {
 // Register user
 export const register = async (formdata) => {
   try {
-    await axiosInstance.post(`${API_URL}/signup`, formdata);
-    return { success: true, message: "Registered successfully." };
+    const response = await axiosInstance.post(`${API_URL}/signup`, formdata);
+    return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);
   }
@@ -47,8 +47,18 @@ export const register = async (formdata) => {
 // Handle token refresh
 export const refreshToken = async () => {
   try {
-    await axiosInstance.post(`${API_URL}/refresh`);
-    return { success: true, message: "Token refreshed successfully." };
+    const response = await axiosInstance.post(`${API_URL}/refresh`);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+// Reset password
+export const resetPassword = async (data) => {
+  try {
+    const response = await axiosInstance.put(`${API_URL}/reset-password`, data);
+    return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);
   }

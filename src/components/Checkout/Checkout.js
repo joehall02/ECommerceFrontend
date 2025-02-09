@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { BasketContext } from "../../contexts/BasketContext";
 import Product from "../Checkout/Product/Product";
 import AddressDetails from "./AddressDetails/AddressDetails";
@@ -16,19 +16,18 @@ const Checkout = () => {
     city: "",
     postcode: "",
   });
+  const [error, setError] = useState("");
 
-  // const address = {
-  //   name: "John Doe",
-  //   addressLine1: "123 Fake Street",
-  //   addressLine2: "Apt 2",
-  //   city: "London",
-  //   postcode: "E1 4AB",
-  // };
+  // Use a ref to track if the fetchCartProducts has been called
+  const fetchCartProductsRef = useRef(false);
 
   // Fetch the cart products when the component mounts
   useEffect(() => {
-    fetchCartProducts();
-  }, []);
+    if (!fetchCartProductsRef.current) {
+      fetchCartProducts();
+      fetchCartProductsRef.current = true;
+    }
+  }, [fetchCartProducts]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -50,10 +49,10 @@ const Checkout = () => {
       });
 
       if (result.error) {
-        console.error(result.error.message);
+        setError(result.error.message);
       }
     } else {
-      console.error(response.error);
+      setError(response.message);
     }
   };
 
@@ -91,21 +90,16 @@ const Checkout = () => {
                           name={product.product.name}
                           category_name={product.product.category_name}
                           price={product.product.price}
+                          stock={product.product.stock}
                           quantity={product.cart_product.quantity}
                           cart_product_id={product.cart_product.id}
                           product_id={product.product.id}
                         />
                       ))}
-                      {/* <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
-                      <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
-                      <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
-                      <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
-                      <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" />
-                      <Product image_path="https://loremflickr.com/320/320" name="Product Name" category_name="Category" price="£10.00" quantity="1" cart_product_id="1" product_id="1" /> */}
                     </ul>
 
                     {/* Checkout Button */}
-                    <button className="btn btn-success rounded-0" onClick={handleCheckout}>
+                    <button className="btn btn-success rounded-0" onClick={handleCheckout} disabled={!address.full_name}>
                       Checkout
                     </button>
                   </>
@@ -114,6 +108,9 @@ const Checkout = () => {
                 )}
               </div>
             </div>
+
+            {/* Error message */}
+            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
           </div>
         </div>
       </div>
