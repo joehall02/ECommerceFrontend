@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { editPassword } from "../../../../api/settings";
 import "../../../../App.css";
+import Error from "../../../Error/Error";
 
 const EditPassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -98,7 +99,7 @@ const EditPassword = () => {
               </div>
             </form>
             {/* Error message */}
-            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </div>
         </div>
       </div>

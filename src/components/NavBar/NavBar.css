@@ -1,80 +1,87 @@
 /* Navbar */
 .navbar {
-    background-color: #323232;
-    box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.5);
+  background-color: #323232;
+  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.5);
 }
 
 /* Changes color and size of nav links */
 .navbar .nav-link {
-    color: #fff;
-    font-size: 1.2rem;
+  color: #fff;
+  font-size: 1.2rem;
 }
 
 /* Changes color when hovering over nav links */
 .navbar .nav-link:hover {
-    color: #727070;    
+  color: #727070;
 }
+
+/* .dropdown-center {
+  left: 50%;
+  right: auto;
+  transform: translateX(-25%);
+} */
 
 /* When screen is at medium breakpoint or less, stops nav link items from being underlined */
 @media (max-width: 768.98px) {
-    .navbar .nav-link:hover {
-        text-decoration: none;
-    }
+  .navbar .nav-link:hover {
+    text-decoration: none;
+  }
 }
 
 /* Remove border on navbar toggler */
 .navbar .navbar-toggler {
-    border: none;
+  border: none;
 }
 
 /* Removes box shadow on navbar toggler when toggled */
 .navbar .navbar-toggler:focus {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 /* Changes color and size of navbar toggler icon */
 .navbar .toggle-icon {
-    color: #fff;
-    font-size: 1.5rem;
+  color: #fff;
+  font-size: 1.5rem;
 }
 
 /* Center nav links horizontally only on larger screens */
 @media (min-width: 992px) {
-    .navbar .navbar-nav {
-        left: 50%; /* Center horizontally relative to the container */
-        transform: translateX(-50%); /* Offset it back by 50% of its width */
-        position: absolute;
-        width: auto; /* Ensure it doesn't take up full width */
-    }
+  .navbar .navbar-nav {
+    left: 50%; /* Center horizontally relative to the container */
+    transform: translateX(-50%); /* Offset it back by 50% of its width */
+    position: absolute;
+    width: auto; /* Ensure it doesn't take up full width */
+  }
 }
 
 /* On smaller screens (below 992px), let the navbar collapse normally */
 @media (max-width: 991.98px) {
-    .navbar .navbar-nav {
-        position: static; /* Ensure normal flow */
-        width: 100%; /* Full width when collapsed */
-        justify-content: flex-start; /* Align links to the left when collapsed */
-    }
+  .navbar .navbar-nav {
+    position: static; /* Ensure normal flow */
+    width: 100%; /* Full width when collapsed */
+    justify-content: flex-start; /* Align links to the left when collapsed */
+  }
 }
 
 /* Changes color and size of navbar profile and cart icons */
 .bi-person-fill {
-    font-size: 1.4rem;
-    color: #fff;
+  font-size: 1.4rem;
+  color: #fff;
 }
 
 .bi-bag-fill {
-    font-size: 1.2rem;
-    color: #fff;
+  font-size: 1.2rem;
+  color: #fff;
 }
 
 /* Changes colour of profile and cart icons when hovering */
-.bi-bag-fill:hover, .bi-person-fill:hover {
-    color: #727070 !important;
+.bi-bag-fill:hover,
+.bi-person-fill:hover {
+  color: #727070 !important;
 }
 
 /* Adjust z index of desktop icons, allows functionality on desktop view */
 .desktop-icons {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }

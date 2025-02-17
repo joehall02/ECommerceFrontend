@@ -4,11 +4,9 @@ import axiosInstance from "./axiosInstance";
 const API_URL = "/product";
 
 // Get all products
-export const getProducts = async (page = 1) => {
+export const getProducts = async (params) => {
   try {
-    const response = await axiosInstance.get(`${API_URL}/`, {
-      params: { page },
-    });
+    const response = await axiosInstance.get(`${API_URL}/`, { params });
     return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);
@@ -48,10 +46,12 @@ export const getFeaturedProducts = async () => {
 // Admin routes
 
 // Get all products
-export const getAdminProducts = async () => {
+export const getAdminProducts = async (page = 1) => {
   try {
-    const response = await axiosInstance.get(`${API_URL}/admin`);
-    return { success: true, products: response.data };
+    const response = await axiosInstance.get(`${API_URL}/admin`, {
+      params: { page },
+    });
+    return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);
   }

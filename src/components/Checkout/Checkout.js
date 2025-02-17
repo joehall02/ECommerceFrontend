@@ -4,10 +4,11 @@ import Product from "../Checkout/Product/Product";
 import AddressDetails from "./AddressDetails/AddressDetails";
 import { getStripeCheckoutSession } from "../../api/order";
 import { loadStripe } from "@stripe/stripe-js";
+import Error from "../Error/Error";
 
 const Checkout = () => {
   // Get the cart products, loading state, and error message from the BasketContext
-  const { cartProducts, cartLoading, cartError, fetchCartProducts } = useContext(BasketContext);
+  const { cartProducts, cartLoading, cartError, setCartError, fetchCartProducts } = useContext(BasketContext);
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
   const [address, setAddress] = useState({
     full_name: "",
@@ -76,7 +77,7 @@ const Checkout = () => {
                     <div className="spinner-border" role="status" />
                   </div>
                 ) : cartError ? (
-                  <p>{cartError}</p>
+                  <Error message={error} setError={setCartError} />
                 ) : cartProducts.length > 0 ? (
                   <>
                     {/* List of Products */}
@@ -110,7 +111,7 @@ const Checkout = () => {
             </div>
 
             {/* Error message */}
-            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </div>
         </div>
       </div>

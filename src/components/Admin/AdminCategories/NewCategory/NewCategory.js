@@ -3,12 +3,14 @@ import AdminSidebar from "../../AdminSidebar/AdminSidebar";
 import { Link, useNavigate } from "react-router-dom";
 import { createCategory } from "../../../../api/category";
 import "../../../../App.css";
+import Error from "../../../Error/Error";
 
 const NewCategory = () => {
   const [category, setCategory] = useState({
     name: "",
   });
   const [error, setError] = useState("");
+  const [charNameCount, setCharNameCount] = useState(0);
 
   const navigate = useNavigate();
 
@@ -16,6 +18,9 @@ const NewCategory = () => {
   const handleInputChange = (e) => {
     // Set the category state with the input value
     setCategory({ ...category, [e.target.name]: e.target.value });
+
+    // Update the character count for the name input
+    setCharNameCount(e.target.value.length);
   };
 
   const handleSubmit = async (e) => {
@@ -58,7 +63,10 @@ const NewCategory = () => {
                 <label htmlFor="name" className="form-label fw-bold">
                   Category Name
                 </label>
-                <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} required />
+                <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} maxLength={20} required />
+                <div className="d-flex justify-content-end">
+                  <small className="text-muted">{charNameCount}/20</small>
+                </div>
               </div>
             </div>
           </div>
@@ -67,7 +75,7 @@ const NewCategory = () => {
           </button>
 
           {/* Error message */}
-          <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+          {error && <Error message={error} setError={setError} />}
         </form>
       </div>
     </section>

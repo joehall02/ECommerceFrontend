@@ -3,8 +3,8 @@ import axiosInstance from "./axiosInstance";
 
 const API_URL = "/category";
 
-// Get all categories
-export const getCategories = async () => {
+// Get all categories without pagination
+export const getAllCategories = async () => {
   try {
     const response = await axiosInstance.get(`${API_URL}/`);
     return { success: true, categories: response.data };
@@ -24,6 +24,18 @@ export const getCategoryById = async (category_id) => {
 };
 
 // Admin Routes
+
+// Get all categories
+export const getCategories = async (page = 1) => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/admin`, {
+      params: { page },
+    });
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
 
 // Create a new category
 export const createCategory = async (category) => {

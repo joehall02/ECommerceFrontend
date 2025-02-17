@@ -4,6 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { getCategoryById } from "../../../../api/category";
 import { updateCategory } from "../../../../api/category";
 import "../../../../App.css";
+import Error from "../../../Error/Error";
 
 const CategoryDetails = () => {
   const { category_id } = useParams();
@@ -18,10 +19,11 @@ const CategoryDetails = () => {
   const [error, setError] = useState("");
   const [editError, setEditError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [charNameCount, setCharNameCount] = useState(0);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCategory({ ...category, [name]: value });
+    setCategory({ ...category, [e.target.name]: e.target.value });
+    setCharNameCount(e.target.value.length);
   };
 
   const handleEdit = () => {
@@ -85,7 +87,7 @@ const CategoryDetails = () => {
             <div className="spinner-border" role="status" />
           </div>
         ) : error ? (
-          <p className="text-danger">{error}</p>
+          <Error message={error} setError={setError} />
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="card">
@@ -99,7 +101,12 @@ const CategoryDetails = () => {
                     Category Name
                   </label>
                   {isEditing ? (
-                    <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} required />
+                    <>
+                      <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} maxLength={20} required />
+                      <div className="d-flex justify-content-end">
+                        <small className="text-muted">{charNameCount}/20</small>
+                      </div>
+                    </>
                   ) : (
                     <p>{category.name}</p>
                   )}
@@ -115,7 +122,7 @@ const CategoryDetails = () => {
             </button>
 
             {/* Edit error message */}
-            <div className="error-container">{editError && <p className="text-danger m-0">{editError}</p>}</div>
+            {error && <Error message={editError} setError={setEditError} />}
           </form>
         )}
       </div>

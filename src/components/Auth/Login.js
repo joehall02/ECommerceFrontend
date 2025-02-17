@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { login } from "../../api/auth";
+import Error from "../Error/Error";
 
 const Login = () => {
   const { verifyAuthentication } = useContext(AuthContext);
@@ -82,7 +83,7 @@ const Login = () => {
               </div>
 
               {/* Error Message */}
-              <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+              {error && <Error message={error} setError={setError} />}
 
               <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100">
                 Login

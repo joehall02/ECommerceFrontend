@@ -32,7 +32,7 @@ export const BasketProvider = ({ children }) => {
     if (response.success) {
       setCartProducts(response.response);
     } else {
-      setCartError(response.error);
+      setCartError(response.message);
       setCartProducts([]); // Clear the products array
     }
 
@@ -51,5 +51,5 @@ export const BasketProvider = ({ children }) => {
   }, [isAuthenticated]);
 
   // Return the context provider including the state and functions
-  return <BasketContext.Provider value={{ isBasketVisible, toggleBasketVisibility, cartProducts, cartLoading, cartError, fetchCartProducts }}>{children}</BasketContext.Provider>;
+  return <BasketContext.Provider value={{ isBasketVisible, toggleBasketVisibility, cartProducts, cartLoading, cartError, setCartError, fetchCartProducts }}>{children}</BasketContext.Provider>;
 };

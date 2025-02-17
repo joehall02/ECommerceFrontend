@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import AdminSidebar from "../../AdminSidebar/AdminSidebar";
 import { createProduct, deleteProduct, addFeaturedProduct, addProductImages } from "../../../../api/product";
-import { getCategories } from "../../../../api/category";
+import { getAllCategories } from "../../../../api/category";
 import { Link, useNavigate } from "react-router-dom";
 import Cropper from "react-easy-crop";
 import imageCompression from "browser-image-compression";
 import "../../../../App.css";
+import Error from "../../../Error/Error";
 
 const NewProduct = () => {
   const [categories, setCategories] = useState([]);
@@ -179,16 +180,15 @@ const NewProduct = () => {
   useEffect(() => {
     // Get all categories when the component mounts
     const fetchData = async () => {
-      const response = await getCategories();
+      const response = await getAllCategories();
 
       if (response.success) {
         setError("");
         setCategories(response.categories);
-        setLoading(false);
       } else {
         setError(response.message);
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     fetchData();
@@ -314,7 +314,7 @@ const NewProduct = () => {
             </button>
 
             {/* Error Message */}
-            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </form>
         )}
       </div>

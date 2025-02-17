@@ -5,6 +5,7 @@ import { editProductQuantityInCart } from "../../../api/cart";
 import { deleteProductFromCart } from "../../../api/cart";
 import { BasketContext } from "../../../contexts/BasketContext";
 import { Link } from "react-router-dom";
+import Error from "../../Error/Error";
 
 const Product = ({ image_path, name, category_name, price, stock, quantity, product_id, cart_product_id }) => {
   const [selectedItem, setSelectedItem] = useState(quantity);
@@ -88,7 +89,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
       </li>
 
       {/* Error */}
-      {error && <p className="text-danger m-0">{error}</p>}
+      {error && <Error message={error} setError={setError} />}
 
       {/* Grey separator */}
       <div className="flex-grow-1 border-top border-secondary"></div>

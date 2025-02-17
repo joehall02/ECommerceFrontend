@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from "react";
 import Order from "./Order/Order";
 import { getOrders } from "../../../api/order";
+import Pagination from "../../Pagination/Pagination";
+import Error from "../../Error/Error";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalOrders, setTotalOrders] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getOrders();
+      const response = await getOrders(currentPage);
 
       if (response.success) {
         setError("");
-        setOrders(response.response);
+        setOrders(response.response.orders);
+        setTotalPages(response.response.total_pages);
+        setCurrentPage(response.response.current_page);
+        setTotalOrders(response.response.total_orders);
       } else {
         setError(response.message);
       }
@@ -22,17 +30,19 @@ const Orders = () => {
     };
 
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     // Scroll to the top of the page when the componenet mounts
     window.scrollTo(0, 0);
-  });
+  }, [currentPage]);
 
   return (
-    <section id="orders">
-      <div className="container min-vh-100 my-5 p-5">
+    <section id="orders" className="d-flex min-vh-100">
+      <div className="container flex-grow-1 d-flex flex-column my-5 p-5">
         <h2 className="fw-bold mb-0">My Orders</h2>
+
+        {orders.length > 0 && <small>{totalOrders} Orders Total</small>}
 
         {/* Orders */}
         <div className="row mt-5">
@@ -42,7 +52,7 @@ const Orders = () => {
               <div className="spinner-border" role="status" />
             </div>
           ) : error ? (
-            <p>{error}</p>
+            <Error message={error} setError={setError} />
           ) : orders.length > 0 ? (
             orders.map((order, index) => (
               <Order
@@ -63,6 +73,13 @@ const Orders = () => {
             <p>No orders found</p>
           )}
         </div>
+
+        {/* Pagination */}
+        {orders.length > 0 && (
+          <div className="mt-auto">
+            <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          </div>
+        )}
       </div>
     </section>
   );

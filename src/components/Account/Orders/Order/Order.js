@@ -6,8 +6,6 @@ import noImageAvailable from "../../../../assets/no-image-available.png";
 const Order = ({ order_date, total_price, status, full_name, address_line_1, address_line_2, city, postcode, order_number, products }) => {
   const [infoToggle, setInfoToggle] = useState(false);
 
-  console.log(products);
-
   const handleInfoToggle = () => {
     setInfoToggle(!infoToggle);
   };

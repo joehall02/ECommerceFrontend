@@ -3,33 +3,52 @@ import AdminSidebar from "../AdminSidebar/AdminSidebar";
 import { Link } from "react-router-dom";
 import "./AdminOrders.css";
 import { getAdminOrders } from "../../../api/order";
+import Pagination from "../../Pagination/Pagination";
+import Error from "../../Error/Error";
 
 const AdminOrders = () => {
-  const [selectedItem, setSelectedItem] = useState("Processing");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalOrders, setTotalOrders] = useState(0);
 
-  const handleDropdownSelect = (item) => {
-    setSelectedItem(item);
+  const handleStatusSelect = (item) => {
+    setSelectedStatus(item);
+
+    // Reset the current page to 1 when the sort by option is changed
+    setCurrentPage(1);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getAdminOrders();
+      const params = {
+        page: currentPage,
+      };
+
+      if (selectedStatus) {
+        params.status = selectedStatus;
+      }
+
+      const response = await getAdminOrders(params);
 
       if (response.success) {
         setError("");
-        setOrders(response.orders);
-        setLoading(false);
+        setOrders(response.response.orders);
+        setTotalPages(response.response.total_pages);
+        setCurrentPage(response.response.current_page);
+        setTotalOrders(response.response.total_orders);
       } else {
         setError(response.message);
-        setLoading(false);
       }
+
+      setLoading(false);
     };
 
     fetchData();
-  }, []);
+  }, [currentPage, selectedStatus]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,37 +57,43 @@ const AdminOrders = () => {
   return (
     <section id="admin-orders" className="d-flex min-vh-100">
       <AdminSidebar />
-      <div className="container my-5 py-5">
+      <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
         <div className="d-flex justify-content-between">
           <h2 className="fw-bold mt-4">Customer Orders</h2>
 
           {/* Dropdown */}
           <div className="d-flex column align-items-center">
-            <p className="mb-0 me-3">Sort By</p>
-            <div className="btn-group">
+            <div className="btn-group w-100">
               <button className="btn btn-outline-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown">
-                {selectedItem}
+                {selectedStatus || "Select Status"}
               </button>
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menu w-100">
                 <li>
-                  <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect("Processing")}>
+                  <button className="dropdown-item" onClick={() => handleStatusSelect("")}>
+                    Default
+                  </button>
+                </li>
+                <li>
+                  <button className="dropdown-item" onClick={() => handleStatusSelect("Processing")}>
                     Processing
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect("Shipped")}>
+                  <button className="dropdown-item" onClick={() => handleStatusSelect("Shipped")}>
                     Shipped
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect("Delivered")}>
+                  <button className="dropdown-item" onClick={() => handleStatusSelect("Delivered")}>
                     Delivered
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
           </div>
         </div>
+
+        {orders.length > 0 && <small>{totalOrders} Orders Total</small>}
 
         {/* Loading */}
         {loading ? (
@@ -76,7 +101,7 @@ const AdminOrders = () => {
             <div className="spinner-border" role="status" />
           </div>
         ) : error ? (
-          <p>{error}</p>
+          <Error message={error} setError={setError} />
         ) : orders.length > 0 ? (
           // Order Table
           <div className="d-flex mt-5">
@@ -125,6 +150,13 @@ const AdminOrders = () => {
           </div>
         ) : (
           <p>No orders found</p>
+        )}
+
+        {/* Pagination */}
+        {orders.length > 0 && (
+          <div className="mt-auto">
+            <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          </div>
         )}
       </div>
     </section>

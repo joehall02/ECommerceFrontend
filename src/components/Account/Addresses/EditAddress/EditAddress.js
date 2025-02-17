@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./../../../../App.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { updateAddress, getAddressById } from "../../../../api/address";
+import Error from "../../../Error/Error";
 
 const EditAddress = () => {
   const { address_id } = useParams();
@@ -41,7 +42,7 @@ const EditAddress = () => {
         setError("");
         navigate("/account/addresses");
       } else {
-        setError(response.error);
+        setError(response.message);
       }
     }
   };
@@ -185,7 +186,7 @@ const EditAddress = () => {
               </button>
 
               {/* Error message */}
-              <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+              {error && <Error message={error} setError={setError} />}
             </form>
           )}
         </div>

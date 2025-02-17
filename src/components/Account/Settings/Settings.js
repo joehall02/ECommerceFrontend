@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getFullName } from "../../../api/settings";
 import { AuthContext } from "../../../contexts/AuthContext";
+import Error from "../../Error/Error";
 
 const Settings = () => {
   const [fullName, setFullName] = useState("");
@@ -37,7 +38,7 @@ const Settings = () => {
         <h2 className="fw-bold text-start mb-5 px-0">My Settings</h2>
 
         {error ? (
-          <p className="text-danger m-0 p-0">{error}</p>
+          <Error message={error} setError={setError} />
         ) : (
           <div className="card">
             <div className="card-body d-flex justify-content-between py-5 border-bottom">

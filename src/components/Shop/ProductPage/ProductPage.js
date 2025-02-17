@@ -6,6 +6,7 @@ import { getProductById, getProductImage } from "../../../api/product";
 import { getCategoryById } from "../../../api/category";
 import { addProductToCart } from "../../../api/cart";
 import { BasketContext } from "../../../contexts/BasketContext";
+import Error from "../../Error/Error";
 
 const ProductPage = () => {
   const { product_id } = useParams(); // Get the product id from the URL
@@ -118,7 +119,7 @@ const ProductPage = () => {
             <div className="spinner-border" role="status" />
           </div>
         ) : error ? (
-          <p className="text-danger">{error}</p>
+          <Error message={error} setError={setError} />
         ) : (
           <div className="d-flex flex-column align-items-center">
             <Link to={"/shop"} className="mb-3 ms-3 text-dark text-decoration-none me-auto">

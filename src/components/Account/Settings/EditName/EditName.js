@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { editName } from "../../../../api/settings";
 import "../../../../App.css";
+import Error from "../../../Error/Error";
 
 const EditName = () => {
   const [newName, setNewName] = useState("");
@@ -56,7 +57,7 @@ const EditName = () => {
               </div>
             </form>
             {/* Error message */}
-            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </div>
         </div>
       </div>

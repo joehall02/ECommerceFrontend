@@ -1,45 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AdminSidebar from "../AdminSidebar/AdminSidebar";
 import { Link } from "react-router-dom";
 import "./AdminProducts.css";
 import "../../../App.css";
 import { getAdminProducts, deleteProduct } from "../../../api/product";
 import DialogBox from "../../DialogBox/DialogBox";
+import Pagination from "../../Pagination/Pagination";
+import Error from "../../Error/Error";
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [deleteError, setDeleteError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [showDialog, setShowDialog] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  // Fetch products when the component mounts
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getAdminProducts();
-
-      if (response.success) {
-        setError("");
-        setProducts(response.products);
-        setLoading(false);
-      } else {
-        setError(response.message);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
 
   // Handle deleting a product
   const handleProductDelete = (product_id) => {
     setProductToDelete(product_id);
-    setShowDialog(true);
   };
 
   // confirm deleting a product
@@ -48,27 +29,50 @@ const AdminProducts = () => {
       const response = await deleteProduct(productToDelete);
 
       if (response.success) {
-        setProducts(products.filter((product) => product.id !== productToDelete)); // Remove the product from the products list
         setDeleteError("");
+        fetchProducts();
       } else {
         setDeleteError(response.message);
       }
 
       setProductToDelete(null); // Reset the product to delete
-      setShowDialog(false); // Close the dialog box
     }
   };
 
   // Cancel deleting a product
   const cancelDelete = () => {
     setProductToDelete(null);
-    setShowDialog(false);
   };
+
+  const fetchProducts = useCallback(async () => {
+    const response = await getAdminProducts(currentPage);
+
+    if (response.success) {
+      setError("");
+      setProducts(response.response.products);
+      setTotalPages(response.response.total_pages);
+      setCurrentPage(response.response.current_page);
+      setTotalProducts(response.response.total_products);
+    } else {
+      setError(response.message);
+    }
+
+    setLoading(false);
+  }, [currentPage]); // Fetch products when currentPage changes
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Fetch products when the component mounts
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   return (
     <section id="admin-products" className="d-flex min-vh-100">
       <AdminSidebar />
-      <div className="container my-5 py-5">
+      <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
         <div className="d-flex justify-content-between">
           <h2 className="fw-bold mt-4">Products</h2>
 
@@ -76,6 +80,8 @@ const AdminProducts = () => {
             New Product
           </Link>
         </div>
+
+        {products.length > 0 && <small>{totalProducts} Products Total</small>}
 
         {/* Display loading message */}
         {/* Else show error message */}
@@ -85,7 +91,7 @@ const AdminProducts = () => {
             <div className="spinner-border" role="status" />
           </div>
         ) : error ? (
-          <p>{error}</p>
+          <Error message={error} setError={setError} />
         ) : products.length > 0 ? (
           <div className="d-flex mt-5">
             <table className="table table-striped">
@@ -121,7 +127,7 @@ const AdminProducts = () => {
                       <Link to={`/admin/products/product-details/${product.id}`} className="btn btn-dark rounded-0 btn-sm me-2">
                         Details
                       </Link>
-                      <button className="btn btn-danger rounded-0 btn-sm" onClick={() => handleProductDelete(product.id)}>
+                      <button className="btn btn-danger rounded-0 btn-sm" data-bs-toggle="modal" data-bs-target="#modal" onClick={() => handleProductDelete(product.id)}>
                         Delete
                       </button>
                     </td>
@@ -134,18 +140,23 @@ const AdminProducts = () => {
           <p>No products available</p>
         )}
 
+        {/* Pagination */}
+        {products.length > 0 && (
+          <div className="mt-auto">
+            <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          </div>
+        )}
+
         {/* Delete error message */}
-        <div className="error-container">{deleteError && <p className="text-danger m-0">{deleteError}</p>}</div>
+        {deleteError && <Error message={deleteError} setError={setDeleteError} />}
 
         {/* Dialog box */}
-        {showDialog && (
-          <DialogBox
-            title="Confirm Deletion"
-            message="Are you sure you want to delete this product? This will also delete all associated product images."
-            toggleOpen={cancelDelete}
-            onConfirm={confirmDelete}
-          />
-        )}
+        <DialogBox
+          title="Confirm Deletion"
+          message="Are you sure you want to delete this product? This will also delete all associated product images."
+          onCancel={cancelDelete}
+          onConfirm={confirmDelete}
+        />
       </div>
     </section>
   );

@@ -3,6 +3,7 @@ import "./AddressDetails.css";
 import { getDefaultAddress, getAllAddresses } from "../../../api/address";
 import Address from "./Address/Address";
 import { Link } from "react-router-dom";
+import Error from "../../Error/Error";
 
 const AddressDetails = ({ address, setAddress }) => {
   const [addresses, setAddresses] = useState([]);
@@ -72,7 +73,7 @@ const AddressDetails = ({ address, setAddress }) => {
                 <div className="spinner-border" role="status" />
               </div>
             ) : error ? (
-              <p>{error}</p>
+              <Error message={error} setError={setError} />
             ) : isChanging ? (
               // Display all user addresses
               <div className="d-flex flex-column w-100">

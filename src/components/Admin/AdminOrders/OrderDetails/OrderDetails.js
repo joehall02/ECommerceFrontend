@@ -4,6 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { getOrderById, updateOrderStatus } from "../../../../api/order";
 import "../../../../App.css";
 import noImageAvailable from "../../../../assets/no-image-available.png";
+import Error from "../../../Error/Error";
 
 const OrderDetails = () => {
   const { order_id } = useParams();
@@ -195,7 +196,7 @@ const OrderDetails = () => {
             </button>
 
             {/* Error message */}
-            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </>
         )}
       </div>

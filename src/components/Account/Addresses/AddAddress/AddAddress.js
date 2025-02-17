@@ -3,6 +3,7 @@ import "./AddAddress.css";
 import "./../../../../App.css";
 import { Link, useNavigate } from "react-router-dom";
 import { createAddress } from "../../../../api/address";
+import Error from "../../../Error/Error";
 
 const AddAddress = () => {
   const [address, setAddress] = useState({
@@ -39,7 +40,7 @@ const AddAddress = () => {
       setError("");
       navigate("/account/addresses");
     } else {
-      setError(response.error);
+      setError(response.message);
     }
   };
 
@@ -100,7 +101,7 @@ const AddAddress = () => {
             </button>
 
             {/* Error message */}
-            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </form>
         </div>
       </div>

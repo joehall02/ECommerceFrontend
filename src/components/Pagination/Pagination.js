@@ -13,7 +13,7 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
 
         {/* Create a list of page numbers, with the current page highlighted */}
         {Array.from({ length: totalPages }, (_, i) => (
-          <li className={`page-item ${currentPage === i + 1 ? "active" : ""}`}>
+          <li key={i} className={`page-item ${currentPage === i + 1 ? "active" : ""}`}>
             <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
               {i + 1}
             </button>

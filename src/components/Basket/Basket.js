@@ -3,10 +3,11 @@ import "./Basket.css";
 import Product from "./Product/Product";
 import { BasketContext } from "../../contexts/BasketContext";
 import { Link } from "react-router-dom";
+import Error from "../Error/Error";
 
 const Basket = ({ isVisible, onClose }) => {
   // Get the cart products, loading state, and error message from the BasketContext
-  const { cartProducts, cartLoading, cartError } = useContext(BasketContext);
+  const { cartProducts, cartLoading, cartError, setCartError } = useContext(BasketContext);
 
   return (
     <div className={`offcanvas offcanvas-end ${isVisible ? "show" : ""} bg-dark text-white`} style={{ visibility: isVisible ? "visible" : "hidden" }}>
@@ -21,7 +22,7 @@ const Basket = ({ isVisible, onClose }) => {
             <div className="spinner-border" role="status" />
           </div>
         ) : cartError ? (
-          <p>{cartError}</p>
+          <Error message={cartError} setError={setCartError} />
         ) : cartProducts.length > 0 ? (
           <>
             {/* List of Products */}

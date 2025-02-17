@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AdminSidebar from "../../AdminSidebar/AdminSidebar";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import "../../../../App.css";
 import { addFeaturedProduct, getProductById, addProductImages, checkFeaturedProduct, getProductImage, updateProduct, deleteFeaturedProduct } from "../../../../api/product";
-import { getCategories } from "../../../../api/category";
+import { getAllCategories } from "../../../../api/category";
+import Cropper from "react-easy-crop";
+import imageCompression from "browser-image-compression";
+import Error from "../../../Error/Error";
 
 const ProductDetails = () => {
   const { product_id } = useParams();
@@ -29,16 +32,41 @@ const ProductDetails = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleInputChange = (e) => {
+  // Crop state
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropping, setCropping] = useState(false);
+
+  const handleInputChange = async (e) => {
     // If the input is a file, set the value to the file itself, else set the value to the input value
     if (e.target.type === "file") {
       const file = e.target.files[0];
 
       // Display the image preview
       if (file) {
-        setEditedProduct({ ...editedProduct, [e.target.name]: file });
-        setPreviewImage(URL.createObjectURL(file));
-        setSelectedFile(file);
+        // setEditedProduct({ ...editedProduct, [e.target.name]: file });
+        // setPreviewImage(URL.createObjectURL(file));
+        // setSelectedFile(file);
+
+        try {
+          // Compress the image
+          const options = {
+            maxSizeKB: 300,
+            maxWidthOrHeight: 1024,
+            useWebWorker: true,
+          };
+
+          const compressedFile = await imageCompression(file, options);
+          const compressedImageUrl = URL.createObjectURL(compressedFile);
+
+          // Store the compressed image in the state
+          setSelectedFile(compressedFile);
+          setPreviewImage(compressedImageUrl);
+          setCropping(true); // Show cropping UI
+        } catch (error) {
+          setError("Failed to compress the image. Please try again.");
+        }
       } else {
         setPreviewImage(null);
       }
@@ -71,6 +99,47 @@ const ProductDetails = () => {
         }
       }
     }
+  };
+
+  // Handles cropping completion
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  // function to crop and convert the image using canvas
+  const getCroppedImage = async () => {
+    if (!selectedFile || !croppedAreaPixels) return;
+
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.src = URL.createObjectURL(selectedFile);
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = croppedAreaPixels.width;
+        canvas.height = croppedAreaPixels.height;
+
+        ctx.drawImage(image, croppedAreaPixels.x, croppedAreaPixels.y, croppedAreaPixels.width, croppedAreaPixels.height, 0, 0, croppedAreaPixels.width, croppedAreaPixels.height);
+
+        canvas.toBlob((blob) => {
+          const file = new File([blob], selectedFile.name, { type: "image/jpeg" });
+          resolve(file);
+        }, "image/jpeg");
+      };
+    });
+  };
+
+  // Handles the crop button click
+  const handleCropDone = async () => {
+    const croppedFile = await getCroppedImage();
+    setPreviewImage(URL.createObjectURL(croppedFile));
+    setEditedProduct((prevProduct) => {
+      const { image_path, ...rest } = prevProduct;
+      return { ...rest, image: croppedFile };
+    });
+    setSelectedFile(croppedFile);
+    setCropping(false); // Hide cropping UI
   };
 
   const handleEdit = () => {
@@ -147,6 +216,7 @@ const ProductDetails = () => {
   const handleRemoveFile = () => {
     setSelectedFile(null);
     setPreviewImage(null);
+    setCropping(false);
     // Remove the image from the editedProduct object
     setEditedProduct((prevProduct) => {
       const { image, ...rest } = prevProduct;
@@ -163,7 +233,7 @@ const ProductDetails = () => {
   // Fetch categories when the component mounts
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getCategories();
+      const response = await getAllCategories();
 
       if (response.success) {
         setError("");
@@ -395,9 +465,21 @@ const ProductDetails = () => {
               )}
             </div>
 
+            {/* Cropping UI */}
+            {cropping && previewImage && (
+              <div>
+                <div style={{ position: "relative", width: "100%", height: "300px" }}>
+                  <Cropper image={previewImage} crop={crop} zoom={zoom} aspect={4 / 3} onCropChange={setCrop} onZoomChange={setZoom} onCropComplete={onCropComplete} />
+                </div>
+                <button type="button" className="btn btn-primary mt-2" onClick={handleCropDone}>
+                  Crop Image
+                </button>
+              </div>
+            )}
+
             {/* Display image */}
             {/* Display preview image if image is uploaded, else show current product image */}
-            <img src={previewImage || "https://storage.googleapis.com/" + product.image_path} className="d-block w-100" alt={product.name} />
+            {!cropping && <img src={previewImage || "https://storage.googleapis.com/" + product.image_path} className="d-block w-100" alt={product.name} />}
 
             {/* Save changes button */}
             <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
@@ -405,7 +487,7 @@ const ProductDetails = () => {
             </button>
 
             {/* Error message */}
-            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </form>
         )}
 

@@ -3,6 +3,7 @@ import Address from "./Address/Address";
 import "./Addresses.css";
 import { Link } from "react-router-dom";
 import { getAllAddresses, deleteAddress, updateAddress } from "../../../api/address";
+import Error from "../../Error/Error";
 
 const Addresses = () => {
   const [addresses, setAddresses] = useState([]);
@@ -60,7 +61,10 @@ const Addresses = () => {
   return (
     <section id="addresses">
       <div className="container min-vh-100 my-5 p-5">
-        <h2 className="fw-bold mb-0">My Addresses</h2>
+        <div className="d-flex justify-content-between align-items-center">
+          <h2 className="fw-bold mb-0">My Addresses</h2>
+          <p className="text-muted mb-0">{addresses.length}/5</p>
+        </div>
 
         <div className="row mt-5">
           <Link to={"/account/addresses/add-address"} className="col-12 col-lg-6 col-xxl-4 mb-5 add-address text-decoration-none">
@@ -81,7 +85,7 @@ const Addresses = () => {
           ) : error === "Addresses not found" ? (
             <p></p>
           ) : error ? (
-            <p className="text-danger">{error}</p>
+            <Error message={error} setError={setError} />
           ) : (
             addresses.length > 0 && (
               <>

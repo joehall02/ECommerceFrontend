@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createAddress } from "../../../../api/address";
+import Error from "../../../Error/Error";
 
 const CheckoutAddAddress = () => {
   const [address, setAddress] = useState({
@@ -37,7 +38,7 @@ const CheckoutAddAddress = () => {
       setError("");
       navigate("/checkout");
     } else {
-      setError(response.error);
+      setError(response.message);
     }
   };
 
@@ -91,7 +92,7 @@ const CheckoutAddAddress = () => {
             </button>
 
             {/* Error message */}
-            <div className="error-container">{error && <p className="text-danger m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </form>
         </div>
       </div>

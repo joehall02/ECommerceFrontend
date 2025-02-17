@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteAccount } from "../../../../api/settings";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import Error from "../../../Error/Error";
 
 const DeleteAccount = () => {
   const [error, setError] = useState("");
@@ -45,7 +46,7 @@ const DeleteAccount = () => {
             </div>
 
             {/* Error message */}
-            <div className="error-container">{error && <p className="text-danger text-center m-0">{error}</p>}</div>
+            {error && <Error message={error} setError={setError} />}
           </div>
         </div>
       </div>
