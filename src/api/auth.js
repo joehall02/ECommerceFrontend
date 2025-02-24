@@ -7,8 +7,8 @@ const API_URL = "/user";
 export const checkAuth = async () => {
   try {
     const response = await axiosInstance.get(`${API_URL}/authenticate`);
-    const { logged_in, is_admin } = response.data;
-    return { success: true, logged_in, is_admin };
+    const { logged_in, is_admin, is_customer } = response.data;
+    return { success: true, logged_in, is_admin, is_customer };
   } catch (error) {
     return handleApiError(error);
   }
@@ -58,6 +58,16 @@ export const refreshToken = async () => {
 export const resetPassword = async (data) => {
   try {
     const response = await axiosInstance.put(`${API_URL}/reset-password`, data);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+// Get admin data
+export const getDashboardData = async () => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/admin`);
     return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);

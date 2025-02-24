@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import AdminSidebar from "../AdminSidebar/AdminSidebar";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./AdminProducts.css";
 import "../../../App.css";
 import { getAdminProducts, deleteProduct } from "../../../api/product";
@@ -17,6 +17,8 @@ const AdminProducts = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
+
+  const { category_id } = useParams();
 
   // Handle deleting a product
   const handleProductDelete = (product_id) => {
@@ -45,7 +47,19 @@ const AdminProducts = () => {
   };
 
   const fetchProducts = useCallback(async () => {
-    const response = await getAdminProducts(currentPage);
+    let response = null;
+
+    const params = {
+      page: currentPage,
+    };
+
+    // If a category_id is present, add it to the params and fetch products for that category
+    if (category_id) {
+      params.category_id = category_id;
+      response = await getAdminProducts(params);
+    } else {
+      response = await getAdminProducts(params);
+    }
 
     if (response.success) {
       setError("");
@@ -58,7 +72,7 @@ const AdminProducts = () => {
     }
 
     setLoading(false);
-  }, [currentPage]); // Fetch products when currentPage changes
+  }, [currentPage, category_id]); // Fetch products when currentPage changes
 
   useEffect(() => {
     window.scrollTo(0, 0);

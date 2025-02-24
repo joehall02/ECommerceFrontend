@@ -179,7 +179,8 @@ const ProductDetails = () => {
 
           // If the response is not a success, set the error message
           if (!featuredResponse.success) {
-            setError("Failed to add product as a featured product.");
+            setError(featuredResponse.message);
+            productEditSuccess = false;
           }
           // if featured product === "No" and productEditSuccess is true, remove the product as a featured product
         } else if (editedProduct.featured_product === "No") {
@@ -187,7 +188,8 @@ const ProductDetails = () => {
 
           // If the response is not a success, set the error message
           if (!deleteFeaturedResponse.success) {
-            setError("Failed to remove product as a featured product.");
+            setError(deleteFeaturedResponse.message);
+            productEditSuccess = false;
           }
         }
       }
@@ -202,7 +204,8 @@ const ProductDetails = () => {
         const imageResponse = await addProductImages(product_id, imageFormData);
 
         if (!imageResponse.success) {
-          setError("Failed to add product image.");
+          setError(imageResponse.message);
+          productEditSuccess = false;
         }
       }
 

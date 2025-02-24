@@ -3,7 +3,7 @@ import { Outlet, Navigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const UserRoute = ({ component: Component, ...rest }) => {
-  const { isAuthenticated, loading } = useContext(AuthContext);
+  const { isAuthenticated, loading, isCustomer, isAdmin } = useContext(AuthContext);
 
   // If the authentication status is still loading, return null
   if (loading) {
@@ -15,7 +15,7 @@ const UserRoute = ({ component: Component, ...rest }) => {
   }
 
   // If the user is authenticated, render the component
-  return isAuthenticated ? <Outlet {...rest} /> : <Navigate to={"/login"} />;
+  return isAuthenticated && (isCustomer || isAdmin) ? <Outlet {...rest} /> : <Navigate to={"/login"} />;
 };
 
 export default UserRoute;

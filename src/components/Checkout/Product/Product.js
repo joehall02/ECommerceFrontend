@@ -70,12 +70,12 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
           <button className="btn btn-outline-dark rounded-0" data-bs-toggle="dropdown">
             {selectedItem} <i className="bi bi-caret-down-fill"></i>
           </button>
-          <ul className="dropdown-menu">
+          <ul className="dropdown-menu w-100">
             {Array.from({ length: maxItems }, (_, i) => (
               <li key={i}>
-                <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect(i + 1)}>
+                <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>
                   {i + 1}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

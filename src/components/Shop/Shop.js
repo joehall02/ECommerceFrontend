@@ -56,6 +56,8 @@ const Shop = () => {
   // Fetch products when the component mounts
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+
       const params = {
         page: currentPage,
       };

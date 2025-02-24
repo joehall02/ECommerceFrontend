@@ -15,7 +15,7 @@ const Contact = () => {
         {/* Contact form */}
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center vh-100 contact-form">
           <div className="col-10 col-lg-8">
-            <h1 className="fw-bold text-white text-center pb-5">Get In Touch</h1>
+            <h1 className="text-white text-center pb-5">Get In Touch</h1>
             <form className="d-flex flex-column justify-content-center">
               <div className="mb-3">
                 <label htmlFor="name" className="form-label text-white">

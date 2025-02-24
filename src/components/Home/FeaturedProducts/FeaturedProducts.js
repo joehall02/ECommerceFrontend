@@ -29,16 +29,18 @@ const FeaturedProducts = () => {
     isVisable && (
       <section id="featured-products">
         <div className="container py-5">
-          <div className="row justify-content-center">
+          <div className="row justify-content-center py-5">
+            <h1 className="text-white text-center pb-5">Shop Our Best Sellers</h1>
+
             {loading ? (
               <div className="d-flex justify-content-center">
                 <div className="spinner-border" role="status" />
               </div>
             ) : (
               <>
-                {featuredProducts.map((product, index) => (
-                  <div className="col-12 col-lg-3" key={index}>
-                    <Product image={product.image_path} name={product.name} category={product.category_name} price={product.price} />
+                {featuredProducts.map((product) => (
+                  <div key={product.id} className="col-12 col-md-6 col-xl-3">
+                    <Product id={product.id} image={product.image_path} name={product.name} category={product.category_name} price={product.price} />
                   </div>
                 ))}
               </>

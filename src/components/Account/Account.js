@@ -4,12 +4,12 @@ import "./Account.css";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const Account = () => {
-  const { isAuthenticated, isAdmin, handleLogout } = useContext(AuthContext);
+  const { isAuthenticated, isAdmin, isCustomer, handleLogout } = useContext(AuthContext);
 
   return (
     <div className="dropdown">
       {/* Conditionally render account icon based on whether a user is logged in */}
-      {isAuthenticated ? (
+      {isAuthenticated && (isAdmin || isCustomer) ? (
         <Link className="btn btn-link p-0" data-bs-toggle="dropdown">
           <i className="bi bi-person-fill"></i>
         </Link>

@@ -7,10 +7,12 @@ import { getCategoryById } from "../../../api/category";
 import { addProductToCart } from "../../../api/cart";
 import { BasketContext } from "../../../contexts/BasketContext";
 import Error from "../../Error/Error";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const ProductPage = () => {
   const { product_id } = useParams(); // Get the product id from the URL
   const { toggleBasketVisibility, fetchCartProducts } = useContext(BasketContext); // Get basket visaibility and fetchCartProducts function from the BasketContext
+  const { verifyAuthentication } = useContext(AuthContext); // Get verifyAuthentication function from the AuthContext, needed to verify guest authentication
   const navigate = useNavigate();
 
   const [selectedItem, setSelectedItem] = useState("1");
@@ -47,6 +49,7 @@ const ProductPage = () => {
     if (response.success) {
       toggleBasketVisibility(); // Show the basket
       fetchCartProducts(); // Fetch the cart products
+      verifyAuthentication(); // Verify authentication
       setError("");
     } else {
       setError(response.message);
@@ -150,13 +153,13 @@ const ProductPage = () => {
                     <button className="btn btn-outline-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown">
                       Quantity: {selectedItem}
                     </button>
-                    <ul className="dropdown-menu">
+                    <ul className="dropdown-menu w-100">
                       {/* Create a list of 5 dropdown items */}
                       {Array.from({ length: maxItems }, (_, i) => (
                         <li key={i}>
-                          <a className="dropdown-item" href="#dropdown" onClick={() => handleDropdownSelect(i + 1)}>
+                          <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>
                             {i + 1}
-                          </a>
+                          </button>
                         </li>
                       ))}
                     </ul>

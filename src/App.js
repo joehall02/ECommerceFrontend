@@ -49,6 +49,13 @@ const App = () => {
             <Route path="/shop/product-page/:product_id" element={<ProductPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            {/* Checkout routes, guests allowed */}
+            <Route path="/checkout">
+              <Route path="" element={<Checkout />} />
+              <Route path="add-address" element={<CheckoutAddAddress />} />
+              <Route path="success" element={<Success />} />
+              <Route path="cancel" element={<Cancel />} />
+            </Route>
             {/* User only routes */}
             <Route path="/account" element={<UserRoute />}>
               <Route path="orders" element={<Orders />} />
@@ -60,13 +67,6 @@ const App = () => {
               <Route path="settings/edit-password" element={<EditPassword />} />
               <Route path="settings/delete-account" element={<DeleteAccount />} />
             </Route>
-            {/* Checkout routes */}
-            <Route path="/checkout" element={<UserRoute />}>
-              <Route path="" element={<Checkout />} />
-              <Route path="add-address" element={<CheckoutAddAddress />} />
-              <Route path="success" element={<Success />} />
-              <Route path="cancel" element={<Cancel />} />
-            </Route>
             {/* Admin only routes */}
             <Route path="/admin" element={<AdminRoute />}>
               <Route path="dashboard" element={<AdminDashboard />} />
@@ -74,6 +74,7 @@ const App = () => {
               <Route path="categories/new-category" element={<NewCategory />} />
               <Route path="categories/category-details/:category_id" element={<CategoryDetails />} />
               <Route path="products" element={<AdminProducts />} />
+              <Route path="products/:category_id" element={<AdminProducts />} />
               <Route path="products/new-product" element={<NewProduct />} />
               <Route path="products/product-details/:product_id" element={<ProductDetails />} />
               <Route path="orders" element={<AdminOrders />} />

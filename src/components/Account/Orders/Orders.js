@@ -23,7 +23,9 @@ const Orders = () => {
         setCurrentPage(response.response.current_page);
         setTotalOrders(response.response.total_orders);
       } else {
-        setError(response.message);
+        if (!(response.message === "No orders found")) {
+          setError(response.message);
+        }
       }
 
       setLoading(false);

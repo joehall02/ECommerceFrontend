@@ -5,24 +5,11 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Register the components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const OrdersGraph = () => {
-  const data = [
-    { month: "January", orders: 10 },
-    { month: "February", orders: 20 },
-    { month: "March", orders: 30 },
-    { month: "April", orders: 40 },
-    { month: "May", orders: 50 },
-    { month: "June", orders: 60 },
-    { month: "July", orders: 70 },
-    { month: "August", orders: 80 },
-    { month: "September", orders: 90 },
-    { month: "October", orders: 10 },
-    { month: "November", orders: 110 },
-    { month: "December", orders: 120 },
-  ];
+const OrdersGraph = ({ graphData }) => {
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-  const labels = data.map((item) => item.month);
-  const orders = data.map((item) => item.orders);
+  const labels = monthNames;
+  const orders = monthNames.map((_, index) => graphData[index + 1] || 0);
 
   const chartData = {
     labels: labels,

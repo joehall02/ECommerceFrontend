@@ -9,7 +9,7 @@ const About = () => {
 
       <div className="container d-flex flex-column align-items-start justify-content-center vh-100 py-5" style={{ zIndex: 2, position: "relative" }}>
         <div className="col-12 col-lg-8 text-center text-lg-start">
-          <h1 className="text-white fw-bold">Our Story</h1>
+          <h1 className="text-white">Our Story</h1>
           <p className="text-white custom-line-height">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore saepe eligendi sunt rem. Tenetur similique ut suscipit autem, praesentium minus dolore iste veniam, impedit ipsum, velit
             explicabo sapiente quam esse. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa, beatae. Perferendis est magnam, neque incidunt ex esse nulla nesciunt cupiditate reprehenderit

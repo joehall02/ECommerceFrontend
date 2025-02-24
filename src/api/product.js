@@ -46,11 +46,9 @@ export const getFeaturedProducts = async () => {
 // Admin routes
 
 // Get all products
-export const getAdminProducts = async (page = 1) => {
+export const getAdminProducts = async (params) => {
   try {
-    const response = await axiosInstance.get(`${API_URL}/admin`, {
-      params: { page },
-    });
+    const response = await axiosInstance.get(`${API_URL}/admin`, { params });
     return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);

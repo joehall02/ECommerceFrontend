@@ -146,13 +146,13 @@ const OrderDetails = () => {
                   <div className="d-flex flex-column">
                     <p className="card-text">
                       {/* if customer name and email are not null, display them, otherwise display "Customer account deleted" */}
-                      {order.customer_name && order.customer_email ? (
+                      {order.customer_name && order.order.customer_email ? (
                         <>
                           <span className="fw-bold">Customer Name: </span>
                           {order.customer_name}
                           <br />
                           <span className="fw-bold">Customer Email: </span>
-                          {order.customer_email}
+                          {order.order.customer_email}
                           <br />
                         </>
                       ) : (
@@ -160,8 +160,8 @@ const OrderDetails = () => {
                           <span className="fw-bold">Customer Name: </span>
                           <span className="text-danger">Customer account deleted</span>
                           <br />
-                          <span className="fw-bold">Customer Email: </span>
-                          <span className="text-danger">Customer account deleted</span>
+                          <span className="fw-bold">Customer Order Email: </span>
+                          {order.order.customer_email}
                           <br />
                         </>
                       )}

@@ -20,7 +20,6 @@ const AdminCategories = () => {
   // Handle deleting a category
   const handleCategoryDelete = (category_id) => {
     setCategoryToDelete(category_id);
-    console.log(category_id);
   };
 
   // Confirm deleting a category
@@ -42,7 +41,6 @@ const AdminCategories = () => {
   // Cancel deleting a category
   const cancelDelete = () => {
     setCategoryToDelete(null);
-    console.log("cancel");
   };
 
   const fetchCategories = useCallback(async () => {
@@ -111,7 +109,9 @@ const AdminCategories = () => {
                     <th scope="row">{category.id}</th>
                     <td>{category.name}</td>
                     <td className="text-end">
-                      <button className="btn btn-dark rounded-0 btn-sm me-2">Products</button>
+                      <Link to={`/admin/products/${category.id}`} className="btn btn-dark rounded-0 btn-sm me-2">
+                        Products
+                      </Link>
                       <Link to={`/admin/categories/category-details/${category.id}`} className="btn btn-dark rounded-0 btn-sm me-2">
                         Details
                       </Link>

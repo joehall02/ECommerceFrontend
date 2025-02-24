@@ -24,7 +24,9 @@ const AddressDetails = ({ address, setAddress }) => {
         setError("");
         setAddress(response.response);
       } else {
-        setError(response.message);
+        if (!(response.message === "Default address not found")) {
+          setError(response.message);
+        }
       }
 
       setLoading(false);

@@ -6,20 +6,23 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Check if the user is authenticated when the component mounts
   const verifyAuthentication = async () => {
     const response = await checkAuth();
 
-    const { success, logged_in, is_admin } = response;
+    const { success, logged_in, is_admin, is_customer } = response;
 
     if (success) {
       setIsAuthenticated(logged_in);
       setIsAdmin(is_admin);
+      setIsCustomer(is_customer);
     } else {
       setIsAuthenticated(false);
       setIsAdmin(false);
+      setIsCustomer(false);
       // handleLogout();
     }
     setLoading(false);
@@ -56,5 +59,5 @@ export const AuthProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, [isAuthenticated, handleTokenRefresh]);
 
-  return <AuthContext.Provider value={{ isAuthenticated, isAdmin, loading, verifyAuthentication, handleLogout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isAuthenticated, isAdmin, isCustomer, loading, verifyAuthentication, handleLogout }}>{children}</AuthContext.Provider>;
 };

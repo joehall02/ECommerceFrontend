@@ -8,7 +8,7 @@ import { login } from "../../api/auth";
 import Error from "../Error/Error";
 
 const Login = () => {
-  const { verifyAuthentication } = useContext(AuthContext);
+  const { verifyAuthentication, isAuthenticated, handleLogout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -31,6 +31,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // If the user is authenticated, log the user out before logging into another account
+    if (isAuthenticated) {
+      handleLogout();
+    }
+
     const response = await login(formData); // Call API function
 
     if (response.success) {
@@ -46,6 +51,13 @@ const Login = () => {
     // Scroll to the top of the page when the componenet mounts
     window.scrollTo(0, 0);
   });
+
+  // // Log the user out when the component unmounts and if the user is authenticated
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     handleLogout();
+  //   }
+  // }, [handleLogout, isAuthenticated]);
 
   return (
     <section id="#login" className="d-flex">

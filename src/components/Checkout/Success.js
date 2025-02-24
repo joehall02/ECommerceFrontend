@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Success = () => {
+  const { verifyAuthentication } = useContext(AuthContext);
+
+  // Verify authentication when the component mounts
+  useEffect(() => {
+    verifyAuthentication();
+  }, [verifyAuthentication]);
+
   return (
     <div className="container min-vh-100 d-flex justify-content-center align-items-center">
       <div className="text-center">
