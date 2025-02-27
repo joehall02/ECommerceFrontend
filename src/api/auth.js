@@ -67,7 +67,7 @@ export const resetPassword = async (data) => {
 // Get admin data
 export const getDashboardData = async () => {
   try {
-    const response = await axiosInstance.get(`${API_URL}/admin`);
+    const response = await axiosInstance.get(`${API_URL}/admin/dashboard`);
     return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);

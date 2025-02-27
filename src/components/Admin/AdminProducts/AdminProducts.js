@@ -46,7 +46,10 @@ const AdminProducts = () => {
     setProductToDelete(null);
   };
 
+  // Use useCallback to memoize the function and prevent unnecessary re-renders
   const fetchProducts = useCallback(async () => {
+    setLoading(true);
+
     let response = null;
 
     const params = {

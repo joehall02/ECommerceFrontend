@@ -43,7 +43,10 @@ const AdminCategories = () => {
     setCategoryToDelete(null);
   };
 
+  // Use useCallback to memoize the function and prevent unnecessary re-renders
   const fetchCategories = useCallback(async () => {
+    setLoading(true);
+
     const response = await getCategories(currentPage);
 
     if (response.success) {

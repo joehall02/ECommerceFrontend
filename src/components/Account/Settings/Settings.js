@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getFullName } from "../../../api/settings";
+import { getFullName } from "../../../api/user";
 import { AuthContext } from "../../../contexts/AuthContext";
 import Error from "../../Error/Error";
 

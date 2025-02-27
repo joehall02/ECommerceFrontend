@@ -59,11 +59,10 @@ const OrderDetails = () => {
       if (response.success) {
         setError("");
         setOrder(response.order);
-        setLoading(false);
       } else {
         setError(response.message);
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     fetchData();

@@ -56,3 +56,15 @@ export const updateOrderStatus = async (order_id, data) => {
     return handleApiError(error);
   }
 };
+
+// Get all of a users orders
+export const getUsersOrders = async (user_id, page = 1) => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/admin/user/${user_id}`, {
+      params: { page },
+    });
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

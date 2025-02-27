@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { editPassword } from "../../../../api/settings";
+import { editPassword } from "../../../../api/user";
 import "../../../../App.css";
 import Error from "../../../Error/Error";
 

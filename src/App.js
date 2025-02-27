@@ -29,6 +29,8 @@ import NewProduct from "./components/Admin/AdminProducts/NewProduct/NewProduct";
 import ProductDetails from "./components/Admin/AdminProducts/ProductDetails/ProductDetails";
 import AdminOrders from "./components/Admin/AdminOrders/AdminOrders";
 import OrderDetails from "./components/Admin/AdminOrders/OrderDetails/OrderDetails";
+import AdminUsers from "./components/Admin/AdminUsers/AdminUsers";
+import UserDetails from "./components/Admin/AdminUsers/UserDetails/UserDetails";
 import Checkout from "./components/Checkout/Checkout";
 import Success from "./components/Checkout/Success";
 import Cancel from "./components/Checkout/Cancel";
@@ -79,6 +81,8 @@ const App = () => {
               <Route path="products/product-details/:product_id" element={<ProductDetails />} />
               <Route path="orders" element={<AdminOrders />} />
               <Route path="orders/order-details/:order_id" element={<OrderDetails />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="users/user-details/:user_id" element={<UserDetails />} />
             </Route>
             {/* Catch-all route */}
             <Route path="*" element={<Navigate to="/" />} />

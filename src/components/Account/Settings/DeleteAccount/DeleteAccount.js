@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteAccount } from "../../../../api/settings";
+import { deleteAccount } from "../../../../api/user";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import Error from "../../../Error/Error";
 

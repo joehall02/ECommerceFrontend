@@ -26,6 +26,11 @@ const AdminSidebar = () => {
             Orders <i className="bi bi-caret-right-fill"></i>
           </Link>
         </li>
+        <li className="nav-item">
+          <Link to="/admin/users" className="nav-link text-light fw-bold my-2 d-flex justify-content-between align-items-center admin-sidebar-link">
+            Users <i className="bi bi-caret-right-fill"></i>
+          </Link>
+        </li>
       </ul>
     </div>
   );

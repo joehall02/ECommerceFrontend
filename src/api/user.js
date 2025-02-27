@@ -42,3 +42,27 @@ export const getFullName = async () => {
     return handleApiError(error);
   }
 };
+
+// Admin
+
+// Get all users
+export const getAllUsers = async (page = 1) => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/admin`, {
+      params: { page },
+    });
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+// Get user by ID
+export const getUserById = async (user_id) => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/admin/${user_id}`);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

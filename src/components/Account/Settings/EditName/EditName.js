@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { editName } from "../../../../api/settings";
+import { editName } from "../../../../api/user";
 import "../../../../App.css";
 import Error from "../../../Error/Error";
 
