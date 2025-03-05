@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./Auth.css";
 import "../../App.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { login } from "../../api/auth";
 import Error from "../Error/Error";
+import Success from "../Success/Success";
+import { verifyEmail } from "../../api/auth";
+import Welcome from "./Welcome";
 
 const Login = () => {
   const { verifyAuthentication, isAuthenticated, handleLogout } = useContext(AuthContext);
@@ -17,6 +20,10 @@ const Login = () => {
   });
 
   const [error, setError] = useState("");
+  const [token, setToken] = useState("");
+  const [verifiedResponse, setVerifiedResponse] = useState("");
+
+  const { verification_token } = useParams();
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -42,6 +49,8 @@ const Login = () => {
       setError("");
       verifyAuthentication(); // Verify authentication
       navigate("/"); // Redirect to home page
+    } else if (response.message === "Email not verified") {
+      navigate(`/awaiting-verification/${formData.email}`); // Redirect to the awaiting verification page
     } else {
       setError(response.message);
     }
@@ -50,7 +59,28 @@ const Login = () => {
   useEffect(() => {
     // Scroll to the top of the page when the componenet mounts
     window.scrollTo(0, 0);
-  });
+  }, []);
+
+  useEffect(() => {
+    setToken(verification_token);
+  }, [verification_token]);
+
+  useEffect(() => {
+    if (token) {
+      const verifyToken = async () => {
+        const response = await verifyEmail(token);
+
+        if (response.success) {
+          setError("");
+          setVerifiedResponse(response.response.message);
+        } else {
+          setError(response.message);
+        }
+      };
+
+      verifyToken();
+    }
+  }, [token]);
 
   // // Log the user out when the component unmounts and if the user is authenticated
   // useEffect(() => {
@@ -62,15 +92,7 @@ const Login = () => {
   return (
     <section id="#login" className="d-flex">
       <div className="d-flex flex-lg-row flex-column w-100">
-        <div className="col-12 col-lg-6 bg-primary d-none d-lg-flex align-items-center justify-content-center min-vh-100">
-          <div className="col-10">
-            <h1 className="text-white auth-header fw-bold">Welcome to Lorem Ipsum</h1>
-            <p className="text-white">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex aliquam ut, labore rem, alias dolorem beatae harum, voluptas ducimus provident nobis reiciendis voluptate. Maxime eum
-              explicabo veniam iure labore odio.
-            </p>
-          </div>
-        </div>
+        <Welcome />
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center min-vh-100 auth-form">
           <div className="col-10 col-lg-8">
             <h1 className="fw-bold text-white text-center pb-5">Login</h1>
@@ -97,6 +119,9 @@ const Login = () => {
               {/* Error Message */}
               {error && <Error message={error} setError={setError} />}
 
+              {/* Token success response */}
+              {verifiedResponse && <Success message={verifiedResponse} setMessage={setVerifiedResponse} />}
+
               <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100">
                 Login
               </button>
@@ -106,9 +131,9 @@ const Login = () => {
               <p className="text-white">
                 New User? <Link to={"/register"}>Register</Link>
               </p>
-              <a href="#forgot" className="text-white">
-                Forgot Password?
-              </a>
+              <p className="text-white">
+                Forgot Password? <Link to={"/forgot-password"}>Click Here</Link>
+              </p>
             </div>
           </div>
         </div>

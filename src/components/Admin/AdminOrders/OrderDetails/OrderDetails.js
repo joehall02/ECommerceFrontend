@@ -84,7 +84,7 @@ const OrderDetails = () => {
           <div className="d-flex justify-content-center">
             <div className="spinner-border" role="status" />
           </div>
-        ) : (
+        ) : order.order ? (
           <>
             {/* Product Details */}
             <div className="card mb-5">
@@ -171,21 +171,24 @@ const OrderDetails = () => {
                       <br />
                       <span className="fw-bold">Status: </span>
                       {isEditing ? (
-                        <select className="form-select" value={newStatus || order.order.status} onChange={handleStatusChange}>
-                          <option value="Processing">Processing</option>
-                          <option value="Shipped">Shipped</option>
-                          <option value="Delivered">Delivered</option>
-                        </select>
+                        <>
+                          <select className="form-select mb-3" value={newStatus || order.order.status} onChange={handleStatusChange}>
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                          </select>
+                          <span className="text-danger">Warning: </span> Changing the status to 'Shipped' will send an email to the customer.
+                        </>
                       ) : (
                         newStatus || order.order.status
                       )}
                     </p>
-
-                    <button type="button" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" onClick={() => handleEdit()}>
-                      {isEditing ? "Done" : "Edit"}
-                    </button>
                   </div>
                 </div>
+
+                <button type="button" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" onClick={() => handleEdit()}>
+                  {isEditing ? "Done" : "Edit"}
+                </button>
               </div>
             </div>
 
@@ -197,6 +200,8 @@ const OrderDetails = () => {
             {/* Error message */}
             {error && <Error message={error} setError={setError} />}
           </>
+        ) : (
+          <Error message="Order not found" setError={setError} />
         )}
       </div>
     </section>

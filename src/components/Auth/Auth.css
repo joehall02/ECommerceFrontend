@@ -1,35 +1,34 @@
 .auth-header {
-    font-size: 5rem;
+  font-size: 5rem;
 }
 
 /* Changes background colour of.auth-form form */
 .auth-form {
-    background-color: #323232;
+  background-color: #323232;
 }
 
 /* Custom styling for form inputs and text area */
 .auth-form form input,
 .auth-form form textarea {
-    background-color: #323232;
-    color: #fff;
-    border: none;
-    
-    border: 3px solid #fff;
-    border-radius: 0px;
-    resize: none;
-    
+  background-color: #323232;
+  color: #fff;
+  border: none;
+
+  border: 3px solid #fff;
+  border-radius: 0px;
+  resize: none;
 }
 
 /* Removes box shadow when input is selected */
 .auth-form form input:focus,
-.auth-form form textarea:focus {    
-    background-color: #323232;
-    color: #fff;
-    border: 3px solid #fff;
+.auth-form form textarea:focus {
+  background-color: #323232;
+  color: #fff;
+  border: 3px solid #fff;
 }
 
 /* Changes colour of placeholder text */
 .auth-form form input::placeholder,
 .auth-form form textarea::placeholder {
-    color: #8f9798;
+  color: #8f9798;
 }

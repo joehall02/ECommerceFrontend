@@ -16,19 +16,8 @@ const ProductPage = () => {
   const navigate = useNavigate();
 
   const [selectedItem, setSelectedItem] = useState("1");
-  const [product, setProduct] = useState({
-    id: "",
-    name: "",
-    price: "",
-    description: "",
-    stock: "",
-    category_id: "",
-    image_path: "",
-  });
-  const [category, setCategory] = useState({
-    id: "",
-    name: "",
-  });
+  const [product, setProduct] = useState({});
+  const [category, setCategory] = useState({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -83,7 +72,8 @@ const ProductPage = () => {
           setError(imageResponse.message);
         }
       } else {
-        setError(response.message);
+        // setError(response.message);
+        navigate("/shop");
       }
 
       setLoading(false);
@@ -105,8 +95,10 @@ const ProductPage = () => {
       }
     };
 
-    fetchData();
-  }, [product]);
+    if (product.category_id) {
+      fetchData();
+    }
+  }, [product.category_id]);
 
   useEffect(() => {
     // Scroll to the top of the page when the componenet mounts

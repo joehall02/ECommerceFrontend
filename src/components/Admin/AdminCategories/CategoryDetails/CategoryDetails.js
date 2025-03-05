@@ -89,41 +89,43 @@ const CategoryDetails = () => {
         ) : error ? (
           <Error message={error} setError={setError} />
         ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="card">
-              <div className="card-header">
-                <h5 className="fw-bold my-auto">Category Details</h5>
-              </div>
-              <div className="card-body py-4">
-                <div className="column">
-                  {/* Name */}
-                  <label htmlFor="name" className="form-label fw-bold">
-                    Category Name
-                  </label>
-                  {isEditing ? (
-                    <>
-                      <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} maxLength={20} required />
-                      <div className="d-flex justify-content-end">
-                        <small className="text-muted">{charNameCount}/20</small>
-                      </div>
-                    </>
-                  ) : (
-                    <p>{category.name}</p>
-                  )}
+          category.id && (
+            <form onSubmit={handleSubmit}>
+              <div className="card">
+                <div className="card-header">
+                  <h5 className="fw-bold my-auto">Category Details</h5>
                 </div>
+                <div className="card-body py-4">
+                  <div className="column">
+                    {/* Name */}
+                    <label htmlFor="name" className="form-label fw-bold">
+                      Category Name
+                    </label>
+                    {isEditing ? (
+                      <>
+                        <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} maxLength={20} required />
+                        <div className="d-flex justify-content-end">
+                          <small className="text-muted">{charNameCount}/20</small>
+                        </div>
+                      </>
+                    ) : (
+                      <p>{category.name}</p>
+                    )}
+                  </div>
 
-                <button type="button" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" onClick={() => handleEdit()}>
-                  {isEditing ? "Done" : "Edit"}
-                </button>
+                  <button type="button" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" onClick={() => handleEdit()}>
+                    {isEditing ? "Done" : "Edit"}
+                  </button>
+                </div>
               </div>
-            </div>
-            <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
-              Save Changes
-            </button>
+              <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
+                Save Changes
+              </button>
 
-            {/* Edit error message */}
-            {error && <Error message={editError} setError={setEditError} />}
-          </form>
+              {/* Edit error message */}
+              {error && <Error message={editError} setError={setEditError} />}
+            </form>
+          )
         )}
       </div>
     </section>

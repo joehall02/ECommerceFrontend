@@ -44,6 +44,35 @@ export const register = async (formdata) => {
   }
 };
 
+// Verify email
+export const verifyEmail = async (token) => {
+  try {
+    const response = await axiosInstance.post(`${API_URL}/verify-email/${token}`);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+// Resend verification email
+export const resendVerification = async (data) => {
+  try {
+    const response = await axiosInstance.post(`${API_URL}/resend-verification`, data);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+export const resetPassword = async (token, data) => {
+  try {
+    const response = await axiosInstance.put(`${API_URL}/reset-password/${token}`, data);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 // Handle token refresh
 export const refreshToken = async () => {
   try {
@@ -55,9 +84,9 @@ export const refreshToken = async () => {
 };
 
 // Reset password
-export const resetPassword = async (data) => {
+export const sendResetPasswordEmail = async (data) => {
   try {
-    const response = await axiosInstance.put(`${API_URL}/reset-password`, data);
+    const response = await axiosInstance.post(`${API_URL}/reset-password`, data);
     return { success: true, response: response.data };
   } catch (error) {
     return handleApiError(error);

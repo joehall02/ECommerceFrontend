@@ -12,6 +12,9 @@ import ProductPage from "./components/Shop/ProductPage/ProductPage";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
+import ForgotPassword from "./components/Auth/ForgotPassword";
+import ResetPassword from "./components/Auth/ResetPassword";
+import AwaitingVerification from "./components/Auth/AwaitingVerification";
 import Orders from "./components/Account/Orders/Orders";
 import Addresses from "./components/Account/Addresses/Addresses";
 import AddAddress from "./components/Account/Addresses/AddAddress/AddAddress";
@@ -49,8 +52,11 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/shop/product-page/:product_id" element={<ProductPage />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login/:verification_token?" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/awaiting-verification/:userEmail" element={<AwaitingVerification />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:reset_token" element={<ResetPassword />} />
             {/* Checkout routes, guests allowed */}
             <Route path="/checkout">
               <Route path="" element={<Checkout />} />

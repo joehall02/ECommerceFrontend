@@ -60,14 +60,14 @@ const EditAddress = () => {
         setError("");
         setAddress(response.response);
       } else {
-        setError(response.message);
+        navigate("/account/addresses");
       }
 
       setLoading(false);
     };
 
     fetchData();
-  }, [address_id]);
+  }, [address_id, navigate]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
