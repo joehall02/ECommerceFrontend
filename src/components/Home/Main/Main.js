@@ -1,5 +1,6 @@
 import "../../../App.css";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Main = () => {
   return (
@@ -16,9 +17,9 @@ const Main = () => {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. <br />
           Exercitationem earum voluptatum animi veniam fuga non eligendi numquam id.
         </h3>
-        <button className="btn px-5 py-2 fw-bold custom-button" href="#shop">
-          Shop Now
-        </button>
+        <Link to="/shop">
+          <button className="btn px-5 py-2 fw-bold custom-button">Shop Now</button>
+        </Link>
       </div>
     </section>
   );

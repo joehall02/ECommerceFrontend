@@ -17,6 +17,7 @@ export const checkAuth = async () => {
 // Log the user out
 export const logout = async () => {
   try {
+    console.log("Logging out...");
     const response = await axiosInstance.post(`${API_URL}/logout`);
     return { success: true, response: response.data };
   } catch (error) {
@@ -76,10 +77,16 @@ export const resetPassword = async (token, data) => {
 // Handle token refresh
 export const refreshToken = async () => {
   try {
+    console.log("Attempting to refresh token...");
+    // const response = await axiosInstance.post(`${API_URL}/refresh`);
     const response = await axiosInstance.post(`${API_URL}/refresh`);
+    console.log("Token refreshed successfully!");
+    // return response;
     return { success: true, response: response.data };
   } catch (error) {
-    return handleApiError(error);
+    console.error("Token refresh failed:", error.response ? error.response.data : error.message);
+    throw error;
+    // return handleApiError(error);
   }
 };
 

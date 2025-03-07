@@ -17,6 +17,7 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    remember_me: false,
   });
 
   const [error, setError] = useState("");
@@ -27,10 +28,10 @@ const Login = () => {
 
   // Handle form input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, checked, type } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -82,13 +83,6 @@ const Login = () => {
     }
   }, [token]);
 
-  // // Log the user out when the component unmounts and if the user is authenticated
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     handleLogout();
-  //   }
-  // }, [handleLogout, isAuthenticated]);
-
   return (
     <section id="#login" className="d-flex">
       <div className="d-flex flex-lg-row flex-column w-100">
@@ -110,8 +104,8 @@ const Login = () => {
                 <input type="password" className="form-control py-3" id="password" name="password" placeholder="********" value={formData.password} onChange={handleChange} required />
               </div>
               <div className="mb-3 form-check ">
-                <input type="checkbox" className="form-check-input" id="rememberMe" />
-                <label className="form-check-label text-white" htmlFor="rememberMe">
+                <input type="checkbox" className="form-check-input" id="remember_me" name="remember_me" checked={formData.remember_me} onChange={handleChange} />
+                <label className="form-check-label text-white" htmlFor="remember_me">
                   Remember Me
                 </label>
               </div>

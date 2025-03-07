@@ -40,7 +40,7 @@ const AdminDashboard = () => {
           </div>
         ) : error ? (
           <Error message={error} setError={setError} />
-        ) : dashboardData ? (
+        ) : dashboardData.total_users ? (
           <>
             <h2 className="fw-bold mt-4">Dashboard</h2>
             <div className="row mt-5 justify-content-between">

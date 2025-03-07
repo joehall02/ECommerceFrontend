@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
 import { checkAuth, logout, refreshToken } from "../api/auth"; // Import Api functions
+import axiosInstance from "../api/axiosInstance";
 
 export const AuthContext = createContext();
 
@@ -11,53 +12,64 @@ export const AuthProvider = ({ children }) => {
 
   // Check if the user is authenticated when the component mounts
   const verifyAuthentication = async () => {
-    const response = await checkAuth();
+    try {
+      const response = await checkAuth();
 
-    const { success, logged_in, is_admin, is_customer } = response;
+      const { success, logged_in, is_admin, is_customer } = response;
 
-    if (success) {
-      setIsAuthenticated(logged_in);
-      setIsAdmin(is_admin);
-      setIsCustomer(is_customer);
-    } else {
+      if (success) {
+        setIsAuthenticated(logged_in);
+        setIsAdmin(is_admin);
+        setIsCustomer(is_customer);
+      } else {
+        // If the initial authentication check fails, attempt to refresh the token
+        try {
+          await refreshToken();
+
+          // Retry the initial authentication check
+          const retryResponse = await checkAuth();
+          const { success: retrySuccess, logged_in: retryLoggedIn, is_admin: retryIsAdmin, is_customer: retryIsCustomer } = retryResponse;
+
+          if (retrySuccess) {
+            setIsAuthenticated(retryLoggedIn);
+            setIsAdmin(retryIsAdmin);
+            setIsCustomer(retryIsCustomer);
+          } else {
+            setIsAuthenticated(false);
+            setIsAdmin(false);
+            setIsCustomer(false);
+          }
+        } catch (refreshError) {
+          console.error("Token refresh failed on initial check.");
+          setIsAuthenticated(false);
+          setIsAdmin(false);
+          setIsCustomer(false);
+        }
+      }
+    } catch (error) {
+      console.log(error);
       setIsAuthenticated(false);
       setIsAdmin(false);
       setIsCustomer(false);
-      // handleLogout();
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleLogout = useCallback(async () => {
+    console.log("Logging out function");
     await logout();
     setIsAuthenticated(false);
     setIsAdmin(false);
   }, []);
 
-  const handleTokenRefresh = useCallback(async () => {
-    if (isAuthenticated) {
-      const response = await refreshToken();
-      if (!response.success) {
-        handleLogout();
-      }
-    }
-  }, [isAuthenticated, handleLogout]);
+  // Add the handleLogout function to the axiosInstance
+  axiosInstance.handleLogout = handleLogout;
 
   // Check if the user is authenticated when the component mounts
   useEffect(() => {
     verifyAuthentication();
-
-    // Refresh the token every 25 minutes
-    if (!isAuthenticated) {
-      return;
-    }
-    const interval = setInterval(() => {
-      handleTokenRefresh();
-      console.log("Token Refreshed");
-    }, 1500000);
-
-    return () => clearInterval(interval);
-  }, [isAuthenticated, handleTokenRefresh]);
+  }, [isAuthenticated]);
 
   return <AuthContext.Provider value={{ isAuthenticated, isAdmin, isCustomer, loading, verifyAuthentication, handleLogout }}>{children}</AuthContext.Provider>;
 };
