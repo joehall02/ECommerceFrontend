@@ -39,7 +39,7 @@ const Order = ({ order_date, total_price, status, full_name, address_line_1, add
 
           {/* Order details */}
 
-          <div className="d-flex mt-3">
+          <div className="d-flex mt-3 border-top border-dark pt-3">
             <small className="card-text me-auto">
               <span className="fw-bold">Delivery Address:</span>
               <br />

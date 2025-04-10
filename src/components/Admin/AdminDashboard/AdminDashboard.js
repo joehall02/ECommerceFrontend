@@ -42,7 +42,7 @@ const AdminDashboard = () => {
           <Error message={error} setError={setError} />
         ) : dashboardData.total_users ? (
           <>
-            <h2 className="fw-bold mt-4">Dashboard</h2>
+            <h2 className="fw-bold mt-3">Dashboard</h2>
             <div className="row mt-5 justify-content-between">
               <div className="col-6 col-md-4 col-xl-3 mb-2">
                 <div className="card bg-light p-2 text-center">

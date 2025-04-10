@@ -13,6 +13,9 @@ const ForgotPassword = () => {
   const [formData, setFormData] = useState({
     email: "",
   });
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const charEmailCount = formData.email.length;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,13 +28,18 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setButtonDisabled(true);
+
     const response = await sendResetPasswordEmail(formData);
 
     if (response.success) {
       setError("");
       setEmailSentResponse(response.response.message);
+      setButtonDisabled(false);
     } else {
       setError(response.message);
+      setEmailSentResponse("");
+      setButtonDisabled(false);
     }
   };
 
@@ -47,11 +55,15 @@ const ForgotPassword = () => {
           <div className="col-10 col-lg-8">
             <h1 className="fw-bold text-white text-center pb-5">Forgot Password</h1>
             <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
+              {/* Email */}
               <div className="mb-3">
-                <label htmlFor="email" className="form-label text-white">
-                  E-Mail
-                </label>
-                <input type="email" className="form-control py-3" id="email" name="email" placeholder="johndoe@gmail.com" value={formData.email} onChange={handleChange} required />
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <label htmlFor="email" className="form-label text-white m-0">
+                    E-Mail
+                  </label>
+                  <small className="text-white">{charEmailCount}/100</small>
+                </div>
+                <input type="email" className="form-control py-3" id="email" name="email" placeholder="johndoe@gmail.com" value={formData.email} onChange={handleChange} maxLength={100} required />
               </div>
 
               {/* Error Message */}
@@ -60,17 +72,21 @@ const ForgotPassword = () => {
               {/* Token success response */}
               {emailSentResponse && <Success message={emailSentResponse} setMessage={setEmailSentResponse} />}
 
-              <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100">
+              <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100" disabled={buttonDisabled}>
                 Confirm
               </button>
             </form>
 
             <div className="d-flex justify-content-between mt-5 pt-3">
               <p className="text-white">
-                New User? <Link to={"/register"}>Register</Link>
+                New User?
+                <br />
+                <Link to={"/register"}>Register</Link>
               </p>
               <p className="text-white">
-                Already Registered? <Link to={"/login"}>Login</Link>
+                Already Registered?
+                <br />
+                <Link to={"/login"}>Login</Link>
               </p>
             </div>
           </div>

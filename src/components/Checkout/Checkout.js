@@ -18,6 +18,7 @@ const Checkout = () => {
     postcode: "",
   });
   const [error, setError] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   // Use a ref to track if the fetchCartProducts has been called
   const fetchCartProductsRef = useRef(false);
@@ -41,6 +42,8 @@ const Checkout = () => {
     // Create a JSON object for the address data, excluding the is_default property
     const { is_default, id, ...addressData } = address;
 
+    setButtonDisabled(true);
+
     // Get the Stripe checkout session
     const response = await getStripeCheckoutSession(addressData);
 
@@ -51,9 +54,11 @@ const Checkout = () => {
 
       if (result.error) {
         setError(result.error.message);
+        setButtonDisabled(false);
       }
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -100,7 +105,7 @@ const Checkout = () => {
                     </ul>
 
                     {/* Checkout Button */}
-                    <button className="btn btn-success rounded-0" onClick={handleCheckout} disabled={!address.full_name}>
+                    <button className="btn btn-success rounded-0" onClick={handleCheckout} disabled={!address.full_name || buttonDisabled}>
                       Checkout
                     </button>
                   </>

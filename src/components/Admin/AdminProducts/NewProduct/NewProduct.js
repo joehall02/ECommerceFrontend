@@ -22,6 +22,10 @@ const NewProduct = () => {
   const [loading, setLoading] = useState(true);
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const nameCharCount = product.name.length;
+  const descriptionCharCount = product.description.length;
 
   // Crop state
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -125,6 +129,8 @@ const NewProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setButtonDisabled(true); // Disable the button to prevent multiple submissions
+
     // Create a JSON object for product data
     const productData = { ...product };
     delete productData.featured_product; // Remove featuredProduct from the product data
@@ -148,6 +154,7 @@ const NewProduct = () => {
           setError("");
         } else {
           setError(featuredResponse.message);
+          setButtonDisabled(false); // Re-enable the button
           await deleteProduct(product_id); // Delete the product if it fails to be a featured product
           return;
         }
@@ -165,10 +172,12 @@ const NewProduct = () => {
         navigate("/admin/products");
       } else {
         setError(imageResponse.message);
+        setButtonDisabled(false); // Re-enable the button
         await deleteProduct(product_id); // Delete the product if it fails to add the product images
       }
     } else {
       setError(response.message);
+      setButtonDisabled(false); // Re-enable the button
     }
   };
 
@@ -223,10 +232,13 @@ const NewProduct = () => {
               <div className="card-body py-4">
                 <div className="column">
                   {/* Name */}
-                  <label htmlFor="name" className="form-label fw-bold">
-                    Product Name
-                  </label>
-                  <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Product 1" value={product.name} onChange={handleInputChange} required />
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <label htmlFor="name" className="form-label fw-bold m-0">
+                      Product Name
+                    </label>
+                    <small className="text-muted">{nameCharCount}/100</small>
+                  </div>
+                  <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Product 1" value={product.name} onChange={handleInputChange} maxLength={100} required />
 
                   {/* Price */}
                   <label htmlFor="price" className="form-label fw-bold">
@@ -235,9 +247,12 @@ const NewProduct = () => {
                   <input type="number" className="form-control mb-3" id="price" name="price" placeholder="10.50" value={product.price} onChange={handleInputChange} required />
 
                   {/* Description */}
-                  <label htmlFor="description" className="form-label fw-bold">
-                    Description
-                  </label>
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <label htmlFor="description" className="form-label fw-bold m-0">
+                      Description
+                    </label>
+                    <small className="text-muted">{descriptionCharCount}/1000</small>
+                  </div>
                   <textarea
                     type="text"
                     className="form-control mb-3"
@@ -246,6 +261,7 @@ const NewProduct = () => {
                     placeholder="Product Description..."
                     value={product.description}
                     onChange={handleInputChange}
+                    maxLength={1000}
                     required
                   />
 
@@ -309,7 +325,7 @@ const NewProduct = () => {
             {/* Display Image */}
             {previewImage && !cropping && <img src={previewImage} className="d-block w-100" alt="Uploaded file" />}
 
-            <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
+            <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" disabled={buttonDisabled}>
               Submit
             </button>
 

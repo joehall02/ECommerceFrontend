@@ -17,6 +17,7 @@ const AdminProducts = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const { category_id } = useParams();
 
@@ -28,13 +29,17 @@ const AdminProducts = () => {
   // confirm deleting a product
   const confirmDelete = async () => {
     if (productToDelete) {
+      setButtonDisabled(true);
+
       const response = await deleteProduct(productToDelete);
 
       if (response.success) {
         setDeleteError("");
         fetchProducts();
+        setButtonDisabled(false);
       } else {
         setDeleteError(response.message);
+        setButtonDisabled(false);
       }
 
       setProductToDelete(null); // Reset the product to delete
@@ -90,8 +95,8 @@ const AdminProducts = () => {
     <section id="admin-products" className="d-flex min-vh-100">
       <AdminSidebar />
       <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
-        <div className="d-flex justify-content-between">
-          <h2 className="fw-bold mt-4">Products</h2>
+        <div className="d-flex justify-content-between mt-3">
+          <h2 className="fw-bold">Products</h2>
 
           <Link to={"/admin/products/new-product"} className="btn btn-dark px-4 rounded-0 fw-bold my-auto">
             New Product
@@ -144,7 +149,7 @@ const AdminProducts = () => {
                       <Link to={`/admin/products/product-details/${product.id}`} className="btn btn-dark rounded-0 btn-sm me-2">
                         Details
                       </Link>
-                      <button className="btn btn-danger rounded-0 btn-sm" data-bs-toggle="modal" data-bs-target="#modal" onClick={() => handleProductDelete(product.id)}>
+                      <button className="btn btn-danger rounded-0 btn-sm" data-bs-toggle="modal" data-bs-target="#modal" onClick={() => handleProductDelete(product.id)} disabled={buttonDisabled}>
                         Delete
                       </button>
                     </td>

@@ -9,6 +9,7 @@ const Addresses = () => {
   const [addresses, setAddresses] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const fetchAddresses = async () => {
     setLoading(true);
@@ -26,6 +27,8 @@ const Addresses = () => {
   };
 
   const handleSetDefaultAddress = async (address_id) => {
+    setButtonDisabled(true);
+
     // Create a JSON object for address data
     const addressData = { is_default: true };
 
@@ -34,19 +37,25 @@ const Addresses = () => {
     if (response.success) {
       setError("");
       fetchAddresses();
+      setButtonDisabled(false);
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
   const handleAddressDelete = async (address_id) => {
+    setButtonDisabled(true);
+
     const response = await deleteAddress(address_id);
 
     if (response.success) {
       setError("");
       fetchAddresses();
+      setButtonDisabled(false);
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -60,7 +69,7 @@ const Addresses = () => {
 
   return (
     <section id="addresses">
-      <div className="container min-vh-100 my-5 p-5">
+      <div className="container min-vh-100 my-5 py-5">
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="fw-bold mb-0">My Addresses</h2>
           <p className="text-muted mb-0">{addresses.length}/5</p>
@@ -101,6 +110,7 @@ const Addresses = () => {
                     addressId={address.id}
                     handleAddressDelete={() => handleAddressDelete(address.id)}
                     handleSetDefault={() => handleSetDefaultAddress(address.id)}
+                    buttonDisabled={buttonDisabled}
                   />
                 ))}
               </>

@@ -43,6 +43,16 @@ export const getFullName = async () => {
   }
 };
 
+// Send contact us email
+export const sendContactEmail = async (data) => {
+  try {
+    const response = await axiosInstance.post(`${API_URL}/contact-us`, data);
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 // Admin
 
 // Get all users

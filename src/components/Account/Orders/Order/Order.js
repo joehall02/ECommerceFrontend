@@ -19,27 +19,30 @@ const Order = ({ order_date, total_price, status, full_name, address_line_1, add
           {/* Top order info */}
           <div className="d-flex justify-content-between">
             <small className="card-text">
-              <span className="fw-bold">Order Placed:</span>
+              <span className="fw-bold">Date:</span>
               <br />
               {order_date}
             </small>
+
             <small className="card-text">
               <span className="fw-bold">Total:</span>
               <br />£{total_price}
             </small>
+
             <small className="card-text">
               <span className="fw-bold">Status:</span>
               <br />
               {status}
             </small>
+
             <small className="card-text fw-bold d-flex align-items-center cursor-pointer" onClick={handleInfoToggle}>
-              <u>Order Details</u> <i className={`bi ${infoToggle ? "bi-caret-up-fill" : "bi-caret-down-fill"}`}></i>
+              <u>Details</u> <i className={`bi ${infoToggle ? "bi-caret-up-fill" : "bi-caret-down-fill"}`}></i>
             </small>
           </div>
 
           {/* Order details */}
 
-          <div className="d-flex mt-3">
+          <div className="d-flex mt-3 border-top border-dark pt-3">
             <small className="card-text me-auto">
               <span className="fw-bold">Delivery Address:</span>
               <br />

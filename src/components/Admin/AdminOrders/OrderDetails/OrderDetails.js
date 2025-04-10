@@ -16,6 +16,7 @@ const OrderDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [newStatus, setNewStatus] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const handleStatusChange = (e) => {
     setNewStatus(e.target.value);
@@ -27,6 +28,9 @@ const OrderDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Disable the button to prevent multiple clickss
+    setButtonDisabled(true);
 
     if (newStatus === order.order.status || newStatus === "") {
       navigate("/admin/orders");
@@ -45,6 +49,7 @@ const OrderDetails = () => {
       navigate("/admin/orders");
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -193,7 +198,7 @@ const OrderDetails = () => {
             </div>
 
             {/* Save changes button */}
-            <button type="submit" className="btn btn-dark mt-2 px-5 py-2 rounded-0 fw-bold" onClick={handleSubmit}>
+            <button type="submit" className="btn btn-dark mt-2 px-5 py-2 rounded-0 fw-bold" onClick={handleSubmit} disabled={buttonDisabled}>
               Save Changes
             </button>
 

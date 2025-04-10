@@ -3,7 +3,8 @@ import { refreshToken } from "./auth";
 
 // Create an axios instance
 const axiosInstance = axios.create({
-  baseURL: "http://127.0.0.1:5050", // API URL
+  // baseURL: "http://127.0.0.1:5050", // API URL
+  baseURL: "http://192.168.1.222:5050", // API URL (Mobile)
   withCredentials: true, // Required to send cookies
 });
 
@@ -46,6 +47,12 @@ axiosInstance.interceptors.response.use(
       // Don't refresh token if the original request was to refresh
       if (originalRequest.url.includes("/refresh")) {
         console.log("Not refreshing token for refresh.");
+        return Promise.reject(error);
+      }
+
+      // Don't refresh token if the original request was to logout
+      if (originalRequest.url.includes("/logout")) {
+        console.log("Not refreshing token for logout.");
         return Promise.reject(error);
       }
 

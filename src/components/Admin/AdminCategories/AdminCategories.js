@@ -16,6 +16,7 @@ const AdminCategories = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCategories, setTotalCategories] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   // Handle deleting a category
   const handleCategoryDelete = (category_id) => {
@@ -25,13 +26,17 @@ const AdminCategories = () => {
   // Confirm deleting a category
   const confirmDelete = async () => {
     if (categoryToDelete) {
+      setButtonDisabled(true);
+
       const response = await deleteCategory(categoryToDelete);
 
       if (response.success) {
         setDeleteError("");
         fetchCategories();
+        setButtonDisabled(false);
       } else {
         setDeleteError(response.message);
+        setButtonDisabled(false);
       }
 
       setCategoryToDelete(null); // Reset the category to delete
@@ -75,8 +80,8 @@ const AdminCategories = () => {
     <section id="admin-categories" className="d-flex min-vh-100">
       <AdminSidebar />
       <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
-        <div className="d-flex justify-content-between">
-          <h2 className="fw-bold mt-4">Categories</h2>
+        <div className="d-flex justify-content-between mt-3">
+          <h2 className="fw-bold">Categories</h2>
 
           <Link to={"/admin/categories/new-category"} className="btn btn-dark px-4 rounded-0 fw-bold my-auto">
             New Category
@@ -118,7 +123,7 @@ const AdminCategories = () => {
                       <Link to={`/admin/categories/category-details/${category.id}`} className="btn btn-dark rounded-0 btn-sm me-2">
                         Details
                       </Link>
-                      <button className="btn btn-danger rounded-0 btn-sm" data-bs-toggle="modal" data-bs-target="#modal" onClick={() => handleCategoryDelete(category.id)}>
+                      <button className="btn btn-danger rounded-0 btn-sm" data-bs-toggle="modal" data-bs-target="#modal" onClick={() => handleCategoryDelete(category.id)} disabled={buttonDisabled}>
                         Delete
                       </button>
                     </td>

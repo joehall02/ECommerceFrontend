@@ -10,7 +10,9 @@ const NewCategory = () => {
     name: "",
   });
   const [error, setError] = useState("");
-  const [charNameCount, setCharNameCount] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const charNameCount = category.name.length;
 
   const navigate = useNavigate();
 
@@ -18,13 +20,12 @@ const NewCategory = () => {
   const handleInputChange = (e) => {
     // Set the category state with the input value
     setCategory({ ...category, [e.target.name]: e.target.value });
-
-    // Update the character count for the name input
-    setCharNameCount(e.target.value.length);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setButtonDisabled(true);
 
     // Create a JSON object for category data
     const categoryData = { ...category };
@@ -38,6 +39,7 @@ const NewCategory = () => {
       navigate("/admin/categories");
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -60,17 +62,17 @@ const NewCategory = () => {
             <div className="card-body py-4">
               <div className="column">
                 {/* Name */}
-                <label htmlFor="name" className="form-label fw-bold">
-                  Category Name
-                </label>
-                <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} maxLength={20} required />
-                <div className="d-flex justify-content-end">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <label htmlFor="name" className="form-label fw-bold m-0">
+                    Category Name
+                  </label>
                   <small className="text-muted">{charNameCount}/20</small>
                 </div>
+                <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} maxLength={20} required />
               </div>
             </div>
           </div>
-          <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
+          <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" disabled={buttonDisabled}>
             Submit
           </button>
 

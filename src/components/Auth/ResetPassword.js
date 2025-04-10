@@ -13,6 +13,10 @@ const ResetPassword = () => {
     new_password: "",
     confirmPassword: "",
   });
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const charPasswordCount = formData.new_password.length;
+  const charConfirmPasswordCount = formData.confirmPassword.length;
 
   const navigate = useNavigate();
 
@@ -28,6 +32,8 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setButtonDisabled(true);
 
     // Confirm passwords match
     if (formData.new_password !== formData.confirmPassword) {
@@ -45,6 +51,7 @@ const ResetPassword = () => {
         navigate("/login");
       } else {
         setError(response.message);
+        setButtonDisabled(false);
       }
     }
   };
@@ -65,16 +72,35 @@ const ResetPassword = () => {
           <div className="col-10 col-lg-8">
             <h1 className="fw-bold text-white text-center pb-5">Reset Password</h1>
             <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
+              {/* New Password */}
               <div className="mb-3">
-                <label htmlFor="new_password" className="form-label text-white">
-                  Password
-                </label>
-                <input type="password" className="form-control py-2" id="new_password" name="new_password" placeholder="********" value={formData.new_password} onChange={handleChange} required />
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <label htmlFor="new_password" className="form-label text-white m-0">
+                    New Password
+                  </label>
+                  <small className="text-white">{charPasswordCount}/100</small>
+                </div>
+                <input
+                  type="password"
+                  className="form-control py-2"
+                  id="new_password"
+                  name="new_password"
+                  placeholder="********"
+                  value={formData.new_password}
+                  onChange={handleChange}
+                  maxLength={100}
+                  required
+                />
               </div>
+
+              {/* Confirm Password */}
               <div className="mb-3">
-                <label htmlFor="confirmPassword" className="form-label text-white">
-                  Confirm Password
-                </label>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <label htmlFor="confirmPassword" className="form-label text-white m-0">
+                    Confirm Password
+                  </label>
+                  <small className="text-white">{charConfirmPasswordCount}/100</small>
+                </div>
                 <input
                   type="password"
                   className="form-control py-2"
@@ -83,6 +109,7 @@ const ResetPassword = () => {
                   placeholder="********"
                   value={formData.confirmPassword}
                   onChange={handleChange}
+                  maxLength={100}
                   required
                 />
               </div>
@@ -90,17 +117,21 @@ const ResetPassword = () => {
               {/* Error Message */}
               {error && <Error message={error} setError={setError} />}
 
-              <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100">
+              <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100" disabled={buttonDisabled}>
                 Confirm
               </button>
             </form>
 
             <div className="d-flex justify-content-between mt-5 pt-3">
               <p className="text-white">
-                New User? <Link to={"/register"}>Register</Link>
+                New User?
+                <br />
+                <Link to={"/register"}>Register</Link>
               </p>
               <p className="text-white">
-                Already Registered? <Link to={"/login"}>Login</Link>
+                Already Registered?
+                <br />
+                <Link to={"/login"}>Login</Link>
               </p>
             </div>
           </div>

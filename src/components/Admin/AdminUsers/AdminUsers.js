@@ -44,7 +44,7 @@ const AdminUsers = () => {
     <section id="admin-users" className="d-flex min-vh-100">
       <AdminSidebar />
       <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
-        <h2 className="fw-bold mt-4">Users</h2>
+        <h2 className="fw-bold mt-3">Users</h2>
 
         {users.length > 0 && <small>{totalUsers} Users Total</small>}
 

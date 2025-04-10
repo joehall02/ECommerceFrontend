@@ -4,12 +4,15 @@ import { getDefaultAddress, getAllAddresses } from "../../../api/address";
 import Address from "./Address/Address";
 import { Link } from "react-router-dom";
 import Error from "../../Error/Error";
+import { useContext } from "react";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const AddressDetails = ({ address, setAddress }) => {
   const [addresses, setAddresses] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [isChanging, setIsChanging] = useState(false);
+  const { isAdmin, isCustomer } = useContext(AuthContext);
 
   const handleAddressChange = () => {
     setIsChanging(!isChanging);
@@ -68,62 +71,77 @@ const AddressDetails = ({ address, setAddress }) => {
             </p>
           </div>
         </div>
-        <div className="card-body d-flex flex-column">
-          <div className="d-flex mt-2" style={{ height: "25vh", overflowY: "auto" }}>
-            {loading ? (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status" />
+        {!address.full_name ? (
+          <Link to={"/checkout/add-address"} className="h-100 text-decoration-none">
+            <div className="card h-100 border-dashed rounded-0">
+              <div className="card-body d-flex align-items-center row">
+                <h4 className="card-text text-center">
+                  <i className="bi bi-plus-lg text-center"></i>
+                  <br />
+                  Add Address
+                </h4>
               </div>
-            ) : error ? (
-              <Error message={error} setError={setError} />
-            ) : isChanging ? (
-              // Display all user addresses
-              <div className="d-flex flex-column w-100">
-                {/* Grey separator */}
-                <div className="border-top border-secondary"></div>
+            </div>
+          </Link>
+        ) : (
+          <>
+            <div className="card-body d-flex flex-column">
+              <div className="d-flex mt-2" style={{ height: "25vh", overflowY: "auto" }}>
+                {loading ? (
+                  <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status" />
+                  </div>
+                ) : error ? (
+                  <Error message={error} setError={setError} />
+                ) : isChanging ? (
+                  // Display all user addresses
+                  <div className="d-flex flex-column w-100">
+                    {/* Grey separator */}
+                    <div className="border-top border-secondary"></div>
 
-                {addresses.map((address) => (
-                  <Address key={address.id} address={address} setAddress={setAddress} setIsChanging={setIsChanging} />
-                ))}
-              </div>
-            ) : (
-              // Display selected or default address
-              <p className="card-text fs-5">
-                {address.full_name}
-                <br />
-                {address.address_line_1}
-                {address.address_line_2 && (
-                  <>
+                    {addresses.map((address) => (
+                      <Address key={address.id} address={address} setAddress={setAddress} setIsChanging={setIsChanging} />
+                    ))}
+                  </div>
+                ) : (
+                  // Display selected or default address
+                  <p className="card-text fs-5">
+                    {address.full_name}
                     <br />
-                    {address.address_line_2}
-                  </>
+                    {address.address_line_1}
+                    {address.address_line_2 && (
+                      <>
+                        <br />
+                        {address.address_line_2}
+                      </>
+                    )}
+                    <br />
+                    {address.city}
+                    <br />
+                    {address.postcode}
+                  </p>
                 )}
-                <br />
-                {address.city}
-                <br />
-                {address.postcode}
-              </p>
-            )}
-          </div>
-          {/* Address actions */}
-          {address.full_name ? (
-            <div className="mt-auto">
-              <div className="d-flex justify-content-start">
-                <button className="btn btn-outline-primary w-25 rounded-0" onClick={handleAddressChange}>
-                  {isChanging ? "Cancel" : "Change"}
-                </button>
               </div>
+              {/* Address actions */}
+              {address.full_name && (
+                <div className="mt-auto">
+                  <div className="d-flex justify-content-start">
+                    {/* If the user is a guest, show the "Add Address" button. Else show change address button */}
+                    {isAdmin !== true && isCustomer !== true ? (
+                      <Link to={"/checkout/add-address"} className="btn btn-outline-primary rounded-0 me-2">
+                        Add Address
+                      </Link>
+                    ) : (
+                      <button className="btn btn-outline-primary rounded-0" onClick={handleAddressChange}>
+                        {isChanging ? "Cancel" : "Change"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="mt-auto">
-              <div className="d-flex justify-content-start">
-                <Link to={"/checkout/add-address"} className="btn btn-outline-primary w-25 rounded-0">
-                  Add
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

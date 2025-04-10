@@ -9,11 +9,18 @@ const EditPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const currentPasswordCharCount = currentPassword.length;
+  const newPasswordCharCount = newPassword.length;
+  const confirmPasswordCharCount = confirmPassword.length;
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setButtonDisabled(true);
 
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match.");
@@ -32,6 +39,7 @@ const EditPassword = () => {
       navigate("/account/settings");
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -61,9 +69,12 @@ const EditPassword = () => {
           <div className="card-body py-5">
             <form onSubmit={handleSubmit}>
               <div className="column">
-                <label htmlFor="current_password" className="form-label fw-bold">
-                  Current Password
-                </label>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <label htmlFor="current_password" className="form-label fw-bold m-0">
+                    Current Password
+                  </label>
+                  <small className="text-muted">{currentPasswordCharCount}/100</small>
+                </div>
                 <input
                   type="password"
                   className="form-control mb-3"
@@ -72,17 +83,34 @@ const EditPassword = () => {
                   placeholder="********"
                   onChange={handleInputChange}
                   value={currentPassword}
+                  maxLength={100}
                   required
                 />
 
-                <label htmlFor="new_password" className="form-label fw-bold">
-                  New Password
-                </label>
-                <input type="password" className="form-control mb-3" id="new_password" name="new_password" placeholder="********" onChange={handleInputChange} value={newPassword} required />
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <label htmlFor="new_password" className="form-label fw-bold m-0">
+                    New Password
+                  </label>
+                  <small className="text-muted">{newPasswordCharCount}/100</small>
+                </div>
+                <input
+                  type="password"
+                  className="form-control mb-3"
+                  id="new_password"
+                  name="new_password"
+                  placeholder="********"
+                  onChange={handleInputChange}
+                  value={newPassword}
+                  maxLength={100}
+                  required
+                />
 
-                <label htmlFor="confirm_password" className="form-label fw-bold">
-                  Confirm New Password
-                </label>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <label htmlFor="confirm_password" className="form-label fw-bold m-0">
+                    Confirm New Password
+                  </label>
+                  <small className="text-muted">{confirmPasswordCharCount}/100</small>
+                </div>
                 <input
                   type="password"
                   className="form-control mb-3"
@@ -91,9 +119,10 @@ const EditPassword = () => {
                   placeholder="********"
                   onChange={handleInputChange}
                   value={confirmPassword}
+                  maxLength={100}
                   required
                 />
-                <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
+                <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" disabled={buttonDisabled}>
                   Submit
                 </button>
               </div>

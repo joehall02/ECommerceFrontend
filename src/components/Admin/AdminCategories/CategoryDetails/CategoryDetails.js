@@ -19,11 +19,12 @@ const CategoryDetails = () => {
   const [error, setError] = useState("");
   const [editError, setEditError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [charNameCount, setCharNameCount] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const charNameCount = category.name.length;
 
   const handleInputChange = (e) => {
     setCategory({ ...category, [e.target.name]: e.target.value });
-    setCharNameCount(e.target.value.length);
   };
 
   const handleEdit = () => {
@@ -32,6 +33,8 @@ const CategoryDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setButtonDisabled(true);
 
     // Create a JSON object for category data
     const categoryData = { ...category };
@@ -44,6 +47,7 @@ const CategoryDetails = () => {
       navigate("/admin/categories");
     } else {
       setEditError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -98,15 +102,15 @@ const CategoryDetails = () => {
                 <div className="card-body py-4">
                   <div className="column">
                     {/* Name */}
-                    <label htmlFor="name" className="form-label fw-bold">
-                      Category Name
-                    </label>
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <label htmlFor="name" className="form-label fw-bold m-0">
+                        Category Name
+                      </label>
+                      <small className="text-muted">{charNameCount}/20</small>
+                    </div>
                     {isEditing ? (
                       <>
                         <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Category 1" value={category.name} onChange={handleInputChange} maxLength={20} required />
-                        <div className="d-flex justify-content-end">
-                          <small className="text-muted">{charNameCount}/20</small>
-                        </div>
                       </>
                     ) : (
                       <p>{category.name}</p>
@@ -118,7 +122,7 @@ const CategoryDetails = () => {
                   </button>
                 </div>
               </div>
-              <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
+              <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" disabled={buttonDisabled}>
                 Save Changes
               </button>
 

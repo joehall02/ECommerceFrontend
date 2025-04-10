@@ -8,6 +8,7 @@ import Error from "../../Error/Error";
 const Product = ({ image_path, name, category_name, price, stock, quantity, product_id, cart_product_id }) => {
   const [selectedItem, setSelectedItem] = useState(quantity);
   const [error, setError] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false); // State to manage button disabled status
 
   const { fetchCartProducts } = useContext(BasketContext); // Get fetchCartProducts function from the BasketContext
 
@@ -39,14 +40,18 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
   };
 
   const handleRemoveFromCart = async () => {
+    setButtonDisabled(true); // Disable the button to prevent multiple clicks
+
     // Delete the product from the cart
     const response = await deleteProductFromCart(cart_product_id);
 
     if (response.success) {
       setError("");
       fetchCartProducts(); // Fetch the cart products
+      setButtonDisabled(false); // Re-enable the button
     } else {
       setError(response.message);
+      setButtonDisabled(false); // Re-enable the button
     }
   };
 
@@ -82,7 +87,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
         </div>
 
         {/* Remove button */}
-        <button onClick={handleRemoveFromCart} className="btn btn-danger rounded-0 ms-3">
+        <button onClick={handleRemoveFromCart} className="btn btn-danger rounded-0 ms-3" disabled={buttonDisabled}>
           <i className="bi bi-trash"></i>
         </button>
       </li>

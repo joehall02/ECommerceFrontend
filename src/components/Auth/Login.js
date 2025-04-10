@@ -23,6 +23,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
   const [verifiedResponse, setVerifiedResponse] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const { verification_token } = useParams();
 
@@ -39,6 +40,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setButtonDisabled(true);
+
     // If the user is authenticated, log the user out before logging into another account
     if (isAuthenticated) {
       handleLogout();
@@ -54,6 +57,7 @@ const Login = () => {
       navigate(`/awaiting-verification/${formData.email}`); // Redirect to the awaiting verification page
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -116,17 +120,21 @@ const Login = () => {
               {/* Token success response */}
               {verifiedResponse && <Success message={verifiedResponse} setMessage={setVerifiedResponse} />}
 
-              <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100">
+              <button type="submit" className="btn mt-4 py-3 fw-bold custom-button w-100" disabled={buttonDisabled}>
                 Login
               </button>
             </form>
 
             <div className="d-flex justify-content-between mt-5 pt-3">
               <p className="text-white">
-                New User? <Link to={"/register"}>Register</Link>
+                New User?
+                <br />
+                <Link to={"/register"}>Register</Link>
               </p>
               <p className="text-white">
-                Forgot Password? <Link to={"/forgot-password"}>Click Here</Link>
+                Forgot Password?
+                <br />
+                <Link to={"/forgot-password"}>Click Here</Link>
               </p>
             </div>
           </div>

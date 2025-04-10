@@ -9,6 +9,7 @@ const Product = ({ id, image, name, category, price }) => {
   const { toggleBasketVisibility, fetchCartProducts } = useContext(BasketContext);
 
   const [error, setError] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const handleAddToCart = (product_id) => async () => {
     // Create a JSON object for product data
@@ -16,14 +17,18 @@ const Product = ({ id, image, name, category, price }) => {
       quantity: 1,
     };
 
+    setButtonDisabled(true); // Disable the button to prevent multiple clicks
+
     const response = await addProductToCart(product_id, productData);
 
     if (response.success) {
       toggleBasketVisibility(); // Show the basket
       fetchCartProducts(); // Fetch the cart products
       setError("");
+      setButtonDisabled(false); // Re-enable the button
     } else {
       setError(response.message);
+      setButtonDisabled(false); // Re-enable the button
     }
   };
 
@@ -45,7 +50,7 @@ const Product = ({ id, image, name, category, price }) => {
 
         {/* Make sure the button stays at the bottom */}
         <div className="d-flex justify-content-center mt-auto">
-          <button className="btn w-75 fw-bold shop-button fs-5" onClick={handleAddToCart(id)}>
+          <button className="btn w-100 fw-bold btn-secondary rounded-0 fs-5" onClick={handleAddToCart(id)} disabled={buttonDisabled}>
             Add to basket
           </button>
         </div>

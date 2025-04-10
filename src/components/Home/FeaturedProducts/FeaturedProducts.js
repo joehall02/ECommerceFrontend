@@ -37,13 +37,11 @@ const FeaturedProducts = () => {
                 <div className="spinner-border" role="status" />
               </div>
             ) : (
-              <>
-                {featuredProducts.map((product) => (
-                  <div key={product.id} className="col-12 col-md-6 col-xl-3">
-                    <Product id={product.id} image={product.image_path} name={product.name} category={product.category_name} price={product.price} />
-                  </div>
-                ))}
-              </>
+              featuredProducts.map((product) => (
+                <div key={product.id} className="col-12 col-lg-10 col-xl-3">
+                  <Product id={product.id} image={product.image_path} name={product.name} category={product.category_name} price={product.price} />
+                </div>
+              ))
             )}
           </div>
         </div>

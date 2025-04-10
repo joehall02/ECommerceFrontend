@@ -14,6 +14,12 @@ const CheckoutAddAddress = () => {
   });
   const [error, setError] = useState("");
 
+  const nameCharCount = address.full_name.length;
+  const addressLine1CharCount = address.address_line_1.length;
+  const addressLine2CharCount = address.address_line_2.length;
+  const cityCharCount = address.city.length;
+  const postcodeCharCount = address.postcode.length;
+
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -52,39 +58,78 @@ const CheckoutAddAddress = () => {
       <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center">
         <div className="col-10 col-lg-8">
           <div className="d-flex justify-content-between align-items-center mb-5 px-0">
-            <h2 className="fw-bold text-start">Add Address</h2>
+            <h2 className="fw-bold text-start mb-0">Add Address</h2>
             <Link to={"/checkout"}>Go Back</Link>
           </div>
           <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
+            {/* Name */}
             <div className="mb-3">
-              <label htmlFor="full_name" className="form-label fw-bold">
-                Full Name
-              </label>
-              <input type="text" className="form-control" id="full_name" name="full_name" placeholder="John Doe" value={address.full_name} onChange={handleInputChange} required />
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <label htmlFor="full_name" className="form-label fw-bold m-0">
+                  Full Name
+                </label>
+                <small className="text-muted">{nameCharCount}/100</small>
+              </div>
+              <input type="text" className="form-control" id="full_name" name="full_name" placeholder="John Doe" value={address.full_name} onChange={handleInputChange} maxLength={100} required />
             </div>
+            {/* Address Line 1 */}
             <div className="mb-3">
-              <label htmlFor="address_line_1" className="form-label fw-bold">
-                Address Line 1
-              </label>
-              <input type="text" className="form-control" id="address_line_1" name="address_line_1" placeholder="16 Main Street" value={address.address_line_1} onChange={handleInputChange} required />
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <label htmlFor="address_line_1" className="form-label fw-bold m-0">
+                  Address Line 1
+                </label>
+                <small className="text-muted">{addressLine1CharCount}/100</small>
+              </div>
+              <input
+                type="text"
+                className="form-control"
+                id="address_line_1"
+                name="address_line_1"
+                placeholder="16 Main Street"
+                value={address.address_line_1}
+                onChange={handleInputChange}
+                maxLength={100}
+                required
+              />
             </div>
+            {/* Address Line 2 */}
             <div className="mb-3">
-              <label htmlFor="address_line_2" className="form-label fw-bold">
-                Address Line 2 (Optional)
-              </label>
-              <input type="text" className="form-control" id="address_line_2" name="address_line_2" placeholder="Apartment 10" value={address.address_line_2} onChange={handleInputChange} />
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <label htmlFor="address_line_2" className="form-label fw-bold m-0">
+                  Address Line 2 (Optional)
+                </label>
+                <small className="text-muted">{addressLine2CharCount}/100</small>
+              </div>
+              <input
+                type="text"
+                className="form-control"
+                id="address_line_2"
+                name="address_line_2"
+                placeholder="Apartment 10"
+                value={address.address_line_2}
+                onChange={handleInputChange}
+                maxLength={100}
+              />
             </div>
+            {/* City */}
             <div className="mb-3">
-              <label htmlFor="city" className="form-label fw-bold">
-                City
-              </label>
-              <input type="text" className="form-control" id="city" name="city" placeholder="Manchester" value={address.city} onChange={handleInputChange} />
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <label htmlFor="city" className="form-label fw-bold m-0">
+                  City
+                </label>
+                <small className="text-muted">{cityCharCount}/100</small>
+              </div>
+              <input type="text" className="form-control" id="city" name="city" placeholder="Manchester" value={address.city} onChange={handleInputChange} maxLength={100} />
             </div>
+            {/* Postcode */}
             <div className="mb-3">
-              <label htmlFor="postcode" className="form-label fw-bold">
-                Postcode
-              </label>
-              <input type="text" className="form-control" id="postcode" name="postcode" placeholder="MB7 8IY" value={address.postcode} onChange={handleInputChange} />
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <label htmlFor="postcode" className="form-label fw-bold m-0">
+                  Postcode
+                </label>
+                <small className="text-muted">{postcodeCharCount}/20</small>
+              </div>
+              <input type="text" className="form-control" id="postcode" name="postcode" placeholder="MB7 8IY" value={address.postcode} onChange={handleInputChange} maxLength={20} />
             </div>
 
             <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">

@@ -10,6 +10,7 @@ import Error from "../../Error/Error";
 const Product = ({ image_path, name, category_name, price, stock, quantity, product_id, cart_product_id }) => {
   const [selectedItem, setSelectedItem] = useState(quantity);
   const [error, setError] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const { toggleBasketVisibility, fetchCartProducts } = useContext(BasketContext); // Get fetchCartProducts function from the BasketContext
 
@@ -40,14 +41,18 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
   };
 
   const handleRemoveFromCart = async () => {
+    setButtonDisabled(true);
+
     // Delete the product from the cart
     const response = await deleteProductFromCart(cart_product_id);
 
     if (response.success) {
       setError("");
       fetchCartProducts(); // Fetch the cart products
+      setButtonDisabled(false);
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -68,7 +73,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
 
         {/* Dropdown */}
         <div className="btn-group ms-auto flex-shrink-0">
-          <button className="btn btn-outline-light rounded-0" data-bs-toggle="dropdown">
+          <button className="btn btn-outline-light rounded-0" data-bs-toggle="dropdown" style={{ width: "60px" }}>
             {selectedItem} <i className="bi bi-caret-down-fill"></i>
           </button>
           <ul className="dropdown-menu w-100">
@@ -83,7 +88,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
         </div>
 
         {/* Remove button */}
-        <button onClick={handleRemoveFromCart} className="btn btn-danger rounded-0 ms-3">
+        <button onClick={handleRemoveFromCart} className="btn btn-danger rounded-0 ms-3" disabled={buttonDisabled}>
           <i className="bi bi-trash"></i>
         </button>
       </li>

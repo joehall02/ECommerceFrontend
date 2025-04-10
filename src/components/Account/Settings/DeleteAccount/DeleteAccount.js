@@ -7,10 +7,13 @@ import Error from "../../../Error/Error";
 const DeleteAccount = () => {
   const [error, setError] = useState("");
   const { handleLogout } = useContext(AuthContext);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const navigate = useNavigate();
 
   const handleDelete = async () => {
+    setButtonDisabled(true);
+
     const response = await deleteAccount();
 
     if (response.success) {
@@ -19,6 +22,7 @@ const DeleteAccount = () => {
       navigate("/");
     } else {
       setError(response.message);
+      setButtonDisabled(false);
     }
   };
 
@@ -40,7 +44,7 @@ const DeleteAccount = () => {
               <h2 className="fw-bold text-center mb-5">Are you sure?</h2>
               <p className="text-center">This action cannot be undone. Once deleted you will no longer have access to this account or any data associated with it, please continue with caution.</p>
 
-              <button type="submit" className="btn btn-danger mt-4 px-5 py-2 rounded-0 fw-bold w-auto" onClick={handleDelete}>
+              <button type="submit" className="btn btn-danger mt-4 px-5 py-2 rounded-0 fw-bold w-auto" onClick={handleDelete} disabled={buttonDisabled}>
                 Delete Account
               </button>
             </div>

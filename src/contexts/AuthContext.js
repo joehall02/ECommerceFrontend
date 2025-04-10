@@ -10,8 +10,16 @@ export const AuthProvider = ({ children }) => {
   const [isCustomer, setIsCustomer] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const handleLogout = useCallback(async () => {
+    console.log("Logging out function");
+    await logout();
+    setIsAuthenticated(false);
+    setIsAdmin(false);
+    setIsCustomer(false);
+  }, []);
+
   // Check if the user is authenticated when the component mounts
-  const verifyAuthentication = async () => {
+  const verifyAuthentication = useCallback(async () => {
     try {
       const response = await checkAuth();
 
@@ -35,33 +43,20 @@ export const AuthProvider = ({ children }) => {
             setIsAdmin(retryIsAdmin);
             setIsCustomer(retryIsCustomer);
           } else {
-            setIsAuthenticated(false);
-            setIsAdmin(false);
-            setIsCustomer(false);
+            handleLogout();
           }
         } catch (refreshError) {
           console.error("Token refresh failed on initial check.");
-          setIsAuthenticated(false);
-          setIsAdmin(false);
-          setIsCustomer(false);
+          handleLogout();
         }
       }
     } catch (error) {
       console.log(error);
-      setIsAuthenticated(false);
-      setIsAdmin(false);
-      setIsCustomer(false);
+      handleLogout();
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleLogout = useCallback(async () => {
-    console.log("Logging out function");
-    await logout();
-    setIsAuthenticated(false);
-    setIsAdmin(false);
-  }, []);
+  }, [handleLogout]);
 
   // Add the handleLogout function to the axiosInstance
   axiosInstance.handleLogout = handleLogout;
@@ -69,7 +64,7 @@ export const AuthProvider = ({ children }) => {
   // Check if the user is authenticated when the component mounts
   useEffect(() => {
     verifyAuthentication();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, verifyAuthentication]);
 
   return <AuthContext.Provider value={{ isAuthenticated, isAdmin, isCustomer, loading, verifyAuthentication, handleLogout }}>{children}</AuthContext.Provider>;
 };

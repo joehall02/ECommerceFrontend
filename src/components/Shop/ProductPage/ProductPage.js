@@ -20,6 +20,7 @@ const ProductPage = () => {
   const [category, setCategory] = useState({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const maxItems = Math.min(product.stock, 5);
 
@@ -33,6 +34,8 @@ const ProductPage = () => {
       quantity: quantity,
     };
 
+    setButtonDisabled(true); // Disable the button to prevent multiple clicks
+
     const response = await addProductToCart(product_id, productData);
 
     if (response.success) {
@@ -40,8 +43,10 @@ const ProductPage = () => {
       fetchCartProducts(); // Fetch the cart products
       verifyAuthentication(); // Verify authentication
       setError("");
+      setButtonDisabled(false); // Enable the button
     } else {
       setError(response.message);
+      setButtonDisabled(false); // Enable the button
     }
   };
 
@@ -82,6 +87,12 @@ const ProductPage = () => {
     fetchData();
   }, [product_id, navigate]);
 
+  useEffect(() => {
+    if (product.stock === 0) {
+      navigate("/shop");
+    }
+  }, [product, navigate]);
+
   // Fetch category by id when the component mounts and the product state is set
   useEffect(() => {
     const fetchData = async () => {
@@ -107,63 +118,78 @@ const ProductPage = () => {
 
   return (
     <section id="product-page">
-      <div className="container min-vh-100 d-flex align-items-center justify-content-center my-5 my-lg-0 py-5">
-        {/* Loading */}
-        {loading ? (
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border" role="status" />
-          </div>
-        ) : error ? (
-          <Error message={error} setError={setError} />
-        ) : (
-          <div className="d-flex flex-column align-items-center">
-            <Link to={"/shop"} className="mb-3 ms-3 text-dark text-decoration-none me-auto">
-              <i className="bi bi-arrow-left me-2" />
-              Back to Shop
-            </Link>
-            <div className="row w-100">
-              {/* Image */}
-              <div className="col-12 col-lg-6 mb-5 mb-lg-0">
-                <img src={"https://storage.googleapis.com/" + product.image_path} className="img-fluid" alt={product.name} />
+      <div className="container min-vh-100 d-flex flex-column my-5 my-lg-0 py-5">
+        <div className="d-flex flex-column align-items-center w-100 ">
+          <div className="row w-100 d-flex justify-content-center ">
+            {/* Loading */}
+            {loading ? (
+              <div className="d-flex justify-content-center align-items-center vh-100">
+                <div className="spinner-border" role="status" />
               </div>
+            ) : error ? (
+              <Error message={error} setError={setError} />
+            ) : (
+              <>
+                {/* Back button */}
+                <Link to={"/shop"} className="mb-3 mt-lg-5 text-dark text-decoration-none me-auto">
+                  <i className="bi bi-arrow-left me-2" />
+                  Back to Shop
+                </Link>
 
-              {/* Product details */}
-              <div className="col-12 col-lg-6 d-flex justify-content-between flex-column">
-                <div className="mt-auto">
+                {/* Image */}
+                <div className="col-12 col-lg-6 mb-3 mb-lg-0">
+                  <img src={"https://storage.googleapis.com/" + product.image_path} className="img-fluid" alt={product.name} />
+                </div>
+
+                {/* Product details */}
+                <div className="col-12 col-lg-6 d-flex flex-column">
                   <h2 className="fw-bold">{product.name}</h2>
-                  <h3>{category.name}</h3>
+                  <hr />
+                  <h4>{category.name}</h4>
                   <h4 className="mb-5">£{product.price}</h4>
-                  <div className="">
-                    <h4>About this item</h4>
-                    <p className="mb-5 flex-grow-1">{product.description}</p>
+
+                  {/* Quantity dropdown and add to basket button */}
+                  <div className="d-flex flex-column justify-content-lg-start mt-auto w-100">
+                    <div className="btn-group mb-3">
+                      <button className="btn btn-outline-secondary dropdown-toggle rounded-0 py-2 fs-5" data-bs-toggle="dropdown">
+                        Quantity: {selectedItem}
+                      </button>
+                      <ul className="dropdown-menu w-100">
+                        {/* Create a list of 5 dropdown items */}
+                        {Array.from({ length: maxItems }, (_, i) => (
+                          <li key={i}>
+                            <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>
+                              {i + 1}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <button className="btn btn-dark rounded-0 fs-5 py-2" onClick={handleAddToCart(product_id, selectedItem)} disabled={buttonDisabled}>
+                      Add to Basket
+                    </button>
                   </div>
                 </div>
 
-                {/* Quantity dropdown and add to basket button */}
-                <div className="d-flex justify-content-between justify-content-lg-start mt-auto">
-                  <div className="btn-group me-3">
-                    <button className="btn btn-outline-secondary dropdown-toggle rounded-0" data-bs-toggle="dropdown">
-                      Quantity: {selectedItem}
-                    </button>
-                    <ul className="dropdown-menu w-100">
-                      {/* Create a list of 5 dropdown items */}
-                      {Array.from({ length: maxItems }, (_, i) => (
-                        <li key={i}>
-                          <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>
-                            {i + 1}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <button className="btn shop-button px-5 fs-5" onClick={handleAddToCart(product_id, selectedItem)}>
-                    Add to Basket
-                  </button>
+                {/* Seperator */}
+                <div className="col-12 my-3">
+                  <hr />
                 </div>
-              </div>
-            </div>
+
+                {/* Product description */}
+                <div className="col-12">
+                  <h5>About this item</h5>
+                  {/* <p className="mb-5 text-break text-wrap">{product.description}</p> */}
+                  {product.description.split("\n").map((line, index) => (
+                    <p key={index} className="mb-3 text-break text-wrap">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

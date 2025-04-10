@@ -41,7 +41,7 @@ const Orders = () => {
 
   return (
     <section id="orders" className="d-flex min-vh-100">
-      <div className="container flex-grow-1 d-flex flex-column my-5 p-5">
+      <div className="container flex-grow-1 d-flex flex-column my-5 py-5">
         <h2 className="fw-bold mb-0">My Orders</h2>
 
         {orders.length > 0 && <small>{totalOrders} Orders Total</small>}

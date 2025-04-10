@@ -58,8 +58,8 @@ const AdminOrders = () => {
     <section id="admin-orders" className="d-flex min-vh-100">
       <AdminSidebar />
       <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
-        <div className="d-flex justify-content-between">
-          <h2 className="fw-bold mt-4">Customer Orders</h2>
+        <div className="d-flex justify-content-between mt-3">
+          <h2 className="fw-bold">Customer Orders</h2>
 
           {/* Dropdown */}
           <div className="d-flex column align-items-center">
@@ -134,7 +134,9 @@ const AdminOrders = () => {
                     <th scope="row" className="w-5">
                       {order.id}
                     </th>
-                    <td className="w-15">{order.full_name}</td>
+                    <td className="w-15 text-truncate" style={{ maxWidth: "100px" }}>
+                      {order.full_name}
+                    </td>
                     <td className="w-15">{order.status}</td>
                     <td className="w-15">{order.order_date}</td>
                     <td className="w-15">£{order.total_price}</td>

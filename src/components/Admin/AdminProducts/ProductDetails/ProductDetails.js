@@ -31,6 +31,10 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
+  const nameCharCount = editedProduct.name?.length || product.name?.length;
+  const descriptionCharCount = editedProduct.description?.length || product.description?.length;
 
   // Crop state
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -160,6 +164,8 @@ const ProductDetails = () => {
 
       let productEditSuccess = true;
 
+      setButtonDisabled(true);
+
       // Only call updateProduct if there are fields to update
       if (Object.keys(productData).length > 0) {
         // Send a PUT request to the server to edit the product
@@ -168,6 +174,7 @@ const ProductDetails = () => {
         if (!response.success) {
           setError(response.message);
           productEditSuccess = false;
+          setButtonDisabled(false);
         }
       }
 
@@ -181,6 +188,7 @@ const ProductDetails = () => {
           if (!featuredResponse.success) {
             setError(featuredResponse.message);
             productEditSuccess = false;
+            setButtonDisabled(false);
           }
           // if featured product === "No" and productEditSuccess is true, remove the product as a featured product
         } else if (editedProduct.featured_product === "No") {
@@ -190,6 +198,7 @@ const ProductDetails = () => {
           if (!deleteFeaturedResponse.success) {
             setError(deleteFeaturedResponse.message);
             productEditSuccess = false;
+            setButtonDisabled(false);
           }
         }
       }
@@ -206,6 +215,7 @@ const ProductDetails = () => {
         if (!imageResponse.success) {
           setError(imageResponse.message);
           productEditSuccess = false;
+          setButtonDisabled(false);
         }
       }
 
@@ -311,7 +321,10 @@ const ProductDetails = () => {
         setLoading(false); // Set loading to false once the request is complete
       };
 
-      fetchFeaturedStatus();
+      // If the product id is not an empty string, fetch the featured status
+      if (product.id !== "") {
+        fetchFeaturedStatus();
+      }
     }
   }, [product.id]);
 
@@ -347,11 +360,24 @@ const ProductDetails = () => {
               <div className="card-body py-4">
                 <div className="column">
                   {/* Name */}
-                  <label htmlFor="name" className="form-label fw-bold">
-                    Product Name
-                  </label>
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <label htmlFor="name" className="form-label fw-bold m-0">
+                      Product Name
+                    </label>
+                    <small className="text-muted">{nameCharCount}/100</small>
+                  </div>
                   {isEditing ? (
-                    <input type="text" className="form-control mb-3" id="name" name="name" placeholder="Product 1" value={editedProduct.name || product.name} onChange={handleInputChange} required />
+                    <input
+                      type="text"
+                      className="form-control mb-3"
+                      id="name"
+                      name="name"
+                      placeholder="Product 1"
+                      value={editedProduct.name || product.name}
+                      onChange={handleInputChange}
+                      maxLength={100}
+                      required
+                    />
                   ) : (
                     <p>{editedProduct.name || product.name}</p>
                   )}
@@ -376,9 +402,12 @@ const ProductDetails = () => {
                   )}
 
                   {/* Description */}
-                  <label htmlFor="description" className="form-label fw-bold">
-                    Description
-                  </label>
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <label htmlFor="description" className="form-label fw-bold m-0">
+                      Description
+                    </label>
+                    <small className="text-muted">{descriptionCharCount}/1000</small>
+                  </div>
                   {isEditing ? (
                     <textarea
                       type="text"
@@ -388,6 +417,7 @@ const ProductDetails = () => {
                       placeholder="Product Description..."
                       value={editedProduct.description || product.description}
                       onChange={handleInputChange}
+                      maxLength={1000}
                       required
                     />
                   ) : (
@@ -485,7 +515,7 @@ const ProductDetails = () => {
             {!cropping && <img src={previewImage || "https://storage.googleapis.com/" + product.image_path} className="d-block w-100" alt={product.name} />}
 
             {/* Save changes button */}
-            <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto">
+            <button type="submit" className="btn btn-dark mt-4 px-5 py-2 rounded-0 fw-bold w-auto" disabled={buttonDisabled}>
               Save Changes
             </button>
 
