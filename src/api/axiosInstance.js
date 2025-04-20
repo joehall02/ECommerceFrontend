@@ -3,8 +3,7 @@ import { refreshToken } from "./auth";
 
 // Create an axios instance
 const axiosInstance = axios.create({
-  // baseURL: "http://127.0.0.1:5050", // API URL
-  baseURL: "http://192.168.1.222:5050", // API URL (Mobile)
+  baseURL: process.env.REACT_APP_API_URL || "http://127.0.0.1:5050", // API URL
   withCredentials: true, // Required to send cookies
 });
 

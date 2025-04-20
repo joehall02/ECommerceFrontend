@@ -178,7 +178,7 @@ const Shop = () => {
               </div>
             ))
           ) : (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: "75vh" }}>
+            <div className="d-flex justify-content-center align-items-center text-center" style={{ height: "75vh" }}>
               <p>No products in stock at the moment. Please come back later!</p>
             </div>
           )}

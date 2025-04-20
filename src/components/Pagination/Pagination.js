@@ -1,29 +1,84 @@
 import React from "react";
 
 const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 4;
+    const half = Math.floor(maxVisiblePages / 2);
+
+    let start = Math.max(2, currentPage - half);
+    let end = Math.min(totalPages - 1, currentPage + half);
+
+    if (currentPage <= half + 1) {
+      end = Math.min(totalPages - 1, maxVisiblePages);
+    }
+
+    if (currentPage >= totalPages - half) {
+      start = Math.max(2, totalPages - maxVisiblePages + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
+
+  const pageNumbers = getPageNumbers();
+
   return (
     <nav aria-label="Page navigation">
-      <ul className="pagination justify-content-center">
-        {/* Previous page button */}
+      <ul className="pagination justify-content-center flex-wrap">
+        {/* Previous */}
         <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-          <button className="page-link" aria-label="Previous" onClick={() => setCurrentPage(currentPage - 1)}>
-            <span aria-hidden="true">&laquo;</span>
+          <button className="page-link" onClick={() => setCurrentPage(currentPage - 1)}>
+            &laquo;
           </button>
         </li>
 
-        {/* Create a list of page numbers, with the current page highlighted */}
-        {Array.from({ length: totalPages }, (_, i) => (
-          <li key={i} className={`page-item ${currentPage === i + 1 ? "active" : ""}`}>
-            <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
-              {i + 1}
+        {/* First Page */}
+        <li className={`page-item ${currentPage === 1 ? "active" : ""}`}>
+          <button className="page-link" onClick={() => setCurrentPage(1)}>
+            1
+          </button>
+        </li>
+
+        {/* Left Ellipsis */}
+        {pageNumbers[0] > 2 && (
+          <li className="page-item disabled">
+            <span className="page-link">...</span>
+          </li>
+        )}
+
+        {/* Middle Page Numbers */}
+        {pageNumbers.map((num) => (
+          <li key={num} className={`page-item ${currentPage === num ? "active" : ""}`}>
+            <button className="page-link" onClick={() => setCurrentPage(num)}>
+              {num}
             </button>
           </li>
         ))}
 
-        {/* Next page button */}
+        {/* Right Ellipsis */}
+        {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && (
+          <li className="page-item disabled">
+            <span className="page-link">...</span>
+          </li>
+        )}
+
+        {/* Last Page */}
+        {totalPages > 1 && (
+          <li className={`page-item ${currentPage === totalPages ? "active" : ""}`}>
+            <button className="page-link" onClick={() => setCurrentPage(totalPages)}>
+              {totalPages}
+            </button>
+          </li>
+        )}
+
+        {/* Next */}
         <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-          <button className="page-link" aria-label="Next" onClick={() => setCurrentPage(currentPage + 1)}>
-            <span aria-hidden="true">&raquo;</span>
+          <button className="page-link" onClick={() => setCurrentPage(currentPage + 1)}>
+            &raquo;
           </button>
         </li>
       </ul>
