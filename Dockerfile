@@ -5,15 +5,20 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Copy and install dependencies
-COPY package.json .
+COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy the application code
 COPY . .
 
-# Expose the port the app runs on
+# Build the production-ready static site
+RUN npm run build
+
+# Install lightweight static file server
+RUN npm install -g serve
+
+# Expose port 3000
 EXPOSE 3000
 
-# Serve the app
-# Devlopment mode
-CMD ["npm", "start"]
+# Serve the built frontend with a simple static server
+CMD ["serve", "-s", "build"]

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminSidebar from "../AdminSidebar/AdminSidebar";
 import "./AdminUsers.css";
-import { getAllUsers } from "../../../api/user";
+import { getAllUsers, deleteGuestUsers } from "../../../api/user";
 import Pagination from "../../Pagination/Pagination";
 import Error from "../../Error/Error";
+import DialogBox from "../../DialogBox/DialogBox";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -13,28 +14,62 @@ const AdminUsers = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const [deleteGuests, setDeleteGuests] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+  // Handle deleting guest users
+  const handleDeleteGuests = () => {
+    setDeleteGuests(true);
+  };
 
-      const response = await getAllUsers(currentPage);
+  // Confirm deleting guest users
+  const confirmDelete = async () => {
+    if (deleteGuests) {
+      setButtonDisabled(true);
+
+      const response = await deleteGuestUsers();
 
       if (response.success) {
-        setError("");
-        setUsers(response.response.users);
-        setTotalPages(response.response.total_pages);
-        setCurrentPage(response.response.current_page);
-        setTotalUsers(response.response.total_users);
+        setDeleteError("");
+        fetchUsers();
+        setButtonDisabled(false);
       } else {
-        setError(response.message);
+        setDeleteError(response.message);
+        setButtonDisabled(false);
       }
 
-      setLoading(false);
-    };
+      setDeleteGuests(false); // Reset the delete guests state
+    }
+  };
 
-    fetchData();
+  // Cancel deleting guest users
+  const cancelDelete = () => {
+    setDeleteGuests(false);
+  };
+
+  // Use useCallback to memoize the function and prevent unnecessary re-renders
+  const fetchUsers = useCallback(async () => {
+    setLoading(true);
+
+    const response = await getAllUsers(currentPage);
+
+    if (response.success) {
+      setError("");
+      setUsers(response.response.users);
+      setTotalPages(response.response.total_pages);
+      setCurrentPage(response.response.current_page);
+      setTotalUsers(response.response.total_users);
+    } else {
+      setError(response.message);
+    }
+
+    setLoading(false);
   }, [currentPage]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,7 +79,13 @@ const AdminUsers = () => {
     <section id="admin-users" className="d-flex min-vh-100">
       <AdminSidebar />
       <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
-        <h2 className="fw-bold mt-3">Users</h2>
+        <div className="d-flex justify-content-between mt-3">
+          <h2 className="fw-bold">Users</h2>
+
+          <button className="btn btn-dark px-4 rounded-0 fw-bold my-auto" data-bs-toggle="modal" data-bs-target="#modal" onClick={() => handleDeleteGuests()} disabled={buttonDisabled}>
+            Delete Guest Users
+          </button>
+        </div>
 
         {users.length > 0 && <small>{totalUsers} Users Total</small>}
 
@@ -106,6 +147,12 @@ const AdminUsers = () => {
             <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           </div>
         )}
+
+        {/* Delete error message */}
+        {deleteError && <Error message={deleteError} setError={setDeleteError} />}
+
+        {/* Dialog box */}
+        <DialogBox title="Confirm Deletion" message="Are you sure you want to delete all guest users older than 7 days old?" onCancel={cancelDelete} onConfirm={confirmDelete} />
       </div>
     </section>
   );
