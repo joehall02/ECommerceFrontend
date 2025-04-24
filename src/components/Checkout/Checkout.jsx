@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { BasketContext } from "../../contexts/BasketContext";
-import Product from "../Checkout/Product/Product";
+import Product from "./Product/Product";
 import AddressDetails from "./AddressDetails/AddressDetails";
 import { getStripeCheckoutSession } from "../../api/order";
 import { loadStripe } from "@stripe/stripe-js";
@@ -9,7 +9,7 @@ import Error from "../Error/Error";
 const Checkout = () => {
   // Get the cart products, loading state, and error message from the BasketContext
   const { cartProducts, cartLoading, cartError, setCartError, fetchCartProducts } = useContext(BasketContext);
-  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
   const [address, setAddress] = useState({
     full_name: "",
     address_line_1: "",

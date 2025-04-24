@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./AddAddress.css";
-import "./../../../../App.css";
+import "../../../../App.css";
 import { Link, useNavigate } from "react-router-dom";
 import { createAddress } from "../../../../api/address";
 import Error from "../../../Error/Error";

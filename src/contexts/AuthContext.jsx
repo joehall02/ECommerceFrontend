@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const handleLogout = useCallback(async () => {
-    console.log("Logging out function");
     await logout();
     setIsAuthenticated(false);
     setIsAdmin(false);
@@ -46,12 +45,10 @@ export const AuthProvider = ({ children }) => {
             handleLogout();
           }
         } catch (refreshError) {
-          console.error("Token refresh failed on initial check.");
           handleLogout();
         }
       }
     } catch (error) {
-      console.log(error);
       handleLogout();
     } finally {
       setLoading(false);

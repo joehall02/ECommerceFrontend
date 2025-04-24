@@ -21,4 +21,4 @@ RUN npm install -g serve
 EXPOSE 3000
 
 # Serve the built frontend with a simple static server
-CMD ["serve", "-s", "build"]
+CMD ["serve", "-s", "dist"]

@@ -3,7 +3,7 @@ import { refreshToken } from "./auth";
 
 // Create an axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://127.0.0.1:5050", // API URL
+  baseURL: import.meta.env.VITE_API_URL || "http://127.0.0.1:5050", // API URL
   withCredentials: true, // Required to send cookies
 });
 
@@ -29,39 +29,39 @@ const addSubscriber = (callback) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    console.log("Interceptor caught error:", error.response ? error.response.status : error.message);
+    // console.log("Interceptor caught error:", error.response ? error.response.status : error.message);
 
     const originalRequest = error.config;
 
     // If the request fails with a 401 and hasn't been retried yet, check if we're refreshing
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
-      console.log("401 error detected. Checking if token refresh is needed...");
+      // console.log("401 error detected. Checking if token refresh is needed...");
 
       // Don't refresh token if the original request was to authenticate
       if (originalRequest.url.includes("/authenticate")) {
-        console.log("Not refreshing token for authenticate.");
+        // console.log("Not refreshing token for authenticate.");
         return Promise.reject(error);
       }
 
       // Don't refresh token if the original request was to refresh
       if (originalRequest.url.includes("/refresh")) {
-        console.log("Not refreshing token for refresh.");
+        // console.log("Not refreshing token for refresh.");
         return Promise.reject(error);
       }
 
       // Don't refresh token if the original request was to logout
       if (originalRequest.url.includes("/logout")) {
-        console.log("Not refreshing token for logout.");
+        // console.log("Not refreshing token for logout.");
         return Promise.reject(error);
       }
 
       // If a refresh is already in progress, wait for the refresh to finish
       if (isRefreshing) {
-        console.log("Already refreshing token. Waiting...");
+        // console.log("Already refreshing token. Waiting...");
         // Return a new promise that will retry the original request after the token refresh
         return new Promise((resolve) => {
           addSubscriber(() => {
-            console.log("Retrying original request after refresh...");
+            // console.log("Retrying original request after refresh...");
             resolve(axiosInstance(originalRequest));
           });
         });
@@ -74,15 +74,13 @@ axiosInstance.interceptors.response.use(
       // Attempt to refresh the token
       try {
         await refreshToken();
-        console.log("Token refreshed. Retrying original request...");
+        // console.log("Token refreshed. Retrying original request...");
         onTokenRefreshed();
         // Retry the original request with the new access token
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         // If the refresh fails, reject the error
-        console.error("Token refresh failed. Logging out user.");
-        // const { handleLogout } = useAuth();
-        // handleLogout();
+        // console.error("Token refresh failed. Logging out user.");
 
         if (axiosInstance.handleLogout) {
           axiosInstance.handleLogout();
