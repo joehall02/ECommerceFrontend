@@ -94,7 +94,7 @@ const AdminProducts = () => {
   return (
     <section id="admin-products" className="d-flex min-vh-100">
       <AdminSidebar />
-      <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
+      <div className="container flex-grow-1 d-flex flex-column my-5 min-vh-100">
         <div className="d-flex justify-content-between mt-3">
           <h2 className="fw-bold">Products</h2>
 

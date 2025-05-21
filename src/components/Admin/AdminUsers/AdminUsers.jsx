@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminSidebar from "../AdminSidebar/AdminSidebar";
 import "./AdminUsers.css";
-import { getAllUsers, deleteGuestUsers } from "../../../api/user";
+import { getAllUsers } from "../../../api/user";
 import Pagination from "../../Pagination/Pagination";
 import Error from "../../Error/Error";
 import DialogBox from "../../DialogBox/DialogBox";
@@ -14,39 +14,39 @@ const AdminUsers = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [deleteError, setDeleteError] = useState("");
-  const [deleteGuests, setDeleteGuests] = useState(false);
+  // const [buttonDisabled, setButtonDisabled] = useState(false);
+  // const [deleteError, setDeleteError] = useState("");
+  // const [deleteGuests, setDeleteGuests] = useState(false);
 
-  // Handle deleting guest users
-  const handleDeleteGuests = () => {
-    setDeleteGuests(true);
-  };
+  // // Handle deleting guest users
+  // const handleDeleteGuests = () => {
+  //   setDeleteGuests(true);
+  // };
 
-  // Confirm deleting guest users
-  const confirmDelete = async () => {
-    if (deleteGuests) {
-      setButtonDisabled(true);
+  // // Confirm deleting guest users
+  // const confirmDelete = async () => {
+  //   if (deleteGuests) {
+  //     setButtonDisabled(true);
 
-      const response = await deleteGuestUsers();
+  //     const response = await deleteGuestUsers();
 
-      if (response.success) {
-        setDeleteError("");
-        fetchUsers();
-        setButtonDisabled(false);
-      } else {
-        setDeleteError(response.message);
-        setButtonDisabled(false);
-      }
+  //     if (response.success) {
+  //       setDeleteError("");
+  //       fetchUsers();
+  //       setButtonDisabled(false);
+  //     } else {
+  //       setDeleteError(response.message);
+  //       setButtonDisabled(false);
+  //     }
 
-      setDeleteGuests(false); // Reset the delete guests state
-    }
-  };
+  //     setDeleteGuests(false); // Reset the delete guests state
+  //   }
+  // };
 
-  // Cancel deleting guest users
-  const cancelDelete = () => {
-    setDeleteGuests(false);
-  };
+  // // Cancel deleting guest users
+  // const cancelDelete = () => {
+  //   setDeleteGuests(false);
+  // };
 
   // Use useCallback to memoize the function and prevent unnecessary re-renders
   const fetchUsers = useCallback(async () => {
@@ -78,13 +78,13 @@ const AdminUsers = () => {
   return (
     <section id="admin-users" className="d-flex min-vh-100">
       <AdminSidebar />
-      <div className="container flex-grow-1 d-flex flex-column my-5 py-5 min-vh-100">
+      <div className="container flex-grow-1 d-flex flex-column my-5 min-vh-100">
         <div className="d-flex justify-content-between mt-3">
           <h2 className="fw-bold">Users</h2>
 
-          <button className="btn btn-dark px-4 rounded-0 fw-bold my-auto" data-bs-toggle="modal" data-bs-target="#modal" onClick={() => handleDeleteGuests()} disabled={buttonDisabled}>
+          {/* <button className="btn btn-dark px-4 rounded-0 fw-bold my-auto" data-bs-toggle="modal" data-bs-target="#modal" onClick={() => handleDeleteGuests()} disabled={buttonDisabled}>
             Delete Guest Users
-          </button>
+          </button> */}
         </div>
 
         {users.length > 0 && <small>{totalUsers} Users Total</small>}
@@ -149,10 +149,10 @@ const AdminUsers = () => {
         )}
 
         {/* Delete error message */}
-        {deleteError && <Error message={deleteError} setError={setDeleteError} />}
+        {/* {deleteError && <Error message={deleteError} setError={setDeleteError} />} */}
 
         {/* Dialog box */}
-        <DialogBox title="Confirm Deletion" message="Are you sure you want to delete all guest users older than 7 days old?" onCancel={cancelDelete} onConfirm={confirmDelete} />
+        {/* <DialogBox title="Confirm Deletion" message="Are you sure you want to delete all guest users older than 7 days old?" onCancel={cancelDelete} onConfirm={confirmDelete} /> */}
       </div>
     </section>
   );

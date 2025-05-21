@@ -33,8 +33,8 @@ const Settings = () => {
   });
 
   return (
-    <section id="settings" className="container min-vh-100 my-3 py-5 d-flex justify-content-center">
-      <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center my-auto row">
+    <section id="settings" className="container min-vh-100 my-3 d-flex justify-content-center">
+      <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center my-auto row pb-5">
         <h2 className="fw-bold text-start mb-5 px-0">My Settings</h2>
 
         {loading ? (
@@ -65,11 +65,9 @@ const Settings = () => {
             </div>
 
             {!isAdmin && (
-              <div className="card-body d-flex justify-content-between py-5 align-items-center">
-                <h5 className="card-title">Delete Account</h5>
-
-                <Link to={"/account/settings/delete-account"} className="btn btn-danger px-5 rounded-0 fw-bold my-auto align-self-start text-decoration-none">
-                  Delete
+              <div className="card-body d-flex justify-content-center py-5 align-items-center">
+                <Link to={"/account/settings/delete-account"} className="btn btn-danger rounded-0 fw-bold py-2 px-5 w-100 text-decoration-none">
+                  Delete Account
                 </Link>
               </div>
             )}

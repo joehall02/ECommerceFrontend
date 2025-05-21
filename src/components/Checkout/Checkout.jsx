@@ -64,18 +64,18 @@ const Checkout = () => {
 
   return (
     <section id="checkout">
-      <div className="container min-vh-100 my-5 py-5">
+      <div className="container min-vh-100 my-5">
         <div className="d-flex flex-column justify-content-between flex-lg-row">
           {/* Details */}
-          <div className="col-lg-5 mb-5 mb-lg-0 d-flex">
+          <div className="col-lg-5 mb-3 mb-lg-0 d-flex">
             <AddressDetails address={address} setAddress={setAddress} />
           </div>
 
           {/* Order summary */}
           <div className="col-lg-5">
             <div className="col-12">
-              <h2 className="fw-bold mb-0">Items</h2>
-
+              <h2 className="fw-bold mb-0 mt-3 mt-lg-0">Basket</h2>
+              <div className="flex-grow-1 border-top border-secondary mb-2"></div>
               <div className="d-flex flex-column">
                 {cartLoading ? (
                   <div className="d-flex justify-content-center">
@@ -86,9 +86,9 @@ const Checkout = () => {
                 ) : cartProducts.length > 0 ? (
                   <>
                     {/* List of Products */}
-                    <ul className="mb-4 p-0" style={{ height: "50vh", overflowY: "auto" }}>
+                    <ul className="mb-4 p-0 border rounded-2 px-2" style={{ height: "50vh", overflowY: "auto" }}>
                       {/* Grey separator */}
-                      <div className="flex-grow-1 border-top border-secondary"></div>
+
                       {cartProducts.map((product, index) => (
                         <Product
                           key={index}

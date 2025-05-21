@@ -22,7 +22,7 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
-  const maxItems = Math.min(product.stock, 5);
+  const maxItems = Math.min(product.stock - product.reserved_stock, 5);
 
   const handleDropdownSelect = (item) => {
     setSelectedItem(item);
@@ -118,7 +118,7 @@ const ProductPage = () => {
 
   return (
     <section id="product-page">
-      <div className="container min-vh-100 d-flex flex-column my-5 my-lg-0 py-5">
+      <div className="container min-vh-100 d-flex flex-column my-5 my-lg-0">
         <div className="d-flex flex-column align-items-center w-100 ">
           <div className="row w-100 d-flex justify-content-center ">
             {/* Loading */}
@@ -126,8 +126,6 @@ const ProductPage = () => {
               <div className="d-flex justify-content-center align-items-center vh-100">
                 <div className="spinner-border" role="status" />
               </div>
-            ) : error ? (
-              <Error message={error} setError={setError} />
             ) : (
               <>
                 {/* Back button */}
@@ -144,7 +142,7 @@ const ProductPage = () => {
                 {/* Product details */}
                 <div className="col-12 col-lg-6 d-flex flex-column">
                   <h2 className="fw-bold">{product.name}</h2>
-                  <hr />
+                  <hr className="mt-0" />
                   <h4>{category.name}</h4>
                   <h4 className="mb-5">£{product.price}</h4>
 
@@ -154,16 +152,18 @@ const ProductPage = () => {
                       <button className="btn btn-outline-secondary dropdown-toggle rounded-0 py-2 fs-5" data-bs-toggle="dropdown">
                         Quantity: {selectedItem}
                       </button>
-                      <ul className="dropdown-menu w-100">
-                        {/* Create a list of 5 dropdown items */}
-                        {Array.from({ length: maxItems }, (_, i) => (
-                          <li key={i}>
-                            <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>
-                              {i + 1}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
+                      {maxItems !== 0 && (
+                        <ul className="dropdown-menu w-100">
+                          {/* Create a list of 5 dropdown items */}
+                          {Array.from({ length: maxItems }, (_, i) => (
+                            <li key={i}>
+                              <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>
+                                {i + 1}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                     <button className="btn btn-dark rounded-0 fs-5 py-2" onClick={handleAddToCart(product_id, selectedItem)} disabled={buttonDisabled}>
                       Add to Basket
@@ -172,7 +172,7 @@ const ProductPage = () => {
                 </div>
 
                 {/* Seperator */}
-                <div className="col-12 my-3">
+                <div className="col-12 m-3">
                   <hr />
                 </div>
 
@@ -186,6 +186,9 @@ const ProductPage = () => {
                     </p>
                   ))}
                 </div>
+
+                {/* Error message */}
+                {error && <Error message={error} setError={setError} />}
               </>
             )}
           </div>

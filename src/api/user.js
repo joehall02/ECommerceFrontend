@@ -78,11 +78,11 @@ export const getUserById = async (user_id) => {
 };
 
 // Delete guest users
-export const deleteGuestUsers = async () => {
-  try {
-    const response = await axiosInstance.delete(`${API_URL}/admin`);
-    return { success: true, response: response.data };
-  } catch (error) {
-    return handleApiError(error);
-  }
-};
+// export const deleteGuestUsers = async () => {
+//   try {
+//     const response = await axiosInstance.delete(`${API_URL}/admin`);
+//     return { success: true, response: response.data };
+//   } catch (error) {
+//     return handleApiError(error);
+//   }
+// };

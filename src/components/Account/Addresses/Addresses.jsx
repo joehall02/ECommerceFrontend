@@ -69,7 +69,7 @@ const Addresses = () => {
 
   return (
     <section id="addresses">
-      <div className="container min-vh-100 my-5 py-5">
+      <div className="container min-vh-100 my-5">
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="fw-bold mb-0">My Addresses</h2>
           <p className="text-muted mb-0">{addresses.length}/5</p>

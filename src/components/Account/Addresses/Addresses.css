@@ -1,11 +1,18 @@
 .add-address {
-    height: 350px;    
+  height: 350px;
 }
 
 .bi-plus-lg {
-    font-size: 3rem;    
+  font-size: 3rem;
 }
 
 .border-dashed {
-    border-style: dashed !important;
+  border-style: dashed !important;
+}
+
+.edit-address-p {
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }

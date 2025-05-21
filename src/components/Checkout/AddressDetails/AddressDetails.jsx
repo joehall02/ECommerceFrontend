@@ -61,8 +61,9 @@ const AddressDetails = ({ address, setAddress }) => {
   }, [isChanging, addresses]);
 
   return (
-    <div className="col-12" style={{ height: "40vh" }}>
-      <div className="card h-100">
+    // <div className="col-12" style={{ height: "40vh" }}>
+    <div className="col-12">
+      <div className="card">
         {/* Address name and default */}
         <div className="card-body address-top-info">
           <div className="d-flex justify-content-between">
@@ -74,7 +75,7 @@ const AddressDetails = ({ address, setAddress }) => {
         {!address.full_name ? (
           <Link to={"/checkout/add-address"} className="h-100 text-decoration-none">
             <div className="card h-100 border-dashed rounded-0">
-              <div className="card-body d-flex align-items-center row">
+              <div className="card-body d-flex align-items-center row" style={{ height: "35vh" }}>
                 <h4 className="card-text text-center">
                   <i className="bi bi-plus-lg text-center"></i>
                   <br />
@@ -86,7 +87,7 @@ const AddressDetails = ({ address, setAddress }) => {
         ) : (
           <>
             <div className="card-body d-flex flex-column">
-              <div className="d-flex mt-2" style={{ height: "25vh", overflowY: "auto" }}>
+              <div className="d-flex mt-2" style={{ height: "35vh", overflowY: "auto" }}>
                 {loading ? (
                   <div className="d-flex justify-content-center">
                     <div className="spinner-border" role="status" />
@@ -106,7 +107,7 @@ const AddressDetails = ({ address, setAddress }) => {
                 ) : (
                   // Display selected or default address
                   <p className="card-text fs-5">
-                    {address.full_name}
+                    <b>{address.full_name}</b>
                     <br />
                     {address.address_line_1}
                     {address.address_line_2 && (
@@ -132,7 +133,7 @@ const AddressDetails = ({ address, setAddress }) => {
                         Add Address
                       </Link>
                     ) : (
-                      <button className="btn btn-outline-primary rounded-0" onClick={handleAddressChange}>
+                      <button className="btn btn-outline-primary rounded-0 mt-2" onClick={handleAddressChange}>
                         {isChanging ? "Cancel" : "Change"}
                       </button>
                     )}
@@ -143,6 +144,11 @@ const AddressDetails = ({ address, setAddress }) => {
           </>
         )}
       </div>
+
+      {/* Disclamer */}
+      <p className="text-center">
+        <small>We only deliver to the UK. If you are outside the UK, please contact us for more information.</small>
+      </p>
     </div>
   );
 };

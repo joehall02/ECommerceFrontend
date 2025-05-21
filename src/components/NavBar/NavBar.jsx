@@ -64,7 +64,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg fixed-top navbar-dark">
+      <nav className="navbar navbar-expand-lg sticky-top navbar-dark">
         <div className="container d-flex justify-content-between position-relative">
           {/* Brand Name */}
           <a className="navbar-brand" href="#main" onClick={handleNavLinkClick}>

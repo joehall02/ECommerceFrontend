@@ -14,7 +14,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
 
   const { toggleBasketVisibility, fetchCartProducts } = useContext(BasketContext); // Get fetchCartProducts function from the BasketContext
 
-  const maxItems = Math.min(stock, 5);
+  const maxItems = Math.min(stock + quantity, 5);
 
   const handleDropdownSelect = async (item) => {
     setSelectedItem(item);
@@ -38,6 +38,8 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
     } else {
       setError(response.message);
     }
+
+    fetchCartProducts(); // Fetch the cart products
   };
 
   const handleRemoveFromCart = async () => {
@@ -48,12 +50,12 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
 
     if (response.success) {
       setError("");
-      fetchCartProducts(); // Fetch the cart products
-      setButtonDisabled(false);
     } else {
       setError(response.message);
-      setButtonDisabled(false);
     }
+
+    fetchCartProducts(); // Fetch the cart products
+    setButtonDisabled(false);
   };
 
   return (
@@ -77,6 +79,13 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
             {selectedItem} <i className="bi bi-caret-down-fill"></i>
           </button>
           <ul className="dropdown-menu w-100">
+            {/* {(stock + quantity) === 0 ? (
+              <li>
+                <span className="dropdown-item text-danger" style={{ cursor: "not-allowed" }}>
+                  Out of Stock
+                </span>
+              </li>
+            ) : ( */}
             {Array.from({ length: maxItems }, (_, i) => (
               <li key={i}>
                 <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>

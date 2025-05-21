@@ -40,8 +40,8 @@ const Product = ({ id, image, name, category, price }) => {
           <img src={`https://storage.googleapis.com/${image}`} className="card-image-top image-shadow w-100" alt={name} />
 
           {/* Separate clickable title to avoid wrapping issues */}
-          <div className="mt-3">
-            <h3 className="cart-title fw-bold">{name}</h3>
+          <div className="my-3">
+            <h4 className="cart-title fw-bold">{name}</h4>
 
             <p className="card-text">{category}</p>
             <p className="card-text">£{price}</p>

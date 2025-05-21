@@ -72,7 +72,7 @@ const Register = () => {
         <Welcome />
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center min-vh-100 auth-form">
           <div className="col-10 col-lg-8">
-            <h1 className="fw-bold text-white text-center pb-5">Register</h1>
+            <h1 className="fw-bold text-white text-center">Register</h1>
             <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
               {/* Name */}
               <div className="mb-3">

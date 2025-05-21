@@ -14,6 +14,7 @@ const UserDetails = () => {
   const [user, setUser] = useState({});
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState("");
+  const [orderError, setOrderError] = useState("");
   const [loading, setLoading] = useState(true);
   const [orderLoading, setOrderLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
@@ -44,13 +45,13 @@ const UserDetails = () => {
       const response = await getUsersOrders(user_id, currentPage);
 
       if (response.success) {
-        setError("");
+        setOrderError("");
         setOrders(response.response.orders);
         setTotalPages(response.response.total_pages);
         setCurrentPage(response.response.current_page);
         setTotalOrders(response.response.total_orders);
       } else {
-        setError(response.message);
+        setOrderError(response.message);
       }
       setOrderLoading(false);
     };
@@ -66,7 +67,7 @@ const UserDetails = () => {
     <section id="user-details" className="d-flex min-vh-100">
       <AdminSidebar />
 
-      <div className="container my-5 py-5 col-12 col-xl-6">
+      <div className="container my-5 col-12 col-xl-6">
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="fw-bold my-4">
             User Id <span className="text-danger">#{user_id}</span>
@@ -142,6 +143,9 @@ const UserDetails = () => {
 
             {/* Error message */}
             {error && <Error message={error} setError={setError} />}
+
+            {/* Order error message */}
+            {orderError && <Error message={orderError} setError={setOrderError} />}
           </>
         )}
       </div>

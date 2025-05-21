@@ -33,7 +33,7 @@ const AdminDashboard = () => {
   return (
     <section id="admin-dashboard" className="d-flex min-vh-100">
       <AdminSidebar />
-      <div className="container my-5 py-5">
+      <div className="container my-5">
         {loading ? (
           <div className="d-flex justify-content-center">
             <div className="spinner-border" role="status" />

@@ -77,7 +77,7 @@ const OrderDetails = () => {
     <section id="order-details" className="d-flex min-vh-100">
       <AdminSidebar />
 
-      <div className="container my-5 py-5 col-12 col-xl-6">
+      <div className="container my-5 col-12 col-xl-6">
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="fw-bold my-4">
             Order Number <span className="text-danger">#{order_id}</span>

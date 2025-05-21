@@ -70,7 +70,7 @@ const ResetPassword = () => {
         <Welcome />
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center min-vh-100 auth-form">
           <div className="col-10 col-lg-8">
-            <h1 className="fw-bold text-white text-center pb-5">Reset Password</h1>
+            <h1 className="fw-bold text-white text-center">Reset Password</h1>
             <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
               {/* New Password */}
               <div className="mb-3">

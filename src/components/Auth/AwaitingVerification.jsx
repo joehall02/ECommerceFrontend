@@ -48,7 +48,7 @@ const AwaitingVerification = () => {
         <Welcome />
         <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center min-vh-100 auth-form">
           <div className="col-10 col-lg-8 text-center">
-            <h1 className="fw-bold text-white pb-5">Verify your email address</h1>
+            <h1 className="fw-bold text-white pb-2">Verify your email address</h1>
             <p className="mb-4">We have sent you an email with a link to verify your email address.</p>
             <p className="mb-4">If you have not received the email, please check your spam folder.</p>
             <button className="btn mt-4 py-2 fw-bold custom-button w-75" onClick={handleResendVerification} disabled={buttonDisabled}>

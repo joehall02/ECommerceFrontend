@@ -59,9 +59,9 @@ const AddAddress = () => {
   }, []);
 
   return (
-    <section id="add-address" className="container min-vh-100 my-3 py-5 d-flex justify-content-center column">
+    <section id="add-address" className="container min-vh-100 my-3 d-flex justify-content-center column">
       {/* Contact form */}
-      <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center">
+      <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center pb-5">
         <div className="col-10 col-lg-8">
           <div className="d-flex justify-content-between align-items-center mb-5 px-0">
             <h2 className="fw-bold text-start mb-0">Add Address</h2>

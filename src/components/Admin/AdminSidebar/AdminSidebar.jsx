@@ -4,7 +4,7 @@ import "./AdminSidebar.css";
 
 const AdminSidebar = () => {
   return (
-    <div className="d-flex flex-column flex-shrink-0 py-5 text-white bg-dark" style={{ width: "250px" }}>
+    <div className="d-flex flex-column flex-shrink-0 text-white bg-dark" style={{ width: "250px" }}>
       <ul className="nav flex-column py-5 mb-auto">
         <li className="nav-item">
           <Link to="/admin/dashboard" className="nav-link text-light fw-bold my-2 d-flex justify-content-between align-items-center admin-sidebar-link">

@@ -31,8 +31,8 @@ const DeleteAccount = () => {
   });
 
   return (
-    <section id="delete-account" className="container min-vh-100 my-3 py-5 d-flex justify-content-center">
-      <div className="col-12 col-lg-8 col-xl-6 d-flex align-items-center justify-content-center my-auto row">
+    <section id="delete-account" className="container min-vh-100 my-3 d-flex justify-content-center">
+      <div className="col-12 col-lg-8 col-xl-6 d-flex align-items-center justify-content-center my-auto row pb-5">
         <div className="d-flex justify-content-between align-items-center mb-5 px-0">
           <h2 className="fw-bold text-start mb-0">Delete Account</h2>
           <Link to={"/account/settings"}>Go Back</Link>

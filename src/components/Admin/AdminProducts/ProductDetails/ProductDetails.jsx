@@ -21,6 +21,7 @@ const ProductDetails = () => {
     price: "",
     description: "",
     stock: "",
+    reserved_stock: "",
     category_id: "",
     featured_product: "",
     image_path: "",
@@ -341,7 +342,7 @@ const ProductDetails = () => {
     <section id="product-details" className="d-flex min-vh-100">
       <AdminSidebar />
 
-      <div className="container my-5 py-5 col-12 col-xl-6">
+      <div className="container my-5 col-12 col-xl-6">
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="fw-bold my-4">Product Number {loading ? <div className="spinner-border" role="status" /> : <span className="text-danger">#{product.id}</span>}</h2>
           <Link to={"/admin/products"}>Go back</Link>
@@ -427,6 +428,9 @@ const ProductDetails = () => {
                   {/* Stock */}
                   <label htmlFor="stock" className="form-label fw-bold">
                     Stock
+                    <span className="ms-2 text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title={`Reserved Stock: ${product.reserved_stock}`}>
+                      <i className="bi bi-info-circle"></i>
+                    </span>
                   </label>
                   {isEditing ? (
                     // ?? is the nullish coalescing operator, it returns the right-hand operand if the left-hand operand is null or undefined, allowing the value to be 0

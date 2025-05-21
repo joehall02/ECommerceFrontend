@@ -12,7 +12,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
 
   const { fetchCartProducts } = useContext(BasketContext); // Get fetchCartProducts function from the BasketContext
 
-  const maxItems = Math.min(stock, 5);
+  const maxItems = Math.min(stock + quantity, 5);
 
   const handleDropdownSelect = async (item) => {
     setSelectedItem(item);
@@ -33,10 +33,10 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
 
     if (response.success) {
       setError("");
-      fetchCartProducts(); // Fetch the cart products
     } else {
       setError(response.message);
     }
+    fetchCartProducts(); // Fetch the cart products
   };
 
   const handleRemoveFromCart = async () => {
@@ -47,12 +47,11 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
 
     if (response.success) {
       setError("");
-      fetchCartProducts(); // Fetch the cart products
-      setButtonDisabled(false); // Re-enable the button
     } else {
       setError(response.message);
-      setButtonDisabled(false); // Re-enable the button
     }
+    fetchCartProducts(); // Fetch the cart products
+    setButtonDisabled(false); // Re-enable the button
   };
 
   return (
@@ -72,7 +71,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
 
         {/* Dropdown */}
         <div className="btn-group ms-auto flex-shrink-0">
-          <button className="btn btn-outline-dark rounded-0" data-bs-toggle="dropdown">
+          <button className="btn btn-outline-dark rounded-0" data-bs-toggle="dropdown" style={{ width: "60px" }}>
             {selectedItem} <i className="bi bi-caret-down-fill"></i>
           </button>
           <ul className="dropdown-menu w-100">

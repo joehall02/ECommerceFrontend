@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../../../App.css";
+import "../Addresses.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { updateAddress, getAddressById } from "../../../../api/address";
 import Error from "../../../Error/Error";
@@ -84,7 +85,7 @@ const EditAddress = () => {
   }, []);
 
   return (
-    <section id="add-address" className="container min-vh-100 my-3 py-5 d-flex justify-content-center column">
+    <section id="add-address" className="container min-vh-100 my-3 d-flex justify-content-center column">
       {/* Contact form */}
       <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center">
         <div className="col-10 col-lg-8">
@@ -98,7 +99,7 @@ const EditAddress = () => {
               <div className="spinner-border" role="status" />
             </div>
           ) : (
-            <form className="d-flex flex-column justify-content-center" onSubmit={handleSubmit}>
+            <form className="d-flex flex-column justify-content-center pb-5" onSubmit={handleSubmit}>
               {/* Full Name */}
               <div className="mb-3">
                 <div className="d-flex justify-content-between align-items-center mb-2">
@@ -110,7 +111,7 @@ const EditAddress = () => {
                 {isEditing ? (
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${isEditing ? "d-block" : "d-none"}`}
                     id="full_name"
                     name="full_name"
                     placeholder="John Doe"
@@ -120,7 +121,7 @@ const EditAddress = () => {
                     required
                   />
                 ) : (
-                  <p>{editedAddress.full_name || address.full_name}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.full_name || address.full_name}</p>
                 )}
               </div>
 
@@ -135,7 +136,7 @@ const EditAddress = () => {
                 {isEditing ? (
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${isEditing ? "d-block" : "d-none"}`}
                     id="address_line_1"
                     name="address_line_1"
                     placeholder="16 Main Street"
@@ -145,7 +146,7 @@ const EditAddress = () => {
                     required
                   />
                 ) : (
-                  <p>{editedAddress.address_line_1 || address.address_line_1}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.address_line_1 || address.address_line_1}</p>
                 )}
               </div>
 
@@ -160,7 +161,7 @@ const EditAddress = () => {
                 {isEditing ? (
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${isEditing ? "d-block" : "d-none"}`}
                     id="address_line_2"
                     name="address_line_2"
                     placeholder="Apartment 10"
@@ -169,7 +170,7 @@ const EditAddress = () => {
                     onChange={handleInputChange}
                   />
                 ) : (
-                  <p>{editedAddress.address_line_2 || address.address_line_2}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.address_line_2 || address.address_line_2}</p>
                 )}
               </div>
 
@@ -182,9 +183,18 @@ const EditAddress = () => {
                   <small className="text-muted">{charCityCount}/100</small>
                 </div>
                 {isEditing ? (
-                  <input type="text" className="form-control" id="city" name="city" placeholder="Manchester" value={editedAddress.city || address.city} onChange={handleInputChange} maxLength={100} />
+                  <input
+                    type="text"
+                    className={`form-control ${isEditing ? "d-block" : "d-none"}`}
+                    id="city"
+                    name="city"
+                    placeholder="Manchester"
+                    value={editedAddress.city || address.city}
+                    onChange={handleInputChange}
+                    maxLength={100}
+                  />
                 ) : (
-                  <p>{editedAddress.city || address.city}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.city || address.city}</p>
                 )}
               </div>
 
@@ -199,7 +209,7 @@ const EditAddress = () => {
                 {isEditing ? (
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${isEditing ? "d-block" : "d-none"}`}
                     id="postcode"
                     name="postcode"
                     placeholder="MB7 8IY"
@@ -208,7 +218,7 @@ const EditAddress = () => {
                     maxLength={20}
                   />
                 ) : (
-                  <p>{editedAddress.postcode || address.postcode}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.postcode || address.postcode}</p>
                 )}
               </div>
 

@@ -90,7 +90,7 @@ const Shop = () => {
 
   return (
     <section id="shop" className="d-flex min-vh-100">
-      <div className="container flex-grow-1 d-flex flex-column mt-5 py-5">
+      <div className="container flex-grow-1 d-flex flex-column mt-5">
         {/* Category heading and sort by button */}
         <div className="d-sm-flex justify-content-between pb-3">
           <h2 className="text-start text-dark align-self-center fw-bold mb-0">All Product</h2>
@@ -171,7 +171,7 @@ const Shop = () => {
             <Error message={error} setError={setError} />
           ) : products.length > 0 ? (
             products.map((product) => (
-              <div key={product.id} className="col-12 col-lg-4">
+              <div key={product.id} className="col-12 col-md-6 col-lg-4">
                 <Link to={`/shop/product-page/${product.id}`} className="text-decoration-none">
                   <Product image={product.image_path} name={product.name} category={product.category_name} price={product.price} />
                 </Link>
@@ -186,7 +186,7 @@ const Shop = () => {
 
         {/* Pagination */}
         {products.length > 0 && (
-          <div className="mt-auto">
+          <div className="mt-auto py-5">
             <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           </div>
         )}
