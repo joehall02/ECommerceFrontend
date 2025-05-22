@@ -21,6 +21,7 @@ const ProductPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [productOutOfStock, setProductOutOfStock] = useState(false);
 
   const maxItems = Math.min(product.stock - product.reserved_stock, 5);
 
@@ -89,7 +90,8 @@ const ProductPage = () => {
 
   useEffect(() => {
     if (product.stock === 0) {
-      navigate("/shop");
+      // navigate("/shop");
+      setProductOutOfStock(true);
     }
   }, [product, navigate]);
 
@@ -148,26 +150,34 @@ const ProductPage = () => {
 
                   {/* Quantity dropdown and add to basket button */}
                   <div className="d-flex flex-column justify-content-lg-start mt-auto w-100">
-                    <div className="btn-group mb-3">
-                      <button className="btn btn-outline-secondary dropdown-toggle rounded-0 py-2 fs-5" data-bs-toggle="dropdown">
-                        Quantity: {selectedItem}
-                      </button>
-                      {maxItems !== 0 && (
-                        <ul className="dropdown-menu w-100">
-                          {/* Create a list of 5 dropdown items */}
-                          {Array.from({ length: maxItems }, (_, i) => (
-                            <li key={i}>
-                              <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>
-                                {i + 1}
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
+                    <div className={`btn-group ${!productOutOfStock ? "mb-3" : "mb-0"}`}>
+                      {!productOutOfStock && (
+                        <button className="btn btn-outline-secondary dropdown-toggle rounded-0 py-2 fs-5" data-bs-toggle="dropdown">
+                          Quantity: {selectedItem}
+                        </button>
+                      )}
+                      {!productOutOfStock ? (
+                        maxItems !== 0 && (
+                          <ul className="dropdown-menu w-100">
+                            {/* Create a list of 5 dropdown items */}
+                            {Array.from({ length: maxItems }, (_, i) => (
+                              <li key={i}>
+                                <button className="dropdown-item w-100" onClick={() => handleDropdownSelect(i + 1)}>
+                                  {i + 1}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        )
+                      ) : (
+                        <p className="text-danger fs-5 mb-0">Out of Stock.</p>
                       )}
                     </div>
-                    <button className="btn btn-dark rounded-0 fs-5 py-2" onClick={handleAddToCart(product_id, selectedItem)} disabled={buttonDisabled}>
-                      Add to Basket
-                    </button>
+                    {!productOutOfStock && (
+                      <button className="btn btn-dark rounded-0 fs-5 py-2" onClick={handleAddToCart(product_id, selectedItem)} disabled={buttonDisabled}>
+                        Add to Basket
+                      </button>
+                    )}
                   </div>
                 </div>
 
