@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./ProductPage.css";
 import "../../../App.css";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getProductById, getProductImage } from "../../../api/product";
 import { getCategoryById } from "../../../api/category";
 import { addProductToCart } from "../../../api/cart";
@@ -41,7 +41,7 @@ const ProductPage = () => {
 
     if (response.success) {
       toggleBasketVisibility(); // Show the basket
-      fetchCartProducts(); // Fetch the cart products
+      fetchCartProducts(true); // Fetch the cart products and set loading to true
       verifyAuthentication(); // Verify authentication
       setError("");
       setButtonDisabled(false); // Enable the button
@@ -116,7 +116,7 @@ const ProductPage = () => {
   useEffect(() => {
     // Scroll to the top of the page when the componenet mounts
     window.scrollTo(0, 0);
-  }, []);
+  });
 
   return (
     <section id="product-page">
@@ -131,10 +131,10 @@ const ProductPage = () => {
             ) : (
               <>
                 {/* Back button */}
-                <Link to={"/shop"} className="mb-3 mt-lg-5 text-dark text-decoration-none me-auto">
+                <button onClick={() => navigate(-1)} className="btn btn-link mb-3 mt-lg-5 text-dark text-decoration-none text-start">
                   <i className="bi bi-arrow-left me-2" />
                   Back to Shop
-                </Link>
+                </button>
 
                 {/* Image */}
                 <div className="col-12 col-lg-6 mb-3 mb-lg-0">

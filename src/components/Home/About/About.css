@@ -1,14 +1,22 @@
-
 /* Changes background colour of about section */
-#about {  
-    /* background-image: url('../../assets/about_background.jpg');   */
-    background-color: #f8f9fa;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;  
-}
 
 .custom-line-height {
-    line-height: 2;
+  line-height: 2;
+}
+
+/* Changes background image of about page */
+.about-bg-image {
+  background-image: url("../../../assets/about_background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+@media (min-width: 991.98px) {
+  #about .container h1 {
+    font-size: 3.5rem;
+  }
 }

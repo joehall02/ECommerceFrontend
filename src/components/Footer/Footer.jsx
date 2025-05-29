@@ -1,4 +1,3 @@
-import React from "react";
 import "./Footer.css";
 
 const Footer = () => {
@@ -8,10 +7,18 @@ const Footer = () => {
         <div className="d-flex align-items-center justify-content-center my-3">
           <div className="flex-grow-1 border-top border-secondary"></div>
           <div className="d-flex justify-content-center mx-3">
-            <i className="footer-icons px-3 bi bi-instagram"></i>
-            <i className="footer-icons px-3 bi bi-facebook"></i>
-            <i className="footer-icons px-3 bi bi-tiktok"></i>
-            <i className="footer-icons px-3 bi bi-twitter"></i>
+            <a href="https://instagram.com" target="_blank">
+              <i className="footer-icons px-3 bi bi-instagram"></i>
+            </a>
+            <a href="https://facebook.com" target="_blank">
+              <i className="footer-icons px-3 bi bi-facebook"></i>
+            </a>
+            <a href="https://tiktok.com" target="_blank">
+              <i className="footer-icons px-3 bi bi-tiktok"></i>
+            </a>
+            <a href="https://x.com" target="_blank">
+              <i className="footer-icons px-3 bi bi-twitter"></i>
+            </a>
           </div>
           <div className="flex-grow-1 border-top border-secondary"></div>
         </div>

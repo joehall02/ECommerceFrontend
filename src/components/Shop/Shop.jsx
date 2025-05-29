@@ -4,32 +4,49 @@ import Product from "./Product/Product";
 import { getProducts } from "../../api/product";
 import { getAllCategories } from "../../api/category";
 import Pagination from "../Pagination/Pagination";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Error from "../Error/Error";
 
 const Shop = () => {
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSortBy, setSelectedSortBy] = useState("");
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get current page, sort by, and category from search params
+  // Default if not specified
+  const currentPage = parseInt(searchParams.get("page")) || 1;
+  const selectedSortBy = searchParams.get("sort_by") || "";
+  const selectedCategoryId = searchParams.get("category") || "";
+
+  // Handle category selection and update search params
   const handleCategorySelect = (item) => {
-    setSelectedCategory(item);
-
-    // Reset the current page to 1 when the category is changed
-    setCurrentPage(1);
+    const newParams = new URLSearchParams(searchParams);
+    if (item) {
+      newParams.set("category", item.id);
+    } else {
+      newParams.delete("category");
+      setSelectedCategory(""); // Reset selected category if "Shop All" is selected
+    }
+    newParams.set("page", 1); // Reset to first page when category changes
+    setSearchParams(newParams);
   };
 
+  // Handle sort by selection and update search params
   const handleSortBySelect = (item) => {
-    setSelectedSortBy(item);
-
-    // Reset the current page to 1 when the sort by option is changed
-    setCurrentPage(1);
+    const newParams = new URLSearchParams(searchParams);
+    if (item) {
+      newParams.set("sort_by", item);
+    } else {
+      newParams.delete("sort_by");
+    }
+    newParams.set("page", 1); // Reset to first page when sort by changes
+    setSearchParams(newParams);
   };
 
   useEffect(() => {
@@ -53,6 +70,19 @@ const Shop = () => {
     fetchData();
   }, []);
 
+  // Set selected category based on the selectedCategoryId from search params
+  useEffect(() => {
+    if (categories.length > 0 && selectedCategoryId) {
+      const found = categories.find((category) => category.id.toString() === selectedCategoryId);
+
+      if (found) {
+        setSelectedCategory(found);
+      } else if (!selectedCategoryId) {
+        setSelectedCategory("");
+      }
+    }
+  }, [categories, selectedCategoryId]);
+
   // Fetch products when the component mounts
   useEffect(() => {
     const fetchData = async () => {
@@ -62,8 +92,8 @@ const Shop = () => {
         page: currentPage,
       };
 
-      if (selectedCategory) {
-        params.category_id = selectedCategory.id;
+      if (selectedCategoryId) {
+        params.category_id = selectedCategoryId;
       }
 
       if (selectedSortBy) {
@@ -76,7 +106,6 @@ const Shop = () => {
         setError("");
         setProducts(response.response.products);
         setTotalPages(response.response.total_pages);
-        setCurrentPage(response.response.current_page);
         setTotalProducts(response.response.total_products);
       } else {
         setError(response.message);
@@ -86,7 +115,7 @@ const Shop = () => {
     };
 
     fetchData();
-  }, [currentPage, selectedCategory, selectedSortBy]);
+  }, [currentPage, selectedCategoryId, selectedSortBy]);
 
   return (
     <section id="shop" className="d-flex min-vh-100">
@@ -100,7 +129,7 @@ const Shop = () => {
             {/* Category Selection */}
             <div className="col-6">
               <div className="btn-group w-100">
-                <button className="btn btn-outline-secondary dropdown-toggle rounded-0 w-100" data-bs-toggle="dropdown">
+                <button className="btn btn-outline-secondary dropdown-toggle rounded-0 w-100 text-truncate" data-bs-toggle="dropdown">
                   {selectedCategory.name || "Select Category"}
                 </button>
                 <ul className="dropdown-menu w-100">
@@ -112,7 +141,7 @@ const Shop = () => {
                   {categories.length > 0 &&
                     categories.map((category) => (
                       <li key={category.id}>
-                        <button className="dropdown-item" onClick={() => handleCategorySelect(category)}>
+                        <button className="dropdown-item text-truncate" onClick={() => handleCategorySelect(category)}>
                           {category.name}
                         </button>
                       </li>
@@ -123,32 +152,32 @@ const Shop = () => {
             {/* Sort By Selection */}
             <div className="col-6">
               <div className="btn-group w-100">
-                <button className="btn btn-outline-secondary dropdown-toggle rounded-0 w-100" data-bs-toggle="dropdown">
+                <button className="btn btn-outline-secondary dropdown-toggle rounded-0 w-100 text-truncate" data-bs-toggle="dropdown">
                   {selectedSortBy || "Sort By"}
                 </button>
                 <ul className="dropdown-menu w-100">
                   <li>
-                    <button className="dropdown-item" onClick={() => handleSortBySelect("")}>
+                    <button className="dropdown-item text-truncate" onClick={() => handleSortBySelect("")}>
                       Recommended
                     </button>
                   </li>
                   <li>
-                    <button className="dropdown-item" onClick={() => handleSortBySelect("Name (A-Z)")}>
+                    <button className="dropdown-item text-truncate" onClick={() => handleSortBySelect("Name (A-Z)")}>
                       Name (A-Z)
                     </button>
                   </li>
                   <li>
-                    <button className="dropdown-item" onClick={() => handleSortBySelect("Name (Z-A)")}>
+                    <button className="dropdown-item text-truncate" onClick={() => handleSortBySelect("Name (Z-A)")}>
                       Name (Z-A)
                     </button>
                   </li>
                   <li>
-                    <button className="dropdown-item" onClick={() => handleSortBySelect("Price (Low to High)")}>
+                    <button className="dropdown-item text-truncate" onClick={() => handleSortBySelect("Price (Low to High)")}>
                       Price (Low to High)
                     </button>
                   </li>
                   <li>
-                    <button className="dropdown-item" onClick={() => handleSortBySelect("Price (High to Low)")}>
+                    <button className="dropdown-item text-truncate" onClick={() => handleSortBySelect("Price (High to Low)")}>
                       Price (High to Low)
                     </button>
                   </li>
@@ -187,7 +216,15 @@ const Shop = () => {
         {/* Pagination */}
         {products.length > 0 && (
           <div className="mt-auto py-5">
-            <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              setCurrentPage={(page) => {
+                const newParams = new URLSearchParams(searchParams);
+                newParams.set("page", page);
+                setSearchParams(newParams);
+              }}
+            />
           </div>
         )}
       </div>

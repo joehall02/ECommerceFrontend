@@ -29,9 +29,9 @@ const Basket = ({ isVisible, onClose }) => {
             <ul className="mb-4 p-0 h-100" style={{ maxHeight: "100vh", overflowY: "auto" }}>
               {/* Grey separator */}
               <div className="flex-grow-1 border-top border-secondary"></div>
-              {cartProducts.map((product, index) => (
+              {cartProducts.map((product) => (
                 <Product
-                  key={index}
+                  key={product.cart_product.id}
                   image_path={product.product.image_path}
                   name={product.product.name}
                   category_name={product.product.category_name}

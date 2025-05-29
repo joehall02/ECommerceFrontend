@@ -63,14 +63,20 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
       <li className="d-flex align-items-center my-3">
         {/* Product image */}
         <Link to={`/shop/product-page/${product_id}`} className="text-decoration-none" onClick={() => toggleBasketVisibility()}>
-          <img src={"https://storage.googleapis.com/" + image_path} alt={name} style={{ width: "75px", height: "75px" }} />
+          <img src={"https://storage.googleapis.com/" + image_path} alt={name} style={{ width: "70px", height: "70px" }} />
         </Link>
 
         {/* Product details */}
-        <div className="d-flex flex-column ms-3" style={{ minWidth: "0" }}>
-          <span className="text-truncate">{name}</span>
-          <span className="text-truncate">{category_name}</span>
-          <span className="text-truncate">£{price}</span>
+        <div className="d-flex flex-column ms-3 w-100" style={{ minWidth: "0" }}>
+          <span className="text-truncate" style={{ width: "95%" }}>
+            {name}
+          </span>
+          <span className="text-truncate" style={{ width: "95%" }}>
+            {category_name}
+          </span>
+          <span className="text-truncate" style={{ width: "95%" }}>
+            £{price}
+          </span>
         </div>
 
         {/* Dropdown */}
@@ -97,7 +103,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
         </div>
 
         {/* Remove button */}
-        <button onClick={handleRemoveFromCart} className="btn btn-danger rounded-0 ms-3" disabled={buttonDisabled}>
+        <button onClick={handleRemoveFromCart} className="btn btn-danger rounded-0 ms-2" disabled={buttonDisabled}>
           <i className="bi bi-trash"></i>
         </button>
       </li>

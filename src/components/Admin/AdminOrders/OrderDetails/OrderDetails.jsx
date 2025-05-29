@@ -182,7 +182,7 @@ const OrderDetails = () => {
                             <option value="Shipped">Shipped</option>
                             <option value="Delivered">Delivered</option>
                           </select>
-                          <span className="text-danger">Warning: </span> Changing the status to 'Shipped' will send an email to the customer.
+                          {/* <span className="text-danger">Warning: </span> Changing the status to 'Shipped' will send an email to the customer. */}
                         </>
                       ) : (
                         newStatus || order.order.status

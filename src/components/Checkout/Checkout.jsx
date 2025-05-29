@@ -87,11 +87,9 @@ const Checkout = () => {
                   <>
                     {/* List of Products */}
                     <ul className="mb-4 p-0 border rounded-2 px-2" style={{ height: "50vh", overflowY: "auto" }}>
-                      {/* Grey separator */}
-
-                      {cartProducts.map((product, index) => (
+                      {cartProducts.map((product) => (
                         <Product
-                          key={index}
+                          key={product.cart_product.id}
                           image_path={product.product.image_path}
                           name={product.product.name}
                           category_name={product.product.category_name}
@@ -103,6 +101,12 @@ const Checkout = () => {
                         />
                       ))}
                     </ul>
+
+                    {/* Total Price */}
+                    <div className="d-flex justify-content-between mb-3">
+                      <span className="fw-bold">Total ({cartProducts.reduce((total, product) => total + product.cart_product.quantity, 0)} items):</span>
+                      <span className="fw-bold">£{cartProducts.reduce((total, product) => total + product.product.price * product.cart_product.quantity, 0).toFixed(2)}</span>
+                    </div>
 
                     {/* Checkout Button */}
                     <button className="btn btn-success rounded-0" onClick={handleCheckout} disabled={!address.full_name || buttonDisabled}>

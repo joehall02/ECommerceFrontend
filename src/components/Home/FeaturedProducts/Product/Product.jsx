@@ -33,22 +33,24 @@ const Product = ({ id, image, name, category, price }) => {
   };
 
   return (
-    <div className="custom-border my-3 py-3 h-100">
+    <div className="custom-border my-3 h-100">
       <div className="card p-2 text-center text-white bg-transparent border-0 d-flex flex-column h-100">
-        {/* Ensure the Link does not break the layout */}
+        {/* Product image and details */}
         <Link to={`/shop/product-page/${id}`} className="text-decoration-none d-block flex-grow-1 text-white">
-          <img src={`https://storage.googleapis.com/${image}`} className="card-image-top image-shadow w-100" alt={name} />
+          <div className="ratio ratio-4x3">
+            <img src={`https://storage.googleapis.com/${image}`} className="card-image-top image-shadow w-100" alt={name} />
+          </div>
 
-          {/* Separate clickable title to avoid wrapping issues */}
-          <div className="my-3">
-            <h4 className="cart-title fw-bold">{name}</h4>
+          {/* Product details */}
+          <div className="card-body mt-3">
+            <h5 className="cart-title fw-bold">{name}</h5>
 
             <p className="card-text">{category}</p>
             <p className="card-text">£{price}</p>
           </div>
         </Link>
 
-        {/* Make sure the button stays at the bottom */}
+        {/* Add to basket button */}
         <div className="d-flex justify-content-center mt-auto">
           <button className="btn w-100 fw-bold btn-secondary rounded-0 fs-5" onClick={handleAddToCart(id)} disabled={buttonDisabled}>
             Add to basket

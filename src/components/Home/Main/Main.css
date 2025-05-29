@@ -1,18 +1,25 @@
 /* Main */
 
-/* Changes background image of home page */
-#main{
-    /* background-image: url('../../assets/home_background.jpg');   */
-    background-color: #f8f9fa;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;  
-}
-
 /* Changes size of h1 on home page */
-#main .container h1 {
+@media (min-width: 991.98px) {
+  #main .container h1 {
     font-size: 4rem;
+  }
 }
 
+/* Changes background image of home page */
+.main-bg-image {
+  background-image: url("../../../assets/home_background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
 
+@media (max-width: 991.98px) {
+  #main {
+    scroll-margin-top: 200px;
+  }
+}

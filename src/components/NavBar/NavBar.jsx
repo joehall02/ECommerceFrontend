@@ -28,7 +28,7 @@ const Navbar = () => {
       // If on another page, navigate to the home page and scroll to the contact section
       setTimeout(() => {
         document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
-      }, 300);
+      }, 500);
     }
   };
 

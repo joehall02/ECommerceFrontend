@@ -23,8 +23,12 @@ export const BasketProvider = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
 
   // Function to fetch the cart products
-  const fetchCartProducts = async () => {
-    setCartLoading(true);
+  const fetchCartProducts = async (withLoading = false) => {
+    // If setLoading is true, set the cartLoading state to true
+    // Only used for adding products, not for editing or deleting products
+    if (withLoading) {
+      setCartLoading(true);
+    }
 
     // Fetch cart products
     const response = await getCartProducts();
@@ -36,7 +40,10 @@ export const BasketProvider = ({ children }) => {
       setCartProducts([]); // Clear the products array
     }
 
-    setCartLoading(false);
+    // Set the cartLoading state to false after fetching the products
+    if (withLoading) {
+      setCartLoading(false);
+    }
   };
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-import React from "react";
 import Main from "./Main/Main";
 // import Categories from "./Categories/Categories";
 import About from "./About/About";

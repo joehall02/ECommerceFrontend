@@ -59,7 +59,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
       <li className="d-flex align-items-center my-3">
         {/* Product image */}
         <Link to={`/shop/product-page/${product_id}`} className="text-decoration-none">
-          <img src={"https://storage.googleapis.com/" + image_path} alt={name} style={{ width: "75px", height: "75px" }} />
+          <img src={"https://storage.googleapis.com/" + image_path} alt={name} style={{ width: "70px", height: "70px" }} />
         </Link>
 
         {/* Product details */}
@@ -86,7 +86,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
         </div>
 
         {/* Remove button */}
-        <button onClick={handleRemoveFromCart} className="btn btn-danger rounded-0 ms-3" disabled={buttonDisabled}>
+        <button onClick={handleRemoveFromCart} className="btn btn-danger rounded-0 ms-2" disabled={buttonDisabled}>
           <i className="bi bi-trash"></i>
         </button>
       </li>
@@ -95,7 +95,7 @@ const Product = ({ image_path, name, category_name, price, stock, quantity, prod
       {error && <Error message={error} setError={setError} />}
 
       {/* Grey separator */}
-      <div className="flex-grow-1 border-top border-secondary"></div>
+      <div className="flex-grow-1 border-top"></div>
     </>
   );
 };
