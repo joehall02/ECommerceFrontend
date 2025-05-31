@@ -22,6 +22,7 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [productOutOfStock, setProductOutOfStock] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const maxItems = Math.min(product.stock - product.reserved_stock, 5);
 
@@ -138,7 +139,22 @@ const ProductPage = () => {
 
                 {/* Image */}
                 <div className="col-12 col-lg-6 mb-3 mb-lg-0">
-                  <img src={"https://storage.googleapis.com/" + product.image_path} className="img-fluid" alt={product.name} />
+                  <div className="ratio ratio-4x3 bg-light position-relative">
+                    {!product.image_path || !imageLoaded ? (
+                      <div className="d-flex justify-content-center align-items-center w-100 h-100">
+                        <span className="text-muted">Loading...</span>
+                      </div>
+                    ) : null}
+                    {product.image_path && (
+                      <img
+                        src={"https://storage.googleapis.com/" + product.image_path}
+                        className={`img-fluid w-100 h-100 position-absolute top-0 start-0 ${imageLoaded ? "" : "d-none"}`}
+                        alt={product.name}
+                        onLoad={() => setImageLoaded(true)}
+                        style={{ objectFit: "cover" }}
+                      />
+                    )}
+                  </div>
                 </div>
 
                 {/* Product details */}

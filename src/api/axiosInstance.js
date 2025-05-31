@@ -25,6 +25,19 @@ const addSubscriber = (callback) => {
   refreshSubscribers.push(callback);
 };
 
+// Request interceptor to add custom secret header
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // Add custom header to request
+    config.headers["X-Frontend-Secret"] = import.meta.env.VITE_FRONTEND_SECRET;
+    return config;
+  },
+  (error) => {
+    // Handle request error
+    return Promise.reject(error);
+  }
+);
+
 // Response interceptor to check for 401 errors
 axiosInstance.interceptors.response.use(
   (response) => response,

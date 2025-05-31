@@ -10,6 +10,7 @@ const Product = ({ id, image, name, category, price }) => {
 
   const [error, setError] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleAddToCart = (product_id) => async () => {
     // Create a JSON object for product data
@@ -37,8 +38,21 @@ const Product = ({ id, image, name, category, price }) => {
       <div className="card p-2 text-center text-white bg-transparent border-0 d-flex flex-column h-100">
         {/* Product image and details */}
         <Link to={`/shop/product-page/${id}`} className="text-decoration-none d-block flex-grow-1 text-white">
-          <div className="ratio ratio-4x3">
-            <img src={`https://storage.googleapis.com/${image}`} className="card-image-top image-shadow w-100" alt={name} />
+          <div className="ratio ratio-4x3 bg-light position-relative">
+            {!image || !imageLoaded ? (
+              <div className="d-flex justify-content-center align-items-center w-100 h-100 position-absolute top-0 start-0">
+                <span className="text-muted">Loading...</span>
+              </div>
+            ) : null}
+            {image && (
+              <img
+                src={`https://storage.googleapis.com/${image}`}
+                className={`card-image-top image-shadow w-100 h-100 position-absolute top-0 start-0 ${imageLoaded ? "" : "d-none"}`}
+                alt={name}
+                onLoad={() => setImageLoaded(true)}
+                style={{ objectFit: "cover" }}
+              />
+            )}
           </div>
 
           {/* Product details */}
