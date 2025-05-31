@@ -11,12 +11,12 @@ const Address = ({ address, setAddress, setIsChanging }) => {
           setIsChanging(false);
         }}
       >
-        <div className="d-flex flex-column">
-          <span>{address.full_name}</span>
-          <span>{address.address_line_1}</span>
-          <span>{address.address_line_2}</span>
-          <span>{address.city}</span>
-          <span>{address.postcode}</span>
+        <div className="d-flex flex-column w-100">
+          <span className="text-truncate">{address.full_name}</span>
+          <span className="text-truncate">{address.address_line_1}</span>
+          <span className="text-truncate">{address.address_line_2}</span>
+          <span className="text-truncate">{address.city}</span>
+          <span className="text-truncate">{address.postcode}</span>
         </div>
       </div>
 

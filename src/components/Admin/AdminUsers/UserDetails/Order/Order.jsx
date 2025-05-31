@@ -40,7 +40,7 @@ const Order = ({ order_date, total_price, status, full_name, address_line_1, add
           {/* Order details */}
 
           <div className="d-flex mt-3 border-top border-dark pt-3">
-            <small className="card-text me-auto">
+            <small className="card-text me-auto text-truncate col-6">
               <span className="fw-bold">Delivery Address:</span>
               <br />
               {full_name}
@@ -62,7 +62,7 @@ const Order = ({ order_date, total_price, status, full_name, address_line_1, add
               <br />
               {payment}
             </small> */}
-            <small className="card-text me-auto">
+            <small className="card-text me-auto col-6">
               <span className="fw-bold">Order Number:</span>
               <br />
               {order_number}

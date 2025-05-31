@@ -96,7 +96,17 @@ const UserDetails = () => {
                       <br />
                       <span className="fw-bold">Stripe Customer Id:</span> {user.stripe_customer_id ? user.stripe_customer_id : "N/A"}
                       <br />
-                      <span className="fw-bold">Created at:</span> {user.created_at}
+                      <span className="fw-bold">Created at: </span>
+                      {user.created_at
+                        ? new Date(user.created_at).toLocaleString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          })
+                        : "N/A"}
                       <br />
                       <span className="fw-bold">Role:</span> {user.role}
                     </p>

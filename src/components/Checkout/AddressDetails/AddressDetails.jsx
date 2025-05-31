@@ -106,21 +106,17 @@ const AddressDetails = ({ address, setAddress }) => {
                   </div>
                 ) : (
                   // Display selected or default address
-                  <p className="card-text fs-5">
-                    <b>{address.full_name}</b>
-                    <br />
-                    {address.address_line_1}
+                  <div className="d-flex flex-column w-100 fs-5">
+                    <p className="fw-bold text-truncate">{address.full_name}</p>
+                    <p className="text-truncate">{address.address_line_1}</p>
                     {address.address_line_2 && (
                       <>
-                        <br />
-                        {address.address_line_2}
+                        <p className="text-truncate">{address.address_line_2}</p>
                       </>
                     )}
-                    <br />
-                    {address.city}
-                    <br />
-                    {address.postcode}
-                  </p>
+                    <p className="text-truncate">{address.city}</p>
+                    <p className="text-truncate">{address.postcode}</p>
+                  </div>
                 )}
               </div>
               {/* Address actions */}

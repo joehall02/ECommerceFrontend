@@ -30,7 +30,7 @@ const EditAddress = () => {
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
-    setEditedAddress({ ...address, [e.target.name]: e.target.value });
+    setEditedAddress({ ...editedAddress, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -121,7 +121,7 @@ const EditAddress = () => {
                     required
                   />
                 ) : (
-                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.full_name || address.full_name}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p text-truncate`}>{editedAddress.full_name || address.full_name}</p>
                 )}
               </div>
 
@@ -146,7 +146,7 @@ const EditAddress = () => {
                     required
                   />
                 ) : (
-                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.address_line_1 || address.address_line_1}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p text-truncate`}>{editedAddress.address_line_1 || address.address_line_1}</p>
                 )}
               </div>
 
@@ -170,7 +170,7 @@ const EditAddress = () => {
                     onChange={handleInputChange}
                   />
                 ) : (
-                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.address_line_2 || address.address_line_2}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p text-truncate`}>{editedAddress.address_line_2 || address.address_line_2}</p>
                 )}
               </div>
 
@@ -194,7 +194,7 @@ const EditAddress = () => {
                     maxLength={100}
                   />
                 ) : (
-                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.city || address.city}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p text-truncate`}>{editedAddress.city || address.city}</p>
                 )}
               </div>
 
@@ -218,7 +218,7 @@ const EditAddress = () => {
                     maxLength={20}
                   />
                 ) : (
-                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p`}>{editedAddress.postcode || address.postcode}</p>
+                  <p className={`${isEditing ? "d-none" : "d-block"} m-0 border rounded bg-light edit-address-p text-truncate`}>{editedAddress.postcode || address.postcode}</p>
                 )}
               </div>
 

@@ -14,7 +14,7 @@ const Product = ({ image, name, category, price }) => {
         {/* Image */}
         <img src={"https://storage.googleapis.com/" + image} className={`img-fluid h-100 ${imageLoaded ? "" : "d-none"}`} alt={name} onLoad={() => setImageLoaded(true)} />
         <div className="card-body">
-          <h4 className="card-text fw-bold mt-3">{name}</h4>
+          <h4 className="card-text fw-bold mt-3 text-truncate">{name}</h4>
           <h5 className="card-text">{category}</h5>
           <h5 className="card-text">£{price}</h5>
         </div>

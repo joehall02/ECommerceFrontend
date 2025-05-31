@@ -10,31 +10,23 @@ const Address = ({ name, addressLine1, addressLine2, city, postcode, addressId, 
         {/* Address name and default */}
         <div className="card-body address-top-info">
           <div className="d-flex justify-content-between">
-            <small className="card-text">
-              <span className="fw-bold">{name}</span>
-            </small>
+            <small className="card-text fw-bold text-truncate">{name}</small>
             <small className="card-text">{isDefault ? <span className="badge bg-primary">Default</span> : ""}</small>
           </div>
         </div>
         {/* Address Details */}
         <div className="card-body d-flex row">
           {/* Address */}
-          <div className="d-flex mt-2">
-            <p className="card-text">
-              <span className="fw-bold">Delivery Address:</span>
-              <br />
-              {addressLine1}
-              {addressLine2 && (
-                <>
-                  <br />
-                  {addressLine2}
-                </>
-              )}
-              <br />
-              {city}
-              <br />
-              {postcode}
-            </p>
+          <div className="d-flex flex-column">
+            <p className="fw-bold">Delivery Address:</p>
+            <p className="text-truncate">{addressLine1}</p>
+            {addressLine2 && (
+              <>
+                <p className="text-truncate">{addressLine2}</p>
+              </>
+            )}
+            <p className="text-truncate">{city}</p>
+            <p className="text-truncate">{postcode}</p>
           </div>
           {/* Address actions */}
           <div className="mt-auto">

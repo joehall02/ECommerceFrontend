@@ -89,7 +89,7 @@ const ProductPage = () => {
   }, [product_id, navigate]);
 
   useEffect(() => {
-    if (product.stock === 0) {
+    if (product.stock === 0 || product.reserved_stock >= product.stock) {
       // navigate("/shop");
       setProductOutOfStock(true);
     }
@@ -120,7 +120,7 @@ const ProductPage = () => {
 
   return (
     <section id="product-page">
-      <div className="container min-vh-100 d-flex flex-column my-5 my-lg-0">
+      <div className="container min-vh-100 d-flex flex-column my-4 my-lg-0 mb-lg-5">
         <div className="d-flex flex-column align-items-center w-100 ">
           <div className="row w-100 d-flex justify-content-center ">
             {/* Loading */}
@@ -131,7 +131,7 @@ const ProductPage = () => {
             ) : (
               <>
                 {/* Back button */}
-                <button onClick={() => navigate(-1)} className="btn btn-link mb-3 mt-lg-5 text-dark text-decoration-none text-start">
+                <button onClick={() => navigate(-1)} className="btn btn-link mb-3 mt-lg-4 text-dark text-decoration-none text-start">
                   <i className="bi bi-arrow-left me-2" />
                   Back to Shop
                 </button>
