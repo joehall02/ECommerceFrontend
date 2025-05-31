@@ -1,3 +1,7 @@
 .remove-blue-background:active {
-    background-color: #6c757d !important;
+  background-color: #6c757d !important;
+}
+
+.dropdown-menu-opacity {
+  opacity: 0.9;
 }

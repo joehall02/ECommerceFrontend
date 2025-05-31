@@ -25,6 +25,18 @@ export const getStripeCheckoutSession = async (address) => {
   }
 };
 
+// Check stripe session status
+export const checkStripeSessionStatus = async (session_id) => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/stripe_session_status`, {
+      params: { session_id },
+    });
+    return { success: true, response: response.data };
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
 // Admin routes
 
 // Get order by ID

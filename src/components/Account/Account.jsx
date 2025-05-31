@@ -19,7 +19,7 @@ const Account = () => {
         </Link>
       )}
 
-      <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+      <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end dropdown-menu-opacity">
         <li>
           <Link to={"/account/orders"} className="dropdown-item remove-blue-background text-end">
             Orders
