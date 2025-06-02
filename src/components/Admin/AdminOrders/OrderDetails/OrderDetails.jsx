@@ -16,6 +16,7 @@ const OrderDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [newStatus, setNewStatus] = useState("");
+  const [trackingUrl, setTrackingUrl] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const handleStatusChange = (e) => {
@@ -24,6 +25,11 @@ const OrderDetails = () => {
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
+
+    // If editing and theres an order with a tracking URL, set the tracking URL state to the order's tracking URL
+    if (!isEditing && order.order && order.order.trackingUrl) {
+      setTrackingUrl(order.order.trackingUrl);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -32,7 +38,8 @@ const OrderDetails = () => {
     // Disable the button to prevent multiple clickss
     setButtonDisabled(true);
 
-    if (newStatus === order.order.status || newStatus === "") {
+    // If the new status is the same as the current status or empty, navigate back to the orders page
+    if ((newStatus === order.order.status || newStatus === "") && trackingUrl === order.order.tracking_url) {
       navigate("/admin/orders");
       return;
     }
@@ -41,6 +48,11 @@ const OrderDetails = () => {
     const data = {
       status: newStatus,
     };
+
+    // If the new status is "Shipped", add a tracking URL to the data object
+    if (newStatus === "Shipped") {
+      data.tracking_url = trackingUrl;
+    }
 
     const response = await updateOrderStatus(order_id, data);
 
@@ -182,10 +194,34 @@ const OrderDetails = () => {
                             <option value="Shipped">Shipped</option>
                             <option value="Delivered">Delivered</option>
                           </select>
-                          {/* <span className="text-danger">Warning: </span> Changing the status to 'Shipped' will send an email to the customer. */}
+                          <span className="text-danger">Warning: </span> Changing the status to 'Shipped' will send an email to the customer.
+                          {newStatus === "Shipped" && (
+                            <div className="mt-2">
+                              <label htmlFor="trackingUrl" className="form-label">
+                                Tracking URL:
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="trackingUrl"
+                                placeholder="Enter tracking URL"
+                                value={trackingUrl}
+                                required={newStatus === "Shipped"}
+                                onChange={(e) => setTrackingUrl(e.target.value)}
+                              />
+                            </div>
+                          )}
                         </>
                       ) : (
                         newStatus || order.order.status
+                      )}
+                      {/* Display tracking URL if one is in the order */}
+                      {order.order.tracking_url && (
+                        <>
+                          <br />
+                          <span className="fw-bold">Tracking URL: </span>
+                          {order.order.tracking_url}
+                        </>
                       )}
                     </p>
                   </div>
